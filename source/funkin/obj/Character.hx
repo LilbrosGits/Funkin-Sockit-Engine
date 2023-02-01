@@ -6,6 +6,7 @@ import funkin.system.FunkinPaths;
 class Character extends FlxSprite {
     public static var singAnims:Array<String> = ['singLEFT', 'singDOWN', 'singUP', 'singRIGHT'];
     public static var forceIdle:Bool = false;
+    
     public function new(x:Float, y:Float, character:String = 'bf') {
         super(x, y);
 
