@@ -28,6 +28,14 @@ class FunkinPaths {
         return Assets.getText(getPath(file));
     }
 
+    inline public static function songJson(song:String, diff:String) {
+        return getText('data/${song.toLowerCase()}/${diff.toLowerCase()}.json');
+    }
+
+    inline public static function stageJson(stage:String) {
+        return getText('stages/$stage.json');
+    }
+
     inline public static function json(json:String) {
         return getText('data/$json.json');
     }
@@ -46,5 +54,13 @@ class FunkinPaths {
 
     inline public static function music(song:String) {
         return getPath('music/$song.ogg');
+    }
+
+    inline public static function inst(song:String) {
+        return getPath('songs/${song.toLowerCase()}/Inst.ogg');
+    }
+
+    inline public static function voices(song:String) {
+        return getPath('songs/${song.toLowerCase()}/Voices.ogg');
     }
 }

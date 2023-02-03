@@ -1,0 +1,31 @@
+package funkin.system;
+
+typedef SecData =
+{
+	var notes:Array<Dynamic>;
+	var lengthInSteps:Int;
+	var typeOfSection:Int;
+	var mustHitSection:Bool;
+	var bpm:Int;
+	var changeBPM:Bool;
+	var altAnim:Bool;
+}
+
+class Sec
+{
+	public var notes:Array<Dynamic> = [];
+
+	public var lengthInSteps:Int = 16;
+	public var typeOfSection:Int = 0;
+	public var mustHitSection:Bool = true;
+
+	/**
+	 *	Copies the first section into the second section!
+	 */
+	public static var COPYCAT:Int = 0;
+
+	public function new(lengthInSteps:Int = 16)
+	{
+		this.lengthInSteps = lengthInSteps;
+	}
+}
