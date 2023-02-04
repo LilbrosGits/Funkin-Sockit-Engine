@@ -32,8 +32,8 @@ class FunkinPaths {
         return getText('data/${song.toLowerCase()}/${diff.toLowerCase()}.json');
     }
 
-    inline public static function stageJson(stage:String) {
-        return getText('stages/$stage.json');
+    inline public static function characterJson(char:String) {
+        return getText('characters/$char.json');
     }
 
     inline public static function json(json:String) {

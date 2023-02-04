@@ -81,7 +81,6 @@ class PlayState extends MusicBeat.MusicBeatState
 
 		var noteData:Array<Sec.SecData>;
 
-		// NEW SHIT
 		noteData = songData.sections;
 
 		var playerCounter:Int = 0;
@@ -171,14 +170,6 @@ class PlayState extends MusicBeat.MusicBeatState
 
 		super.update(elapsed);
 
-		if (steps % 4 == 0) {			
-			if (loadedSong)
-				notes.sort(FlxSort.byY, FlxSort.DESCENDING);
-			
-			player2.playAnim('idle');
-			player1.playAnim('idle');
-		}
-
 		if (unaddedNotes[0] != null)
 		{
 			if (unaddedNotes[0].strumTime - Conductor.songPos < 1500)
@@ -199,5 +190,15 @@ class PlayState extends MusicBeat.MusicBeatState
 				note.y = (strumLine.y - (Conductor.songPos - note.strumTime) * (0.45 * FlxMath.roundDecimal(song.speed, 2)));
 			});
 		}
+	}
+
+	override public function onBeat() {
+		if (loadedSong)
+			notes.sort(FlxSort.byY, FlxSort.DESCENDING);
+		
+		player2.playAnim('idle');
+		player1.playAnim('idle');
+		
+		super.onBeat();
 	}
 }
