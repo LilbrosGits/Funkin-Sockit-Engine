@@ -14,10 +14,15 @@ class Character extends FlxSprite {
             case 'bf':
                 frames = FunkinPaths.sparrowAtlas('characters/BOYFRIEND');
                 animation.addByPrefix('idle', 'BF idle dance', 24, false);
-                animation.addByPrefix('singLEFT', 'BF NOTE LEFT', 24, false);
-                animation.addByPrefix('singRIGHT', 'BF NOTE RIGHT', 24, false);
-                animation.addByPrefix('singUP', 'BF NOTE UP', 24, false);
-                animation.addByPrefix('singDOWN', 'BF NOTE DOWN', 24, false);
+                animation.addByPrefix('singLEFT', 'BF NOTE LEFT0', 24, false);
+                animation.addByPrefix('singRIGHT', 'BF NOTE RIGHT0', 24, false);
+                animation.addByPrefix('singUP', 'BF NOTE UP0', 24, false);
+                animation.addByPrefix('singDOWN', 'BF NOTE DOWN0', 24, false);
+                animation.addByPrefix('singLEFTmiss', 'BF NOTE LEFT MISS', 24, false);
+                animation.addByPrefix('singRIGHTmiss', 'BF NOTE RIGHT MISS', 24, false);
+                animation.addByPrefix('singUPmiss', 'BF NOTE UP MISS', 24, false);
+                animation.addByPrefix('singDOWNmiss', 'BF NOTE DOWN MISS', 24, false);
+                animation.addByPrefix('taunt', 'BF HEY', 24, false);
                 playAnim('idle');
             case 'dad':
                 frames = FunkinPaths.sparrowAtlas('characters/DADDY_DEAREST');
@@ -36,12 +41,8 @@ class Character extends FlxSprite {
         forceIdle = forceIdleAnim;
     }
 
-    public function sing(dir:Int, altAnim:Bool = false, forceIdleAnim:Bool = false) {
-
-        if (altAnim)
-            playAnim('${singAnims[dir]}-alt', forceIdleAnim, true);
-        else
-            playAnim(singAnims[dir], forceIdleAnim, true);
+    public function sing(dir:Int, altAnim:String = '', forceIdleAnim:Bool = false) {
+        playAnim(singAnims[dir] + altAnim, forceIdleAnim, true);
     }
 
     override public function update(elapsed:Float) {

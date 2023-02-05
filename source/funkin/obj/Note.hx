@@ -5,20 +5,17 @@ import funkin.system.*;
 
 class Note extends FlxSprite {
     public static var noteWidth = 160 * 0.7;
-
     public static var notes:Array<String> = ['purple', 'blue', 'green', 'red'];
-
     public var noteData:Int = 0;
-
     public var susNote:Bool = false; //GET OUT OF MY HEAD GET OUYT GET OPUT GET OUTFDRSHSZ
-
     public var prevNote:Note;
-
     public var mustHit:Bool = false;
-
     public var susLength:Float;
-
     public var strumTime:Float;
+    public var canHit:Bool = false; //hit notesss
+    public var late:Bool = false;
+    public var hit:Bool = false;
+    public var willMiss:Bool = false;
 
     public function new(strumTime:Float, noteData:Int, ?previousNote:Note, ?isSus:Bool) {
         super();
@@ -39,8 +36,8 @@ class Note extends FlxSprite {
         loadNotes();
     }
 
-    function loadNotes(skin:String = 'UI/HUD/NOTE_assets') {
-        frames = FunkinPaths.sparrowAtlas(skin);
+    function loadNotes(skin:String = 'NOTE_assets') {
+        frames = FunkinPaths.sparrowAtlas('UI/HUD/$skin');
         animation.addByPrefix('purple', 'purple0', 24, false);
         animation.addByPrefix('blue', 'blue0', 24, false);
         animation.addByPrefix('green', 'green0', 24, false);
@@ -59,13 +56,15 @@ class Note extends FlxSprite {
         animation.play(notes[noteData]);
 
         if (prevNote != null && susNote) {
-            alpha = 0.6;
+            alpha = 0.5;
 
             x += width / 2;
 
             animation.play('${notes[noteData]}holdend');
 
             updateHitbox();
+
+            x -= width / 2;
 
             if (prevNote.susNote) {
                 prevNote.animation.play('${notes[prevNote.noteData]}hold');
@@ -74,8 +73,36 @@ class Note extends FlxSprite {
             }
         }
     }
-
+    
     override public function update(elapsed:Float) {
+        if (willMiss && !hit) {
+            late = true;
+            canHit = false;
+        }
+         if (mustHit) {
+            if (strumTime > Conductor.songPos - Conductor.milliFrames)
+            {
+                if (strumTime < Conductor.songPos + (Conductor.milliFrames * 0.5))
+                    canHit = true;
+                if (strumTime < Conductor.songPos + (Conductor.milliFrames * 0.4)) //try both??
+                    canHit = true;
+            }
+            else
+            {
+                canHit = true;
+                willMiss = true;
+            }
+        }
+        else{
+            canHit = false;
+            
+            if (strumTime <= Conductor.songPos)
+                hit = true;
+        }
+
+        if (late) {
+            alpha = 0.3;
+        }
         super.update(elapsed);
     }
 }
