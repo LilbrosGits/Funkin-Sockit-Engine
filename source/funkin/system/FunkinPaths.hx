@@ -40,6 +40,10 @@ class FunkinPaths {
         return getText('data/$json.json');
     }
 
+    inline public static function stage(stage:String) {
+        return getText('stages/$stage.json');
+    }
+
     inline public static function sparrowAtlas(sprAtlas:String) {
         return FlxAtlasFrames.fromSparrow(getPath('images/$sprAtlas.png'), getPath('images/$sprAtlas.xml'));
     }

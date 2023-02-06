@@ -25,10 +25,16 @@ class PlayState extends MusicBeat.MusicBeatState
 	var vocals:FlxSound;
 	var strumLine:FlxSprite;
 	var loadedSong:Bool = false;
+	var stage:Stage;
 
 	override public function create()
 	{
 		song = Song.loadSong('bopeebo', 'normal');
+
+		stage = new Stage('stage');
+		add(stage);
+
+		FlxG.camera.zoom = stage.data.cameraZoom;
 
 		player2 = new Character(100, 100, song.characters[0]);//dad
 		add(player2);
@@ -63,8 +69,6 @@ class PlayState extends MusicBeat.MusicBeatState
 		Conductor.songPos = FlxG.sound.music.time;
 
 		hud.health = health;
-
-		updateStrums();
 
 		super.update(elapsed);
 
@@ -101,7 +105,7 @@ class PlayState extends MusicBeat.MusicBeatState
 				}
 				else if (note.late || note.hit)
 				{
-					if (note.late)
+					if (note.late && !note.susNote)
 					{
 						health -= 1;
 					}
@@ -147,6 +151,7 @@ class PlayState extends MusicBeat.MusicBeatState
 		if (health <= 0)
 			health = 0;
 
+		updateStrums();
 		inputInit();
 	}
 
@@ -178,6 +183,8 @@ class PlayState extends MusicBeat.MusicBeatState
 		if (beats % 8 == 7 && song.song == 'Bopeebo') {
 			player1.playAnim('taunt');
 		}
+
+		hud.everyBeat();
 		
 		super.onBeat();
 	}
@@ -420,6 +427,18 @@ class PlayState extends MusicBeat.MusicBeatState
 			else
 				spr.centerOffsets();
 		});
+
+		if (!pArray.contains(false)){
+			var noKey = pArray.lastIndexOf(true);
+
+			pArray[noKey] = false;
+		}
+
+		if (!hArray.contains(false)){
+			var noKey = hArray.lastIndexOf(true);
+
+			hArray[noKey] = false;
+		}
 	}
 
 	function genStrums(player:Int) {

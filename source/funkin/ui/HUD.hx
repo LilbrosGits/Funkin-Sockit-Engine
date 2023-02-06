@@ -3,13 +3,17 @@ package funkin.ui;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxSubState;
+import flixel.math.FlxMath;
 import flixel.ui.FlxBar;
+import funkin.states.PlayState;
 import funkin.system.*;
 
 class HUD extends FlxSubState{
 	private var healthBarBackdrop:FlxSprite;
 	private var healthBar:FlxBar;
     public var health:Float = 50;
+	public var iconP1:Icon;
+	public var iconP2:Icon;
     public function new(){
         super();
 		healthBarBackdrop = new FlxSprite(0, FlxG.height * 0.9).loadGraphic(FunkinPaths.image('UI/HUD/healthBar'));
@@ -22,9 +26,46 @@ class HUD extends FlxSubState{
 		healthBar.scrollFactor.set();
 		healthBar.createFilledBar(0xFFFF0000, 0xFF66FF33);
 		add(healthBar);
+
+		iconP1 = new Icon(PlayState.song.characters[1], true);
+		iconP1.y = healthBar.y - (iconP1.height / 2);
+		add(iconP1);
+
+		iconP2 = new Icon(PlayState.song.characters[0], false);
+		iconP2.y = healthBar.y - (iconP2.height / 2);
+		add(iconP2);
     }
 
     override public function update(elapsed:Float) {
+		if (healthBar.percent < 40)
+			iconP1.animation.curAnim.curFrame = 1;
+		else
+			iconP1.animation.curAnim.curFrame = 0;
+
+		if (healthBar.percent > 60)
+			iconP2.animation.curAnim.curFrame = 1;
+		else
+			iconP2.animation.curAnim.curFrame = 0;
+
+		var iconOffset:Int = 26;
+
+		iconP1.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01) - iconOffset);
+		iconP2.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)) - (iconP2.width - iconOffset);
+
+		iconP1.setGraphicSize(Std.int(FlxMath.lerp(150, iconP1.width, 0.50)));
+		iconP2.setGraphicSize(Std.int(FlxMath.lerp(150, iconP2.width, 0.50)));
+
+		iconP1.updateHitbox();
+		iconP2.updateHitbox();
+		
         super.update(elapsed);
     }
+
+	public function everyBeat() {
+		iconP1.setGraphicSize(Std.int(iconP1.width + 30));
+		iconP2.setGraphicSize(Std.int(iconP2.width + 30));
+
+		iconP1.updateHitbox();
+		iconP2.updateHitbox();
+	}
 }

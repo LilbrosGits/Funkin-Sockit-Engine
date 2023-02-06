@@ -1,0 +1,27 @@
+{
+    "cameraZoom": 0.9,
+    "images": [
+        {
+            "image": "stageback",
+            "positions": [-600, -200],
+            "antialiasing":true,
+            "active": false
+        },
+        {
+            "image": "stagefront",
+            "positions": [-650, 600],
+            "antialiasing":true,
+            "graphicSize": [1.1, 0],
+            "active": false
+        },
+        {
+            "image": "stagecurtains",
+            "positions": [-500, -300],
+            "antialiasing":true,
+            "graphicSize": [0.9, 0],
+            "active": false
+        }
+    ],
+    "boyfriendPosition": [770, 450],
+    "dadPosition": [100, 100]
+}
