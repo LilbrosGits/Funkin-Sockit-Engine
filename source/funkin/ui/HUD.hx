@@ -37,12 +37,12 @@ class HUD extends FlxSubState{
     }
 
     override public function update(elapsed:Float) {
-		if (healthBar.percent < 40)
+		if (healthBar.percent < 20)
 			iconP1.animation.curAnim.curFrame = 1;
 		else
 			iconP1.animation.curAnim.curFrame = 0;
 
-		if (healthBar.percent > 60)
+		if (healthBar.percent > 70)
 			iconP2.animation.curAnim.curFrame = 1;
 		else
 			iconP2.animation.curAnim.curFrame = 0;

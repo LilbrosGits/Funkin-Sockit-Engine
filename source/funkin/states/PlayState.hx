@@ -36,10 +36,10 @@ class PlayState extends MusicBeat.MusicBeatState
 
 		FlxG.camera.zoom = stage.data.cameraZoom;
 
-		player2 = new Character(100, 100, song.characters[0]);//dad
+		player2 = new Character(stage.data.dadPosition[0], stage.data.dadPosition[1], song.characters[0]);//dad
 		add(player2);
 
-		player1 = new Character(770, 450, song.characters[1]);//bf
+		player1 = new Character(stage.data.boyfriendPosition[0], stage.data.boyfriendPosition[1], song.characters[1]);//bf
 		add(player1);
 
 		strumLine = new FlxSprite(0, 50).makeGraphic(FlxG.width, 10);

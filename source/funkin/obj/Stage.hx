@@ -1,6 +1,7 @@
 package funkin.obj;
 
 import flixel.FlxSprite;
+import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.util.FlxColor;
 import funkin.system.FunkinPaths;
 import funkin.system.MusicBeat.MusicBeatSubState;
@@ -18,9 +19,8 @@ typedef File = {
 typedef ImageSprite = {
     image:String,
     positions:Array<Float>,
-    ?scale:Array<Float>,
+    ?scrollFactor:Array<Float>,
     ?active:Bool,
-    ?setGraphicSize:Array<Float>,
     ?angle:Float,
     ?color:Array<Int>,
     ?width:Int,
@@ -32,9 +32,8 @@ typedef AnimSprite = {
     image:String,
     positions:Array<Float>,
     animations:Array<AnimThing>,
-    ?scale:Array<Float>,
+    ?scrollFactor:Array<Float>,
     ?active:Bool,
-    ?setGraphicSize:Array<Float>,
     ?angle:Float,
     ?color:Array<Int>,
     ?width:Int,
@@ -54,20 +53,25 @@ typedef MakeSprite = {
     color:Array<Int>,
     width:Int,
     height:Int,
+    ?scrollFactor:Array<Float>,
     ?angle:Float,
     ?active:Bool,
-    ?setGraphicSize:Array<Float>,
     positions:Array<Float>,
 }
 
 class Stage extends MusicBeatSubState
 {
     public var data:File;
+
+    public var allSprGrp:FlxTypedGroup<FlxSprite>;
     
     public function new(stage:String){
         super();
 
         data = Json.parse(FunkinPaths.stage(stage));
+
+        allSprGrp = new FlxTypedGroup<FlxSprite>();
+        add(allSprGrp);
 
         if (data.images != null) {
             for (img in data.images) {
@@ -80,13 +84,11 @@ class Stage extends MusicBeatSubState
                     image.height = img.height;
                 if (img.color != null)
                     image.color = FlxColor.fromRGB(img.color[0], img.color[1], img.color[2]);
-                if (img.scale != null)
-                    image.scale.set(img.scale[0], img.scale[1]);
-                if (img.setGraphicSize != null)
-                    image.setGraphicSize(Std.int(image.width * img.setGraphicSize[0]), Std.int(image.height * img.setGraphicSize[1]));
+                if (img.scrollFactor != null)
+                    image.scrollFactor.set(img.scrollFactor[0], img.scrollFactor[1]);
                 if (img.active != null)
                     image.active = img.active;
-                add(image);
+                allSprGrp.add(image);
             }
         }
 
@@ -94,11 +96,11 @@ class Stage extends MusicBeatSubState
             for (swag in data.createdSprites) {
                 var swagSpr:FlxSprite = new FlxSprite(swag.positions[0], swag.positions[1]).makeGraphic(swag.width, swag.height, FlxColor.fromRGB(swag.color[0], swag.color[1], swag.color[2]));
                 swagSpr.angle = swag.angle;
-                if (swag.setGraphicSize != null)
-                    swagSpr.setGraphicSize(Std.int(swagSpr.width * swag.setGraphicSize[0]), Std.int(swagSpr.height * swag.setGraphicSize[1]));
                 if (swag.active != null)
                     swagSpr.active = swag.active;
-                add(swagSpr);
+                if (swag.scrollFactor != null)
+                    swagSpr.scrollFactor.set(swag.scrollFactor[0], swag.scrollFactor[1]);
+                allSprGrp.add(swagSpr);
             }
         }
 
@@ -119,14 +121,20 @@ class Stage extends MusicBeatSubState
                     anim.height = animSpr.height;
                 if (animSpr.color != null)
                     anim.color = FlxColor.fromRGB(animSpr.color[0], animSpr.color[1], animSpr.color[2]);
-                if (animSpr.scale != null)
-                    anim.scale.set(animSpr.scale[0], animSpr.scale[1]);
-                if (animSpr.setGraphicSize != null)
-                    anim.setGraphicSize(Std.int(anim.width * animSpr.setGraphicSize[0]), Std.int(anim.height * animSpr.setGraphicSize[1]));
+                if (animSpr.scrollFactor != null)
+                    anim.scrollFactor.set(animSpr.scrollFactor[0], animSpr.scrollFactor[1]);
                 if (animSpr.active != null)
                     anim.active = animSpr.active;
-                add(anim);
+                allSprGrp.add(anim);
             }
         }
+    }
+
+    override public function update(elapsed:Float) {
+        super.update(elapsed);
+
+        allSprGrp.forEach(function(spr:FlxSprite) {
+            spr.updateHitbox();
+        });
     }
 }
