@@ -2,53 +2,135 @@ package funkin.obj;
 
 import flixel.FlxSprite;
 import funkin.system.FunkinPaths;
+import haxe.Json;
+
+using StringTools;
+
+typedef CharacterFile = {
+    singAnims:Array<String>,
+    defaultAnim:String,
+    spriteSheet:String,
+    ?flipX:Bool,
+    ?flipY:Bool,
+    animations:MasterAnim
+}
+
+typedef MasterAnim = {
+    ?indiciesAnim:Array<IndiciesAnim>,
+    ?prefixAnim:Array<PrefixAnim>
+}
+
+typedef PrefixAnim = {
+    name:String,
+    xmlName:String,
+    offsets:Array<Float>,
+    ?fr:Int,
+    ?loop:Bool,
+    ?flipX:Bool,
+    ?flipY:Bool
+}
+
+typedef IndiciesAnim = {
+    name:String,
+    xmlName:String,
+    indices:Array<Int>,
+    offsets:Array<Float>,
+    ?fr:Int,
+    ?loop:Bool,
+    ?flipX:Bool,
+    ?flipY:Bool
+}
+
 
 class Character extends FlxSprite {
-    public static var singAnims:Array<String> = ['singLEFT', 'singDOWN', 'singUP', 'singRIGHT'];
     public static var forceIdle:Bool = false;
+
+    public var animOffsets:Map<String, Array<Dynamic>>;
+
+    public var charJSON:CharacterFile;
+
+    public var char:String;
     
     public function new(x:Float, y:Float, character:String = 'bf') {
         super(x, y);
 
-        switch(character) {
-            case 'bf':
-                frames = FunkinPaths.sparrowAtlas('characters/BOYFRIEND');
-                animation.addByPrefix('idle', 'BF idle dance', 24, false);
-                animation.addByPrefix('singLEFT', 'BF NOTE LEFT0', 24, false);
-                animation.addByPrefix('singRIGHT', 'BF NOTE RIGHT0', 24, false);
-                animation.addByPrefix('singUP', 'BF NOTE UP0', 24, false);
-                animation.addByPrefix('singDOWN', 'BF NOTE DOWN0', 24, false);
-                animation.addByPrefix('singLEFTmiss', 'BF NOTE LEFT MISS', 24, false);
-                animation.addByPrefix('singRIGHTmiss', 'BF NOTE RIGHT MISS', 24, false);
-                animation.addByPrefix('singUPmiss', 'BF NOTE UP MISS', 24, false);
-                animation.addByPrefix('singDOWNmiss', 'BF NOTE DOWN MISS', 24, false);
-                animation.addByPrefix('taunt', 'BF HEY', 24, false);
-                playAnim('idle');
-            case 'dad':
-                frames = FunkinPaths.sparrowAtlas('characters/DADDY_DEAREST');
-                animation.addByPrefix('idle', 'Dad idle dance', 24, false);
-                animation.addByPrefix('singLEFT', 'Dad Sing Note LEFT', 24, false);
-                animation.addByPrefix('singRIGHT', 'Dad Sing Note RIGHT', 24, false);
-                animation.addByPrefix('singUP', 'Dad Sing Note UP', 24, false);
-                animation.addByPrefix('singDOWN', 'Dad Sing Note DOWN', 24, false);
-                playAnim('idle');
+        animOffsets = new Map<String, Array<Dynamic>>();
+
+        char = character;
+
+        charJSON = Json.parse(FunkinPaths.characterJson(character));
+
+        frames = FunkinPaths.sparrowAtlas(charJSON.spriteSheet);
+
+        if (charJSON.animations.prefixAnim != null) {
+            for (swag in charJSON.animations.prefixAnim) {
+                animation.addByPrefix(swag.name, swag.xmlName, swag.fr, swag.loop, swag.flipX, swag.flipY);
+                addOffset(swag.name, swag.offsets[0], swag.offsets[1]);
+            }
+        }
+        
+        if (charJSON.animations.indiciesAnim != null) {
+            for (indiswag in charJSON.animations.indiciesAnim) {
+                if (indiswag.indices.length > 0){
+                    animation.addByIndices(indiswag.name, indiswag.xmlName, indiswag.indices, "", indiswag.fr, indiswag.loop, indiswag.flipX, indiswag.flipY);
+                }
+                addOffset(indiswag.name, indiswag.offsets[0], indiswag.offsets[1]);
+            }
+        }
+
+        playAnim(charJSON.defaultAnim);
+    }
+
+    public var danced:Bool;
+
+    public function playAnim(anim:String, force:Bool = false, reverse:Bool = false, frame:Int = 0) {
+        animation.play(anim, force, reverse, frame);
+
+		var daOffset = animOffsets.get(anim);
+		if (animOffsets.exists(anim))
+		{
+			offset.set(daOffset[0], daOffset[1]);
+		}
+		else
+			offset.set(0, 0);
+
+        if (char.startsWith('gf'))
+        {
+            if (anim == 'singLEFT')
+            {
+                danced = true;
+            }
+            else if (anim == 'singRIGHT')
+            {
+                danced = false;
+            }
+
+            if (anim == 'singUP' || anim == 'singDOWN')
+            {
+                danced = !danced;
+            }
         }
     }
 
-    public function playAnim(anim:String, forceIdleAnim:Bool = false, force:Bool = false, reverse:Bool = false, frame:Int = 0) {
-        animation.play(anim, force, reverse, frame);
-
-        forceIdle = forceIdleAnim;
+    public function sing(dir:Int, altAnim:String = '') {
+        playAnim(charJSON.singAnims[dir] + altAnim, true);
     }
 
-    public function sing(dir:Int, altAnim:String = '', forceIdleAnim:Bool = false) {
-        playAnim(singAnims[dir] + altAnim, forceIdleAnim, true);
+    public function dance() {
+        danced = !danced;
+
+        if (danced)
+            playAnim('danceRight');
+        else
+            playAnim('danceLeft');
+    }
+
+    public function addOffset(name:String, x:Float = 0, y:Float = 0)
+    {
+        animOffsets[name] = [x, y];
     }
 
     override public function update(elapsed:Float) {
-        if (animation.curAnim.name != 'idle' && animation.finished && !forceIdle){
-            playAnim('idle');
-        }
         super.update(elapsed);
     }
 }

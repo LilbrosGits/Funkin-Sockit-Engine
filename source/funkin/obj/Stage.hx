@@ -13,7 +13,8 @@ typedef File = {
     ?createdSprites:Array<MakeSprite>,
     ?animatedSprites:Array<AnimSprite>,
     boyfriendPosition:Array<Float>,
-    dadPosition:Array<Float>
+    dadPosition:Array<Float>,
+    gfPosition:Array<Float>
 }
 
 typedef ImageSprite = {
@@ -25,6 +26,9 @@ typedef ImageSprite = {
     ?color:Array<Int>,
     ?width:Int,
     ?height:Int,
+    ?flipX:Bool,
+    ?flipY:Bool,
+    ?scale:Array<Float>,
     antialiasing:Bool,
 }
 
@@ -38,6 +42,9 @@ typedef AnimSprite = {
     ?color:Array<Int>,
     ?width:Int,
     ?height:Int,
+    ?flipX:Bool,
+    ?flipY:Bool,
+    ?scale:Array<Float>,
     antialiasing:Bool,
 }
 
@@ -56,6 +63,9 @@ typedef MakeSprite = {
     ?scrollFactor:Array<Float>,
     ?angle:Float,
     ?active:Bool,
+    ?flipX:Bool,
+    ?flipY:Bool,
+    ?scale:Array<Float>,
     positions:Array<Float>,
 }
 
@@ -88,6 +98,8 @@ class Stage extends MusicBeatSubState
                     image.scrollFactor.set(img.scrollFactor[0], img.scrollFactor[1]);
                 if (img.active != null)
                     image.active = img.active;
+                if (img.scale != null)
+                    image.scale.set(img.scale[0], img.scale[1]);
                 allSprGrp.add(image);
             }
         }
@@ -100,6 +112,8 @@ class Stage extends MusicBeatSubState
                     swagSpr.active = swag.active;
                 if (swag.scrollFactor != null)
                     swagSpr.scrollFactor.set(swag.scrollFactor[0], swag.scrollFactor[1]);
+                if (swag.scale != null)
+                    swagSpr.scale.set(swag.scale[0], swag.scale[1]);
                 allSprGrp.add(swagSpr);
             }
         }
@@ -125,6 +139,8 @@ class Stage extends MusicBeatSubState
                     anim.scrollFactor.set(animSpr.scrollFactor[0], animSpr.scrollFactor[1]);
                 if (animSpr.active != null)
                     anim.active = animSpr.active;
+                if (animSpr.scale != null)
+                    anim.scale.set(animSpr.scale[0], animSpr.scale[1]);
                 allSprGrp.add(anim);
             }
         }

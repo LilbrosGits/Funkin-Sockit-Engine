@@ -16,7 +16,7 @@ class MusicBeatState extends FlxUIState {
     var steps:Int = 0;
 
     override public function create() {
-		var diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileDiamond);
+        var diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileDiamond);
 		diamond.persist = true;
 		diamond.destroyOnNoUse = false;
 
@@ -27,6 +27,8 @@ class MusicBeatState extends FlxUIState {
 
 		transIn = FlxTransitionableState.defaultTransIn;
 		transOut = FlxTransitionableState.defaultTransOut;
+
+        System.gc();
         super.create();
     }
 

@@ -1,17 +1,22 @@
 package funkin.states;
 
+import flixel.FlxCamera;
 import flixel.FlxG;
+import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxMath;
+import flixel.math.FlxPoint;
 import flixel.system.FlxSound;
 import flixel.util.FlxColor;
 import flixel.util.FlxSort;
+import funkin.editors.CharacterEditor;
 import funkin.obj.*;
 import funkin.system.*;
+import funkin.system.MusicBeat.MusicBeatState;
 import funkin.ui.HUD;
 
-class PlayState extends MusicBeat.MusicBeatState
+class PlayState extends MusicBeatState
 {
 	private var unaddedNotes:Array<Note> = [];
 	public static var song:Song.SongData;
@@ -19,6 +24,7 @@ class PlayState extends MusicBeat.MusicBeatState
 	var dadStrums:FlxTypedGroup<StaticNote>;
 	var player1:Character;
 	var player2:Character;
+	var player3:Character;
 	var hud:HUD;
 	var health:Float = 50;
 	var notes:FlxTypedGroup<Note>;
@@ -26,7 +32,10 @@ class PlayState extends MusicBeat.MusicBeatState
 	var strumLine:FlxSprite;
 	var loadedSong:Bool = false;
 	var stage:Stage;
-
+	var camGame:FlxCamera;
+	var camHUD:FlxCamera;
+	var camFollow:FlxObject;
+	
 	override public function create()
 	{
 		song = Song.loadSong('bopeebo', 'normal');
@@ -34,13 +43,34 @@ class PlayState extends MusicBeat.MusicBeatState
 		stage = new Stage('stage');
 		add(stage);
 
+		camGame = new FlxCamera();
+		camHUD = new FlxCamera();
+		camHUD.bgColor.alpha = 0;
+
+		FlxG.cameras.reset(camGame);
+		FlxG.cameras.add(camHUD, false);
+
+		FlxG.cameras.setDefaultDrawTarget(camGame, true);
+
 		FlxG.camera.zoom = stage.data.cameraZoom;
+
+		player3 = new Character(stage.data.gfPosition[0], stage.data.gfPosition[1], song.characters[2]);//gf
+		add(player3);
 
 		player2 = new Character(stage.data.dadPosition[0], stage.data.dadPosition[1], song.characters[0]);//dad
 		add(player2);
 
 		player1 = new Character(stage.data.boyfriendPosition[0], stage.data.boyfriendPosition[1], song.characters[1]);//bf
 		add(player1);
+
+		camFollow = new FlxObject(0, 0, 1, 1);
+		camFollow.setPosition(player3.getMidpoint().x - 100, player3.getMidpoint().y - 100);
+		add(camFollow);
+
+		FlxG.camera.follow(camFollow, LOCKON, 0.04);
+		FlxG.camera.focusOn(camFollow.getPosition());
+		FlxG.worldBounds.set(0, 0, FlxG.width, FlxG.height);
+		FlxG.fixedTimestep = false;
 
 		strumLine = new FlxSprite(0, 50).makeGraphic(FlxG.width, 10);
 		strumLine.scrollFactor.set();
@@ -58,10 +88,30 @@ class PlayState extends MusicBeat.MusicBeatState
 		genNotes();
 		genSong();
 
+		hud.cameras = [camHUD];
+		notes.cameras = [camHUD];
+		playerStrums.cameras = [camHUD];
+		dadStrums.cameras = [camHUD];
+		strumLine.cameras = [camHUD];
+
 		persistentDraw = true;
 		persistentUpdate = true;
 		
 		super.create();
+	}
+
+	override public function onFocusLost() {
+		vocals.pause();
+		FlxG.sound.music.pause();
+		super.onFocusLost();
+	}
+
+	override public function onFocus() {
+		vocals.play();
+		FlxG.sound.music.play();
+		resyncVocals();
+		
+		super.onFocus();
 	}
 
 	override public function update(elapsed:Float)
@@ -83,9 +133,6 @@ class PlayState extends MusicBeat.MusicBeatState
 				unaddedNotes.splice(index, 1);
 			}
 		}
-
-		if (vocals.time != FlxG.sound.music.time)
-			resyncVocals();
 
 		if (loadedSong) {
 			notes.forEachAlive(function(note:Note) {
@@ -119,7 +166,7 @@ class PlayState extends MusicBeat.MusicBeatState
 				}
 
 				if (!note.mustHit && note.hit) {
-					player2.sing(note.noteData, '', true);
+					player2.sing(note.noteData, '');
 					
 					note.active = false;
 					note.visible = false;
@@ -153,6 +200,27 @@ class PlayState extends MusicBeat.MusicBeatState
 
 		updateStrums();
 		inputInit();
+		updateVocals();
+		updateCam();
+	}
+
+	function updateVocals() {
+		if (vocals.time != FlxG.sound.music.time)
+			resyncVocals();
+
+		vocals.volume = FlxG.sound.volume;
+	}
+
+	//PUT THE KETCHUP UNDER THE TOILET SEAT IN FIRST PERIOD!!
+
+	function updateCam() {
+		if (PlayState.song.sections[Std.int(steps / 16)].mustHitSection) {
+			camFollow.setPosition(player1.getMidpoint().x - 100, player1.getMidpoint().y - 100);
+		}
+		else
+		{
+			camFollow.setPosition(player2.getMidpoint().x + 150, player2.getMidpoint().y - 100);
+		}
 	}
 
 	function updateStrums() {
@@ -179,6 +247,7 @@ class PlayState extends MusicBeat.MusicBeatState
 		
 		player2.playAnim('idle');
 		player1.playAnim('idle');
+		player3.dance();
 
 		if (beats % 8 == 7 && song.song == 'Bopeebo') {
 			player1.playAnim('taunt');
@@ -196,6 +265,7 @@ class PlayState extends MusicBeat.MusicBeatState
 		FlxG.sound.playMusic(FunkinPaths.inst(song.song));
 
 		vocals = new FlxSound().loadEmbedded(FunkinPaths.voices(song.song));
+		FlxG.sound.list.add(vocals);
 		vocals.play();
 
 		Conductor.songPos = FlxG.sound.music.time;
@@ -292,7 +362,7 @@ class PlayState extends MusicBeat.MusicBeatState
 	function onNoteHit(note:Note) {
 		if (!note.hit)//its false here!!!! cause thats the default
 		{
-			player1.sing(note.noteData, '', true);
+			player1.sing(note.noteData, '');
 
 			health += 2; //same amount as miss cause fuck how imbalanced base game is
 
@@ -314,7 +384,7 @@ class PlayState extends MusicBeat.MusicBeatState
 
 	function onNoteMiss(dir:Int) {
 		health -= 2;
-		player1.sing(dir, 'miss', true);
+		player1.sing(dir, 'miss');
 	}
 
 	function inputInit() {
@@ -438,6 +508,18 @@ class PlayState extends MusicBeat.MusicBeatState
 			var noKey = hArray.lastIndexOf(true);
 
 			hArray[noKey] = false;
+		}
+
+		if (FlxG.keys.justPressed.F1) {
+			FlxG.switchState(new PlayState());
+			FlxG.sound.music.stop();
+			vocals.stop();
+		}
+
+		if (FlxG.keys.justPressed.F2) {
+			FlxG.switchState(new CharacterEditor());
+			FlxG.sound.music.stop();
+			vocals.stop();
 		}
 	}
 

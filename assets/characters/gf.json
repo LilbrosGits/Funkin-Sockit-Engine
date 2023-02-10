@@ -1,0 +1,88 @@
+{
+    "singAnims": ["singLEFT", "singDOWN", "singUP", "singRIGHT"],
+    "defaultAnim": "danceLeft",
+    "spriteSheet": "characters/GF_assets",
+    "animations": {
+        "prefixAnim": [
+            {
+                "name": "singLEFT",
+                "xmlName": "GF left note",
+                "offsets": [0, 0],
+                "fr": 24,
+                "loop": false
+            },
+            {
+                "name": "singDOWN",
+                "xmlName": "GF Down Note",
+                "offsets": [0, 0],
+                "fr": 24,
+                "loop": false
+            },
+            {
+                "name": "singUP",
+                "xmlName": "GF Up Note",
+                "offsets": [0, 0],
+                "fr": 24,
+                "loop": false
+            },
+            {
+                "name": "singRIGHT",
+                "xmlName": "GF Right Note",
+                "offsets": [0, 0],
+                "fr": 24,
+                "loop": false
+            }
+        ],
+        "indiciesAnim": [
+            {
+                "name": "danceLeft",
+                "xmlName": "GF Dancing Beat",
+                "indices": [
+                    30,
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10,
+                    11,
+                    12,
+                    13,
+                    14
+                ],
+                "fr": 24,
+                "loop": false,
+                "offsets": [0, 0]
+            },
+            {
+                "name": "danceRight",
+                "xmlName": "GF Dancing Beat",
+                "indices": [
+                    15,
+                    16,
+                    17,
+                    18,
+                    19,
+                    20,
+                    21,
+                    22,
+                    23,
+                    24,
+                    25,
+                    26,
+                    27,
+                    28,
+                    29
+                ],
+                "fr": 24,
+                "loop": false,
+                "offsets": [0, 0]
+            }
+        ]
+    }
+}

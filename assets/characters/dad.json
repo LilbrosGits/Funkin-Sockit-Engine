@@ -1,0 +1,44 @@
+{
+    "singAnims": ["singLEFT", "singDOWN", "singUP", "singRIGHT"],
+    "defaultAnim": "idle",
+    "spriteSheet": "characters/DADDY_DEAREST",
+    "animations": {
+        "prefixAnim": [
+            {
+                "name": "idle",
+                "xmlName": "Dad idle dance",
+                "offsets": [0, 0],
+                "fr": 24,
+                "loop": false
+            },
+            {
+                "name": "singLEFT",
+                "xmlName": "Dad Sing Note LEFT",
+                "offsets": [-10, 10],
+                "fr": 24,
+                "loop": false
+            },
+            {
+                "name": "singDOWN",
+                "xmlName": "Dad Sing Note DOWN",
+                "offsets": [0, -30],
+                "fr": 24,
+                "loop": false
+            },
+            {
+                "name": "singUP",
+                "xmlName": "Dad Sing Note UP",
+                "offsets": [-6, 50],
+                "fr": 24,
+                "loop": false
+            },
+            {
+                "name": "singRIGHT",
+                "xmlName": "Dad Sing Note RIGHT",
+                "offsets": [0, 27],
+                "fr": 24,
+                "loop": false
+            }
+        ]
+    }
+}

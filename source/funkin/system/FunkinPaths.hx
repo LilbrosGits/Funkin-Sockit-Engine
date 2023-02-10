@@ -39,7 +39,7 @@ class FunkinPaths {
     inline public static function json(json:String) {
         return getText('data/$json.json');
     }
-
+    
     inline public static function stage(stage:String) {
         return getText('stages/$stage.json');
     }

@@ -1,0 +1,79 @@
+{
+    "singAnims": ["singLEFT", "singDOWN", "singUP", "singRIGHT"],
+    "defaultAnim": "idle",
+    "spriteSheet": "characters/BOYFRIEND",
+    "animations": {
+        "prefixAnim": [
+            {
+                "name": "idle",
+                "xmlName": "BF idle dance",
+                "offsets": [-5, 0],
+                "fr": 24,
+                "loop": false
+            },
+            {
+                "name": "singLEFT",
+                "xmlName": "BF NOTE LEFT0",
+                "offsets": [12, -6],
+                "fr": 24,
+                "loop": false
+            },
+            {
+                "name": "singDOWN",
+                "xmlName": "BF NOTE DOWN0",
+                "offsets": [-10, -50],
+                "fr": 24,
+                "loop": false
+            },
+            {
+                "name": "singUP",
+                "xmlName": "BF NOTE UP0",
+                "offsets": [-29, 27],
+                "fr": 24,
+                "loop": false
+            },
+            {
+                "name": "singRIGHT",
+                "xmlName": "BF NOTE RIGHT0",
+                "offsets": [-40, -7],
+                "fr": 24,
+                "loop": false
+            },
+            {
+                "name": "singLEFTmiss",
+                "xmlName": "BF NOTE LEFT MISS",
+                "offsets": [12, 24],
+                "fr": 24,
+                "loop": false
+            },
+            {
+                "name": "singDOWNmiss",
+                "xmlName": "BF NOTE DOWN MISS",
+                "offsets": [-11, -19],
+                "fr": 24,
+                "loop": false
+            },
+            {
+                "name": "singUPmiss",
+                "xmlName": "BF NOTE UP MISS",
+                "offsets": [-29, 27],
+                "fr": 24,
+                "loop": false
+            },
+            {
+                "name": "singRIGHTmiss",
+                "xmlName": "BF NOTE RIGHT MISS",
+                "offsets": [-30, 21],
+                "fr": 24,
+                "loop": false
+            },
+            {
+                "name": "taunt",
+                "xmlName": "BF HEY",
+                "offsets": [7, 4],
+                "fr": 24,
+                "loop": false
+            }
+        ]
+    }
+}
