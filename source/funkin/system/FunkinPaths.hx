@@ -3,8 +3,11 @@ package funkin.system;
 import flixel.graphics.frames.FlxAtlasFrames;
 import lime.utils.Assets;
 import openfl.utils.Assets as OpenFlAssets;
+import sys.FileSystem;
 
 class FunkinPaths {
+    public static var SCRIPT_EXT = ['hx', 'hscript', 'hxs'];
+    
     inline public static function getPath(file:String = '') {
         return 'assets/$file';
     }
@@ -66,5 +69,13 @@ class FunkinPaths {
 
     inline public static function voices(song:String) {
         return getPath('songs/${song.toLowerCase()}/Voices.ogg');
+    }
+
+    inline public static function font(font:String) {
+        return getPath('fonts/$font');
+    }
+
+    inline public static function script(scr:String) {
+        return getText('data/$scr.hscript');
     }
 }

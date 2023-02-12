@@ -6,7 +6,7 @@ import funkin.system.FunkinPaths;
 class Icon extends FlxSprite {
     public var sprTracker:FlxSprite;
 
-    public function new(char:String, isPlayer:Bool) {
+    public function new(char:String = 'bf', isPlayer:Bool) {
         super();
 
         loadGraphic(FunkinPaths.image('UI/HUD/icons/icon-$char'), true, 150, 150);

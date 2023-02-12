@@ -2,6 +2,7 @@ package funkin.editors;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.addons.ui.FlxInputText;
 import flixel.addons.ui.FlxUIDropDownMenu;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
@@ -12,7 +13,7 @@ import sys.FileSystem;
 using StringTools;
 
 class CharacterJSONEditor extends MusicBeatState {
-    var stupidStuff:FlxText;
+    var stupidStuff:FlxInputText;
 
     var daChar:String = 'bf';
 
@@ -23,7 +24,7 @@ class CharacterJSONEditor extends MusicBeatState {
     var textBG:FlxSprite;
 
     override public function create() {
-        textBG = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, ui_Colors[0]);
+        textBG = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.WHITE);
         add(textBG);
 
         var swagChar = new FlxUIDropDownMenu(10, 10, FlxUIDropDownMenu.makeStrIdLabelArray(getCharacterFileFromPaths(), true), function(character:String)
@@ -33,7 +34,8 @@ class CharacterJSONEditor extends MusicBeatState {
 
         swagChar.selectedLabel = 'bf';
 
-        stupidStuff = new FlxText(0, 0, 0, FunkinPaths.characterJson(daChar), 32);
+        stupidStuff = new FlxInputText(0, 0, FlxG.width * 2, FunkinPaths.characterJson(daChar), 16, ui_Colors[1], FlxColor.TRANSPARENT);
+        stupidStuff.font = FunkinPaths.font('vcr.ttf');
         add(stupidStuff);
         
         super.create();

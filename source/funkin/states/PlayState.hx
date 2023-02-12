@@ -12,6 +12,7 @@ import flixel.util.FlxColor;
 import flixel.util.FlxSort;
 import funkin.editors.CharacterEditor;
 import funkin.obj.*;
+import funkin.scripting.FunkinScript;
 import funkin.system.*;
 import funkin.system.MusicBeat.MusicBeatState;
 import funkin.ui.HUD;
@@ -35,10 +36,26 @@ class PlayState extends MusicBeatState
 	var camGame:FlxCamera;
 	var camHUD:FlxCamera;
 	var camFollow:FlxObject;
+	var swagScript:FunkinScript;
 	
 	override public function create()
-	{
+	{		
+		swagScript = new FunkinScript();
+
 		song = Song.loadSong('bopeebo', 'normal');
+
+		if (FunkinPaths.exists('assets/data/${song.song.toLowerCase()}/script.hscript'))
+			swagScript.execute(FunkinPaths.script('${song.song.toLowerCase()}/script'));
+		else
+			trace('NOT IN assets/data/${song.song.toLowerCase()}/script.hscript');
+		
+		swagScript.setVar('song', song);
+		swagScript.setVar('generatedSong', loadedSong);
+		swagScript.setVar('health', health);
+		swagScript.setVar('unspawnedNotes', unaddedNotes);
+		swagScript.setVar('Conductor', Conductor);
+		
+		swagScript.executeFunc('onCreate', []);
 
 		stage = new Stage('stage');
 		add(stage);
@@ -85,6 +102,17 @@ class PlayState extends MusicBeatState
 		hud = new HUD();
 		add(hud);
 
+		swagScript.setVar('ui', hud);
+		swagScript.setVar('bfStrums', playerStrums);
+		swagScript.setVar('dadStrums', dadStrums);
+		swagScript.setVar('boyfriend', player1);
+		swagScript.setVar('dad', player2);
+		swagScript.setVar('gf', player3);
+		swagScript.setVar('stage', stage);
+		swagScript.setVar('camGame', camGame);
+		swagScript.setVar('camHUD', camHUD);
+		swagScript.setVar('camFollow', camFollow);
+
 		genNotes();
 		genSong();
 
@@ -98,17 +126,24 @@ class PlayState extends MusicBeatState
 		persistentUpdate = true;
 		
 		super.create();
+
+		swagScript.setVar('beats', beats);
+		swagScript.setVar('steps', steps);
+
+		swagScript.executeFunc('onCreatePost', []);
 	}
 
 	override public function onFocusLost() {
 		vocals.pause();
 		FlxG.sound.music.pause();
+		swagScript.executeFunc('onFocusLost', []);
 		super.onFocusLost();
 	}
 
 	override public function onFocus() {
 		vocals.play();
 		FlxG.sound.music.play();
+		swagScript.executeFunc('onFocus', []);
 		resyncVocals();
 		
 		super.onFocus();
@@ -119,6 +154,8 @@ class PlayState extends MusicBeatState
 		Conductor.songPos = FlxG.sound.music.time;
 
 		hud.health = health;
+
+		swagScript.executeFunc('onUpdate', [elapsed]);
 
 		super.update(elapsed);
 
@@ -202,6 +239,8 @@ class PlayState extends MusicBeatState
 		inputInit();
 		updateVocals();
 		updateCam();
+
+		swagScript.executeFunc('onUpdatePost', [elapsed]);
 	}
 
 	function updateVocals() {
@@ -221,6 +260,8 @@ class PlayState extends MusicBeatState
 		{
 			camFollow.setPosition(player2.getMidpoint().x + 150, player2.getMidpoint().y - 100);
 		}
+
+		swagScript.executeFunc('onCamMove', [PlayState.song.sections[Std.int(steps / 16)].mustHitSection]);
 	}
 
 	function updateStrums() {
@@ -252,6 +293,7 @@ class PlayState extends MusicBeatState
 		if (beats % 8 == 7 && song.song == 'Bopeebo') {
 			player1.playAnim('taunt');
 		}
+		swagScript.executeFunc('onBeat', []);
 
 		hud.everyBeat();
 		
@@ -271,6 +313,8 @@ class PlayState extends MusicBeatState
 		Conductor.songPos = FlxG.sound.music.time;
 		Conductor.setBPM(song.bpm);
 		resyncVocals();
+
+		swagScript.executeFunc('onSongCreate', []);
 	}
 
 	function resyncVocals() {
@@ -347,6 +391,10 @@ class PlayState extends MusicBeatState
 		unaddedNotes.sort(sortByShit);
 
 		loadedSong = true;
+
+		swagScript.setVar('notes', notes);
+
+		swagScript.executeFunc('onNoteLoad', []);
 	}
 
 	function sortByShit(Obj1:Note, Obj2:Note):Int
@@ -379,12 +427,15 @@ class PlayState extends MusicBeatState
 			note.destroy();	
 
 			note.hit = true;
+
+			swagScript.executeFunc('onNoteHit', []);
 		}
 	}
 
 	function onNoteMiss(dir:Int) {
 		health -= 2;
 		player1.sing(dir, 'miss');
+		swagScript.executeFunc('onNoteMiss', [dir]);
 	}
 
 	function inputInit() {

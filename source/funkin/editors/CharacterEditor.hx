@@ -1,70 +1,45 @@
 package funkin.editors;
 
 import flixel.FlxG;
+import flixel.FlxObject;
 import flixel.FlxSprite;
+import flixel.FlxState;
+import flixel.addons.display.FlxGridOverlay;
 import flixel.addons.ui.FlxUI;
 import flixel.addons.ui.FlxUICheckBox;
 import flixel.addons.ui.FlxUIDropDownMenu;
-import flixel.addons.ui.FlxUINumericStepper;
 import flixel.addons.ui.FlxUITabMenu;
-import funkin.editors.*;
-import funkin.obj.Character;
+import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.text.FlxText;
+import flixel.util.FlxColor;
+import funkin.obj.*;
 import funkin.system.*;
-import funkin.system.MusicBeat.MusicBeatState;
 import sys.FileSystem;
 
 using StringTools;
 
-class CharacterEditor extends MusicBeatState {
-    var tempChar:String = '{
-        "singAnims": ["singLEFT", "singDOWN", "singUP", "singRIGHT"],
-        "defaultAnim": "idle",
-        "spriteSheet": "characters/DADDY_DEAREST",
-        "animations": {
-            "prefixAnim": [
-                {
-                    "name": "idle",
-                    "xmlName": "Dad idle dance",
-                    "offsets": [0, 0],
-                    "fr": 24,
-                    "loop": false
-                },
-                {
-                    "name": "singLEFT",
-                    "xmlName": "Dad Sing Note LEFT",
-                    "offsets": [0, 0],
-                    "fr": 24,
-                    "loop": false
-                },
-                {
-                    "name": "singDOWN",
-                    "xmlName": "Dad Sing Note DOWN",
-                    "offsets": [0, 0],
-                    "fr": 24,
-                    "loop": false
-                },
-                {
-                    "name": "singUP",
-                    "xmlName": "Dad Sing Note UP",
-                    "offsets": [0, 0],
-                    "fr": 24,
-                    "loop": false
-                },
-                {
-                    "name": "singRIGHT",
-                    "xmlName": "Dad Sing Note RIGHT",
-                    "offsets": [0, 0],
-                    "fr": 24,
-                    "loop": false
-                }
-            ]
-        }
-    }';
+/**
+	*DEBUG MODE
+ */
+class CharacterEditor extends FlxState
+{
     var mainBox:FlxUITabMenu;
-    var char:Character;
+	var char:Character;
+	var textAnim:FlxText;
+	var dumbTexts:FlxTypedGroup<FlxText>;
+	var animList:Array<String> = [];
+	var curAnim:Int = 0;
     var charList:Array<String> = [];
+	var camFollow:FlxObject;
 
-    override public function create() {
+	override function create()
+	{
+		FlxG.sound.music.stop();
+
+		var gridBG:FlxSprite = FlxGridOverlay.create(10, 10);
+		gridBG.scrollFactor.set(0.5, 0.5);
+		add(gridBG);
+
 		var tabs = [
 			{name: "Character", label: 'Character'},
 			{name: "Animation", label: 'Animation'}
@@ -81,8 +56,24 @@ class CharacterEditor extends MusicBeatState {
         //addAnimUI();
         reloadCharacter('bf');
 
-        super.create();
-    }
+		dumbTexts = new FlxTypedGroup<FlxText>();
+		add(dumbTexts);
+
+		textAnim = new FlxText(300, 16);
+		textAnim.size = 26;
+		textAnim.scrollFactor.set();
+		add(textAnim);
+
+		genBoyOffsets();
+
+		camFollow = new FlxObject(0, 0, 2, 2);
+		camFollow.screenCenter();
+		add(camFollow);
+
+		FlxG.camera.follow(camFollow);
+
+		super.create();
+	}
 
     function addCharUI() {
 		var swagChar = new FlxUIDropDownMenu(10, 10, FlxUIDropDownMenu.makeStrIdLabelArray(getCharacterFileFromPaths(), true), function(character:String)
@@ -162,14 +153,114 @@ class CharacterEditor extends MusicBeatState {
         return charList;
     }
 
-    override public function update(elapsed:Float) {
-        if (FlxG.keys.justPressed.ESCAPE) {
-            FlxG.switchState(new funkin.states.PlayState());
-        }
+	function genBoyOffsets(pushList:Bool = true):Void
+	{
+		var daLoop:Int = 0;
 
-        if (FlxG.keys.justPressed.F1) {
-            FlxG.switchState(new CharacterJSONEditor());
-        }
-        super.update(elapsed);
-    }
+		for (anim => offsets in char.animOffsets)
+		{
+			var text:FlxText = new FlxText(10, 20 + (18 * daLoop), 0, anim + ": " + offsets, 15);
+			text.scrollFactor.set();
+			text.color = FlxColor.BLUE;
+			dumbTexts.add(text);
+
+			if (pushList)
+				animList.push(anim);
+
+			daLoop++;
+		}
+	}
+
+	function updateTexts():Void
+	{
+		dumbTexts.forEach(function(text:FlxText)
+		{
+			text.kill();
+			dumbTexts.remove(text, true);
+		});
+	}
+
+	override function update(elapsed:Float)
+	{
+		textAnim.text = char.animation.curAnim.name;
+
+		if (FlxG.keys.justPressed.E)
+			FlxG.camera.zoom += 0.25;
+		if (FlxG.keys.justPressed.Q)
+			FlxG.camera.zoom -= 0.25;
+
+		if (FlxG.keys.pressed.I || FlxG.keys.pressed.J || FlxG.keys.pressed.K || FlxG.keys.pressed.L)
+		{
+			if (FlxG.keys.pressed.I)
+				camFollow.velocity.y = -90;
+			else if (FlxG.keys.pressed.K)
+				camFollow.velocity.y = 90;
+			else
+				camFollow.velocity.y = 0;
+
+			if (FlxG.keys.pressed.J)
+				camFollow.velocity.x = -90;
+			else if (FlxG.keys.pressed.L)
+				camFollow.velocity.x = 90;
+			else
+				camFollow.velocity.x = 0;
+		}
+		else
+		{
+			camFollow.velocity.set();
+		}
+
+		if (FlxG.keys.justPressed.W)
+		{
+			curAnim -= 1;
+		}
+
+		if (FlxG.keys.justPressed.S)
+		{
+			curAnim += 1;
+		}
+
+		if (curAnim < 0)
+			curAnim = animList.length - 1;
+
+		if (curAnim >= animList.length)
+			curAnim = 0;
+
+		if (FlxG.keys.justPressed.S || FlxG.keys.justPressed.W || FlxG.keys.justPressed.SPACE)
+		{
+			char.playAnim(animList[curAnim]);
+
+			updateTexts();
+			genBoyOffsets(false);
+		}
+
+		var upP = FlxG.keys.anyJustPressed([UP]);
+		var rightP = FlxG.keys.anyJustPressed([RIGHT]);
+		var downP = FlxG.keys.anyJustPressed([DOWN]);
+		var leftP = FlxG.keys.anyJustPressed([LEFT]);
+
+		var holdShift = FlxG.keys.pressed.SHIFT;
+		var multiplier = 1;
+		if (holdShift)
+			multiplier = 10;
+
+		if (upP || rightP || downP || leftP)
+		{
+			updateTexts();
+			if (upP)
+				char.animOffsets.get(animList[curAnim])[1] += 1 * multiplier;
+			if (downP)
+				char.animOffsets.get(animList[curAnim])[1] -= 1 * multiplier;
+			if (leftP)
+				char.animOffsets.get(animList[curAnim])[0] += 1 * multiplier;
+			if (rightP)
+				char.animOffsets.get(animList[curAnim])[0] -= 1 * multiplier;
+
+			updateTexts();
+			genBoyOffsets(false);
+			char.playAnim(animList[curAnim]);
+		}
+
+		super.update(elapsed);
+	}
 }
