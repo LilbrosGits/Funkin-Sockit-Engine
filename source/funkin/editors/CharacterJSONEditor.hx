@@ -4,16 +4,23 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.ui.FlxInputText;
 import flixel.addons.ui.FlxUIDropDownMenu;
+import flixel.input.keyboard.FlxKey;
+import flixel.input.keyboard.FlxKeyList;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import funkin.system.FunkinPaths;
 import funkin.system.MusicBeat.MusicBeatState;
+import funkin.ui.Alphabet;
 import sys.FileSystem;
 
 using StringTools;
 
 class CharacterJSONEditor extends MusicBeatState {
-    var stupidStuff:FlxInputText;
+    var typedTxt:String = '';
+
+    var alphabet:Alphabet;
+
+    var cap = true; //no cap ong
 
     var daChar:String = 'bf';
 
@@ -34,9 +41,8 @@ class CharacterJSONEditor extends MusicBeatState {
 
         swagChar.selectedLabel = 'bf';
 
-        stupidStuff = new FlxInputText(0, 0, FlxG.width * 2, FunkinPaths.characterJson(daChar), 16, ui_Colors[1], FlxColor.TRANSPARENT);
-        stupidStuff.font = FunkinPaths.font('vcr.ttf');
-        add(stupidStuff);
+        alphabet = new Alphabet(0, 0, typedTxt, false);
+        add(alphabet);
         
         super.create();
     }
@@ -54,11 +60,33 @@ class CharacterJSONEditor extends MusicBeatState {
             FlxG.switchState(new CharacterEditor());
         }
 
-        textBG.width = stupidStuff.width;
-        textBG.height = stupidStuff.height;
+        for (i in 0...typedTxt.length) {
+            alphabet.text += i;
+            alphabet.isBold = cap;
+        }
+
+        if (FlxG.keys.justPressed.CAPSLOCK && !cap)
+            cap = true;
+        else
+            cap = false;
+
+        typingInput();
 
         textBG.centerOrigin();
         
         super.update(elapsed);
+    }
+
+    function typingInput() {
+        if (FlxG.keys.anyJustPressed([Q,W,E,R,T,Y,U,I,O,P,A,S,D,F,G,H,J,K,L,Z,X,C,V,B,N,M])) {
+            if (cap)
+                typedTxt += keyToLetter([Q,W,E,R,T,Y,U,I,O,P,A,S,D,F,G,H,J,K,L,Z,X,C,V,B,N,M]).toUpperCase();
+            else
+                typedTxt += keyToLetter([Q,W,E,R,T,Y,U,I,O,P,A,S,D,F,G,H,J,K,L,Z,X,C,V,B,N,M]).toLowerCase();
+        }
+    }
+
+    function keyToLetter(key:Array<FlxKey>):String {
+        return key.toString();
     }
 }

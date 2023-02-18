@@ -1,0 +1,29 @@
+{
+    "defaultAnim": "dead",
+    "spriteSheet": "characters/BF_DEAD",
+    "animations": {
+        "prefixAnim": [
+            {
+                "name": "dead",
+                "xmlName": "BF dies",
+                "offsets": [7, 4],
+                "fr": 24,
+                "loop": false
+            },
+            {
+                "name": "deathTwitch",
+                "xmlName": "BF Dead Loop",
+                "offsets": [7, 4],
+                "fr": 24,
+                "loop": true
+            },
+            {
+                "name": "retry",
+                "xmlName": "BF Dead confirm",
+                "offsets": [7, 4],
+                "fr": 24,
+                "loop": false
+            }
+        ]
+    }
+}

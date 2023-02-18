@@ -64,13 +64,13 @@ class CharacterEditor extends FlxState
 		textAnim.scrollFactor.set();
 		add(textAnim);
 
-		genBoyOffsets();
-
 		camFollow = new FlxObject(0, 0, 2, 2);
 		camFollow.screenCenter();
 		add(camFollow);
 
 		FlxG.camera.follow(camFollow);
+
+		genBoyOffsets();
 
 		super.create();
 	}
@@ -259,6 +259,23 @@ class CharacterEditor extends FlxState
 			updateTexts();
 			genBoyOffsets(false);
 			char.playAnim(animList[curAnim]);
+		}
+
+		if (FlxG.mouse.overlaps(char) && FlxG.mouse.pressed) {
+			char.animOffsets.get(animList[curAnim])[0] = FlxG.mouse.x - char.frameWidth / 2;
+			char.animOffsets.get(animList[curAnim])[1] = FlxG.mouse.y - char.frameWidth / 2;
+			updateTexts();
+			genBoyOffsets(false);
+		}
+
+		FlxG.mouse.useSystemCursor = true;
+
+		if (FlxG.keys.justPressed.F1) {
+			FlxG.switchState(new CharacterJSONEditor());
+		}
+
+		if (FlxG.keys.justPressed.ESCAPE) {
+			FlxG.switchState(new funkin.states.PlayState());
 		}
 
 		super.update(elapsed);

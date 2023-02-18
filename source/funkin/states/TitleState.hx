@@ -176,7 +176,7 @@ class TitleState extends MusicBeat.MusicBeatState
 			titleText.animation.play('press');
 
 			FlxG.camera.flash(FlxColor.WHITE, 1);
-			FlxG.sound.play(FunkinPaths.sound('confirmMenu'), 0.7);
+			FlxG.sound.play(FunkinPaths.sound('menus/confirmMenu'), 0.7);
 
 			transitioning = true;
 			// FlxG.sound.music.stop();

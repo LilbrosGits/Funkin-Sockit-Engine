@@ -4,7 +4,9 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxSubState;
 import flixel.math.FlxMath;
+import flixel.text.FlxText;
 import flixel.ui.FlxBar;
+import flixel.util.FlxColor;
 import funkin.states.PlayState;
 import funkin.system.*;
 
@@ -14,6 +16,9 @@ class HUD extends FlxSubState{
     public var health:Float = 50;
 	public var iconP1:Icon;
 	public var iconP2:Icon;
+	public var scoreTxt:String = '';
+	public var scoreBar:FlxText;//should probably name this something else???
+	
     public function new(){
         super();
 		healthBarBackdrop = new FlxSprite(0, FlxG.height * 0.9).loadGraphic(FunkinPaths.image('UI/HUD/healthBar'));
@@ -34,6 +39,12 @@ class HUD extends FlxSubState{
 		iconP2 = new Icon(PlayState.song.characters[0], false);
 		iconP2.y = healthBar.y - (iconP2.height / 2);
 		add(iconP2);
+
+		scoreBar = new FlxText(FlxG.width / 2, healthBarBackdrop.y + 40, 0, scoreTxt, 32);
+		scoreBar.setFormat(FunkinPaths.font('vcr.ttf'), 18, FlxColor.WHITE);
+		scoreBar.setBorderStyle(OUTLINE, FlxColor.BLACK, 1.5);
+		scoreBar.antialiasing = true;
+		add(scoreBar);
     }
 
     override public function update(elapsed:Float) {
@@ -57,6 +68,8 @@ class HUD extends FlxSubState{
 
 		iconP1.updateHitbox();
 		iconP2.updateHitbox();
+
+		scoreBar.text = scoreTxt;
 		
         super.update(elapsed);
     }

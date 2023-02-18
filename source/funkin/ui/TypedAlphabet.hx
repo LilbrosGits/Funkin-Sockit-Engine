@@ -10,9 +10,6 @@ import funkin.system.*;
 
 using StringTools;
 
-/**
- * Loosley based on FlxTypeText lolol
- */
 class Alphabet extends FlxSpriteGroup
 {
 	public var delay:Float = 0.05;

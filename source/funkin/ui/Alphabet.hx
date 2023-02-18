@@ -39,7 +39,7 @@ class Alphabet extends FlxSpriteGroup
 
 	var splitWords:Array<String> = [];
 
-	var isBold:Bool = false;
+	public var isBold:Bool = false;
 
 	public function new(x:Float, y:Float, text:String = "", ?bold:Bool = false)
 	{

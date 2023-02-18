@@ -7,8 +7,8 @@ import haxe.Json;
 using StringTools;
 
 typedef CharacterFile = {
-    singAnims:Array<String>,
-    defaultAnim:String,
+    ?singAnims:Array<String>,
+    ?defaultAnim:String,
     spriteSheet:String,
     ?flipX:Bool,
     ?flipY:Bool,

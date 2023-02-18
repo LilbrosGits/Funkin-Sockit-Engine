@@ -4,12 +4,14 @@ import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
+import flixel.FlxSubState;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxMath;
-import flixel.math.FlxPoint;
 import flixel.system.FlxSound;
-import flixel.util.FlxColor;
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
 import flixel.util.FlxSort;
+import flixel.util.FlxTimer;
 import funkin.editors.CharacterEditor;
 import funkin.obj.*;
 import funkin.scripting.FunkinScript;
@@ -37,17 +39,24 @@ class PlayState extends MusicBeatState
 	var camHUD:FlxCamera;
 	var camFollow:FlxObject;
 	var swagScript:FunkinScript;
+	var paused:Bool = false;
+	var finishedCountdown:Bool = false;
+	var canPlay:Bool = false;
+	public static var score:Int = 0;
+	public static var misses:Int = 0;
 	
 	override public function create()
-	{		
+	{
 		swagScript = new FunkinScript();
 
 		song = Song.loadSong('bopeebo', 'normal');
 
+		if (FlxG.sound.music != null) {
+			FlxG.sound.music.stop();
+		}
+
 		if (FunkinPaths.exists('assets/data/${song.song.toLowerCase()}/script.hscript'))
 			swagScript.execute(FunkinPaths.script('${song.song.toLowerCase()}/script'));
-		else
-			trace('NOT IN assets/data/${song.song.toLowerCase()}/script.hscript');
 		
 		swagScript.setVar('song', song);
 		swagScript.setVar('generatedSong', loadedSong);
@@ -91,13 +100,14 @@ class PlayState extends MusicBeatState
 
 		strumLine = new FlxSprite(0, 50).makeGraphic(FlxG.width, 10);
 		strumLine.scrollFactor.set();
-		add(strumLine);
 
 		playerStrums = new FlxTypedGroup<StaticNote>();
 		add(playerStrums);
 
 		dadStrums = new FlxTypedGroup<StaticNote>();
 		add(dadStrums);
+
+		genSong();
 
 		hud = new HUD();
 		add(hud);
@@ -113,8 +123,7 @@ class PlayState extends MusicBeatState
 		swagScript.setVar('camHUD', camHUD);
 		swagScript.setVar('camFollow', camFollow);
 
-		genNotes();
-		genSong();
+		startCountdown();
 
 		hud.cameras = [camHUD];
 		notes.cameras = [camHUD];
@@ -133,31 +142,23 @@ class PlayState extends MusicBeatState
 		swagScript.executeFunc('onCreatePost', []);
 	}
 
-	override public function onFocusLost() {
-		vocals.pause();
-		FlxG.sound.music.pause();
-		swagScript.executeFunc('onFocusLost', []);
-		super.onFocusLost();
-	}
-
-	override public function onFocus() {
-		vocals.play();
-		FlxG.sound.music.play();
-		swagScript.executeFunc('onFocus', []);
-		resyncVocals();
-		
-		super.onFocus();
-	}
-
 	override public function update(elapsed:Float)
 	{
 		Conductor.songPos = FlxG.sound.music.time;
 
 		hud.health = health;
+		
+		hud.scoreTxt = 'Score: $score • Misses: $misses';
 
 		swagScript.executeFunc('onUpdate', [elapsed]);
 
 		super.update(elapsed);
+
+		/*if (finishedCountdown) {
+			if (Conductor.songPos >= 0) {
+				startSong();
+			}
+		}*/
 
 		if (unaddedNotes[0] != null)
 		{
@@ -171,7 +172,7 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		if (loadedSong) {
+		if (loadedSong && finishedCountdown) {
 			notes.forEachAlive(function(note:Note) {
 				note.y = (strumLine.y - (Conductor.songPos - note.strumTime) * (0.45 * FlxMath.roundDecimal(song.speed, 2)));
 
@@ -235,19 +236,160 @@ class PlayState extends MusicBeatState
 		if (health <= 0)
 			health = 0;
 
+		if (health <= 0) {
+			paused = true;
+			
+			persistentUpdate = false;
+			persistentDraw = true;
+
+			vocals.stop();
+			FlxG.sound.music.stop();
+			camHUD.visible = false;
+
+			openSubState(new GameOverSubState(player1.getScreenPosition().x, player1.getScreenPosition().y));
+		}
+
 		updateStrums();
-		inputInit();
+		if (canPlay)
+			inputInit();
 		updateVocals();
 		updateCam();
 
 		swagScript.executeFunc('onUpdatePost', [elapsed]);
 	}
 
+	function genScore(note:Note) {
+		var noteDiff:Float = Math.abs(note.strumTime - Conductor.songPos);
+		var noteScore:Int = 200;
+
+		if (noteDiff > Conductor.milliFrames * 0.9)
+		{
+			noteScore = 10;
+		}
+		else if (noteDiff > Conductor.milliFrames * 0.75)
+		{
+			noteScore = 50;
+		}
+		else if (noteDiff > Conductor.milliFrames * 0.2)
+		{
+			noteScore = 100;
+		}
+
+		score += noteScore;
+	}
+
+	override public function onFocusLost() {
+		paused = true;
+		swagScript.executeFunc('onFocusLost', []);
+		super.onFocusLost();
+	}
+
+	override public function onFocus() {
+		paused = false;
+		swagScript.executeFunc('onFocus', []);
+		resyncVocals();
+		
+		super.onFocus();
+	}
+
+	override function openSubState(SubState:FlxSubState)
+	{
+		if (paused)
+		{
+			if (FlxG.sound.music != null)
+			{
+				FlxG.sound.music.pause();
+				vocals.pause();
+			}
+		}
+
+		super.openSubState(SubState);
+	}
+
+	override function closeSubState()
+	{
+		if (paused)
+		{
+			if (FlxG.sound.music != null)
+			{
+				FlxG.sound.music.play();
+				vocals.play();
+				resyncVocals();
+			}
+			paused = false;
+		}
+
+		super.closeSubState();
+	}
+
+	function startCountdown():Void {
+		var introAssets:Array<String> = ['', 'ready', 'set', 'go'];
+		var introSounds:Array<String> = ['intro3', 'intro2', 'intro1', 'introGo'];
+		var swagCounter:Int = 0;
+
+		Conductor.songPos = 0;
+		Conductor.songPos -= Conductor.crochet * 5;
+
+		new FlxTimer().start(Conductor.crochet / 1000, function(tmr:FlxTimer)
+		{
+			switch (swagCounter)
+			{
+				case 0:
+					FlxG.sound.play(FunkinPaths.sound('countdown/${introSounds[swagCounter]}'), 0.6);
+				case 1:
+					var ready:FlxSprite = new FlxSprite().loadGraphic(FunkinPaths.image('UI/HUD/countdown/${introAssets[swagCounter]}'));
+					ready.scrollFactor.set();
+					ready.screenCenter();
+					add(ready);
+					FlxTween.tween(ready, {y: ready.y += 100, alpha: 0}, Conductor.crochet / 1000, {
+						ease: FlxEase.cubeInOut,
+						onComplete: function(twn:FlxTween)
+						{
+							ready.destroy();
+						}
+					});
+					FlxG.sound.play(FunkinPaths.sound('countdown/${introSounds[swagCounter]}'), 0.6);
+				case 2:
+					var set:FlxSprite = new FlxSprite().loadGraphic(FunkinPaths.image('UI/HUD/countdown/${introAssets[swagCounter]}'));
+					set.scrollFactor.set();
+					set.screenCenter();
+					add(set);
+					FlxTween.tween(set, {y: set.y += 100, alpha: 0}, Conductor.crochet / 1000, {
+						ease: FlxEase.cubeInOut,
+						onComplete: function(twn:FlxTween)
+						{
+							set.destroy();
+						}
+					});
+					FlxG.sound.play(FunkinPaths.sound('countdown/${introSounds[swagCounter]}'), 0.6);
+				case 3:
+					var go:FlxSprite = new FlxSprite().loadGraphic(FunkinPaths.image('UI/HUD/countdown/${introAssets[swagCounter]}'));
+					go.scrollFactor.set();
+					go.screenCenter();
+					add(go);
+					FlxTween.tween(go, {y: go.y += 100, alpha: 0}, Conductor.crochet / 1000, {
+						ease: FlxEase.cubeInOut,
+						onComplete: function(twn:FlxTween)
+						{
+							go.destroy();
+							startSong();
+							canPlay = true;
+						}
+					});
+					FlxG.sound.play(FunkinPaths.sound('countdown/${introSounds[swagCounter]}'), 0.6);
+				case 4:
+					
+			}
+
+			swagCounter += 1;
+		}, 5);
+		
+		swagScript.executeFunc('onCountdown', [swagCounter]);
+	}
+
 	function updateVocals() {
 		if (vocals.time != FlxG.sound.music.time)
 			resyncVocals();
-
-		vocals.volume = FlxG.sound.volume;
 	}
 
 	//PUT THE KETCHUP UNDER THE TOILET SEAT IN FIRST PERIOD!!
@@ -255,31 +397,52 @@ class PlayState extends MusicBeatState
 	function updateCam() {
 		if (PlayState.song.sections[Std.int(steps / 16)].mustHitSection) {
 			camFollow.setPosition(player1.getMidpoint().x - 100, player1.getMidpoint().y - 100);
+			swagScript.executeFunc('onCamMove', ['bf']);
 		}
 		else
 		{
 			camFollow.setPosition(player2.getMidpoint().x + 150, player2.getMidpoint().y - 100);
+			swagScript.executeFunc('onCamMove', ['dad']);
 		}
 
-		swagScript.executeFunc('onCamMove', [PlayState.song.sections[Std.int(steps / 16)].mustHitSection]);
+		if (loadedSong && PlayState.song.sections[Std.int(steps / 16)] != null) {
+			FlxG.camera.zoom = FlxMath.lerp(1.05, FlxG.camera.zoom, 0.95);
+			camHUD.zoom = FlxMath.lerp(1, camHUD.zoom, 0.95);
+		}
 	}
 
 	function updateStrums() {
 		dadStrums.forEach(function(spr:FlxSprite)
-			{
-				if (spr.animation.finished && spr.animation.curAnim.name == 'confirm') {
-					spr.animation.play('static');
-				}
+		{
+			if (spr.animation.finished && spr.animation.curAnim.name == 'confirm') {
+				spr.animation.play('static');
+			}
 
-				if (spr.animation.curAnim.name == 'confirm')
-				{
-					spr.centerOffsets();
-					spr.offset.x -= 13;
-					spr.offset.y -= 13;
-				}
-				else
-					spr.centerOffsets();
-			});
+			if (spr.animation.curAnim.name == 'confirm')
+			{
+				spr.centerOffsets();
+				spr.offset.x -= 13;
+				spr.offset.y -= 13;
+			}
+			else
+				spr.centerOffsets();
+		});
+
+		playerStrums.forEach(function(spr:StaticNote)
+		{
+			if (spr.animation.finished && spr.animation.curAnim.name == 'confirm') {
+				spr.animation.play('static');
+			}
+
+			if (spr.animation.curAnim.name == 'confirm')
+			{
+				spr.centerOffsets();
+				spr.offset.x -= 13;
+				spr.offset.y -= 13;
+			}
+			else
+				spr.centerOffsets();
+		});
 	}
 
 	override public function onBeat() {
@@ -293,9 +456,16 @@ class PlayState extends MusicBeatState
 		if (beats % 8 == 7 && song.song == 'Bopeebo') {
 			player1.playAnim('taunt');
 		}
-		swagScript.executeFunc('onBeat', []);
+		swagScript.executeFunc('onBeat', []);	
 
 		hud.everyBeat();
+
+			
+		if (FlxG.camera.zoom < 1.35 && beats % 4 == 0)
+		{
+			FlxG.camera.zoom += 0.015;
+			camHUD.zoom += 0.03;
+		}
 		
 		super.onBeat();
 	}
@@ -303,18 +473,21 @@ class PlayState extends MusicBeatState
 	function genSong() {
 		genStrums(0);
 		genStrums(1);
-		
-		FlxG.sound.playMusic(FunkinPaths.inst(song.song));
+		genNotes();
 
 		vocals = new FlxSound().loadEmbedded(FunkinPaths.voices(song.song));
 		FlxG.sound.list.add(vocals);
-		vocals.play();
 
-		Conductor.songPos = FlxG.sound.music.time;
 		Conductor.setBPM(song.bpm);
-		resyncVocals();
 
 		swagScript.executeFunc('onSongCreate', []);
+	}
+
+	function startSong() {
+		resyncVocals();
+		vocals.play();
+		FlxG.sound.playMusic(FunkinPaths.inst(song.song));
+		finishedCountdown = true;
 	}
 
 	function resyncVocals() {
@@ -428,7 +601,10 @@ class PlayState extends MusicBeatState
 
 			note.hit = true;
 
-			swagScript.executeFunc('onNoteHit', []);
+			genScore(note);
+
+			var dir = note.noteData;
+			swagScript.executeFunc('onNoteHit', [dir]);
 		}
 	}
 
@@ -436,6 +612,7 @@ class PlayState extends MusicBeatState
 		health -= 2;
 		player1.sing(dir, 'miss');
 		swagScript.executeFunc('onNoteMiss', [dir]);
+		misses++;
 	}
 
 	function inputInit() {
@@ -534,7 +711,7 @@ class PlayState extends MusicBeatState
 
 		playerStrums.forEach(function(spr:StaticNote)
 		{
-			if (hArray[spr.ID] && spr.animation.curAnim.name != 'confirm')
+			if (pArray[spr.ID] && spr.animation.curAnim.name != 'confirm')
 				spr.animation.play('pressed');
 			if (!hArray[spr.ID])
 				spr.animation.play('static');
@@ -559,6 +736,13 @@ class PlayState extends MusicBeatState
 			var noKey = hArray.lastIndexOf(true);
 
 			hArray[noKey] = false;
+		}
+
+		if (FlxG.keys.justPressed.ENTER) {
+			paused = true;
+			persistentUpdate = false;
+			persistentDraw = true;
+			openSubState(new funkin.states.PauseSubState());
 		}
 
 		if (FlxG.keys.justPressed.F1) {
