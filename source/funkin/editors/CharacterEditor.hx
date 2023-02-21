@@ -270,10 +270,6 @@ class CharacterEditor extends FlxState
 
 		FlxG.mouse.useSystemCursor = true;
 
-		if (FlxG.keys.justPressed.F1) {
-			FlxG.switchState(new CharacterJSONEditor());
-		}
-
 		if (FlxG.keys.justPressed.ESCAPE) {
 			FlxG.switchState(new funkin.states.PlayState());
 		}

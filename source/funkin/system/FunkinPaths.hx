@@ -76,6 +76,10 @@ class FunkinPaths {
     }
 
     inline public static function script(scr:String) {
-        return getText('data/$scr.hscript');
+        return getPath('data/$scr');
     }
+
+    inline public static function state(scr:String) {
+        return getPath('states/$scr');
+    }//couldve been one function but i alr spent
 }

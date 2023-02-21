@@ -18,6 +18,9 @@ import funkin.scripting.FunkinScript;
 import funkin.system.*;
 import funkin.system.MusicBeat.MusicBeatState;
 import funkin.ui.HUD;
+import sys.FileSystem;
+
+using StringTools;
 
 class PlayState extends MusicBeatState
 {
@@ -47,6 +50,9 @@ class PlayState extends MusicBeatState
 	
 	override public function create()
 	{
+		score = 0;
+		misses = 0;
+
 		swagScript = new FunkinScript();
 
 		song = Song.loadSong('bopeebo', 'normal');
@@ -55,8 +61,14 @@ class PlayState extends MusicBeatState
 			FlxG.sound.music.stop();
 		}
 
-		if (FunkinPaths.exists('assets/data/${song.song.toLowerCase()}/script.hscript'))
-			swagScript.execute(FunkinPaths.script('${song.song.toLowerCase()}/script'));
+		/*if (FunkinPaths.exists(FunkinPaths.script('${song.song.toLowerCase()}/')))
+			swagScript.execute(FunkinPaths.script('${song.song.toLowerCase()}/script'));*/
+
+		for (scr in FileSystem.readDirectory('assets/data/${song.song.toLowerCase()}/')) {
+            if (scr.endsWith('.hx') || scr.endsWith('.hxs') || scr.endsWith('.hscript')) {
+				swagScript.execute(FunkinPaths.getText(scr));
+            }
+        }
 		
 		swagScript.setVar('song', song);
 		swagScript.setVar('generatedSong', loadedSong);
@@ -93,7 +105,7 @@ class PlayState extends MusicBeatState
 		camFollow.setPosition(player3.getMidpoint().x - 100, player3.getMidpoint().y - 100);
 		add(camFollow);
 
-		FlxG.camera.follow(camFollow, LOCKON, 0.04);
+		FlxG.camera.follow(camFollow, LOCKON, Util.adjustedFrame(0.04));
 		FlxG.camera.focusOn(camFollow.getPosition());
 		FlxG.worldBounds.set(0, 0, FlxG.width, FlxG.height);
 		FlxG.fixedTimestep = false;
@@ -193,6 +205,7 @@ class PlayState extends MusicBeatState
 					if (note.late && !note.susNote)
 					{
 						health -= 1;
+						misses++;
 					}
 
 					note.active = false;
@@ -406,8 +419,8 @@ class PlayState extends MusicBeatState
 		}
 
 		if (loadedSong && PlayState.song.sections[Std.int(steps / 16)] != null) {
-			FlxG.camera.zoom = FlxMath.lerp(1.05, FlxG.camera.zoom, 0.95);
-			camHUD.zoom = FlxMath.lerp(1, camHUD.zoom, 0.95);
+			FlxG.camera.zoom = FlxMath.lerp(1.05, FlxG.camera.zoom, Util.adjustedFrame(0.95));
+			camHUD.zoom = FlxMath.lerp(1, camHUD.zoom, Util.adjustedFrame(0.95));
 		}
 	}
 
@@ -613,6 +626,7 @@ class PlayState extends MusicBeatState
 		player1.sing(dir, 'miss');
 		swagScript.executeFunc('onNoteMiss', [dir]);
 		misses++;
+		score -= 50;
 	}
 
 	function inputInit() {
