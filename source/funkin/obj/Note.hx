@@ -37,6 +37,7 @@ class Note extends FlxSprite {
     }
 
     function loadNotes(skin:String = 'NOTE_assets') {
+        antialiasing = Preferences.antialiasing;
         frames = FunkinPaths.sparrowAtlas('UI/HUD/$skin');
         animation.addByPrefix('purple', 'purple0', 24, false);
         animation.addByPrefix('blue', 'blue0', 24, false);

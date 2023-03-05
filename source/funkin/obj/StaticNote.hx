@@ -43,6 +43,7 @@ class StaticNote extends FlxSprite
 				animation.addByPrefix('confirm', 'right confirm', 24, false);
 				animation.play('static');
 		}
+		antialiasing = Preferences.antialiasing;
 	}
 
 	public function fixPositionings()

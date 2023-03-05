@@ -5,6 +5,7 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.util.FlxColor;
 import funkin.system.FunkinPaths;
 import funkin.system.MusicBeat.MusicBeatSubState;
+import funkin.system.Preferences;
 import haxe.Json;
 
 typedef File = {
@@ -100,6 +101,8 @@ class Stage extends MusicBeatSubState
                     image.active = img.active;
                 if (img.scale != null)
                     image.scale.set(img.scale[0], img.scale[1]);
+                if (img.antialiasing != false)
+                    image.antialiasing = Preferences.antialiasing;
                 allSprGrp.add(image);
             }
         }
@@ -141,6 +144,8 @@ class Stage extends MusicBeatSubState
                     anim.active = animSpr.active;
                 if (animSpr.scale != null)
                     anim.scale.set(animSpr.scale[0], animSpr.scale[1]);
+                if (animSpr.antialiasing != false)
+                    anim.antialiasing = Preferences.antialiasing;
                 allSprGrp.add(anim);
             }
         }

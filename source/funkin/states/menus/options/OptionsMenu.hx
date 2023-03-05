@@ -23,10 +23,9 @@ class OptionsMenu extends MusicBeatState {
 
     public function toggleOption() {
         if (options[curSel].type == 'bool') {
-            var value = options[curSel].value;
-            value = !value;
-            options[curSel].value = value;
+            options[curSel].value = !options[curSel].value;
             Reflect.setProperty(Preferences, options[curSel].id, options[curSel].value);
+            //trace(Reflect.setProperty(Preferences, options[curSel].id, options[curSel].value));
             boxes.forEach(function(ow:CheckBox) {
                 if (ow.ID == curSel) {
                     ow.set_value(options[curSel].value);
@@ -51,13 +50,19 @@ class OptionsMenu extends MusicBeatState {
         add(boxes);
 
         for (i in 0...options.length) {
-            var txt:Alphabet = new Alphabet(0, 0 + (100 * i), options[i].name, true);
-            txt.ID = i;
-            alphabitch.add(txt);
             if (options[i].type == 'bool') {
+                var txt:Alphabet = new Alphabet(0, 0 + (100 * i), options[i].name, true);
+                txt.ID = i;
+                alphabitch.add(txt);
                 var hi:CheckBox = new CheckBox(txt.width, 0 + (60 * i), options[i].value);
                 hi.ID = i;
                 boxes.add(hi);
+            }
+
+            if (options[i].type == 'int' || options[i].type == 'float') {
+                var txt:Alphabet = new Alphabet(0, 0 + (100 * i), options[i].name, true);
+                txt.ID = i;
+                alphabitch.add(txt);
             }
         }
 
@@ -74,6 +79,19 @@ class OptionsMenu extends MusicBeatState {
 
         if (FlxG.keys.justPressed.ENTER) {
             toggleOption();
+        }
+
+        if (FlxG.keys.justPressed.LEFT && options[curSel].type != 'bool') {
+            if(options[curSel].type == 'int')
+                options[curSel].value -= 1;
+            else
+                options[curSel].value -= 0.1;
+        }
+        if (FlxG.keys.justPressed.RIGHT && options[curSel].type != 'bool') {
+            if(options[curSel].type == 'int')
+                options[curSel].value += 1;
+            else
+                options[curSel].value += 0.1;
         }
         
         super.update(elapsed);
@@ -93,6 +111,9 @@ class OptionsMenu extends MusicBeatState {
             }
             if (bbc.ID != curSel) {
                 bbc.alpha = 0.6;
+            }
+            if (options[curSel].type == 'int' || options[curSel].type == 'float') {
+                bbc.text = bbc.text + ' ' + options[curSel].value;
             }
         });
 

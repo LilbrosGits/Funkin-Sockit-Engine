@@ -2,6 +2,7 @@ package funkin.obj;
 
 import flixel.FlxSprite;
 import funkin.system.FunkinPaths;
+import funkin.system.Preferences;
 import haxe.Json;
 
 using StringTools;
@@ -12,7 +13,8 @@ typedef CharacterFile = {
     spriteSheet:String,
     ?flipX:Bool,
     ?flipY:Bool,
-    animations:MasterAnim
+    animations:MasterAnim,
+    antialiasing:Bool
 }
 
 typedef MasterAnim = {
@@ -79,6 +81,11 @@ class Character extends FlxSprite {
         }
 
         playAnim(charJSON.defaultAnim);
+
+        if (charJSON.antialiasing != false) {
+            charJSON.antialiasing = Preferences.antialiasing;
+        }
+        antialiasing = charJSON.antialiasing;
     }
 
     public var danced:Bool;

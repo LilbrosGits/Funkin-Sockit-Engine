@@ -1,6 +1,7 @@
 package;
 
 import flixel.FlxGame;
+import funkin.system.*;
 import openfl.display.FPS;
 import openfl.display.Sprite;
 
@@ -12,5 +13,7 @@ class Main extends Sprite
 		addChild(new FlxGame(0, 0, funkin.states.TitleState));
 
 		addChild(new FPS());
+
+		Preferences.loadOptions();
 	}
 }
