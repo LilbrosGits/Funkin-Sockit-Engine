@@ -6,10 +6,11 @@ import openfl.utils.Assets as OpenFlAssets;
 import sys.FileSystem;
 
 class FunkinPaths {
-    public static var SCRIPT_EXT = ['hx', 'hscript', 'hxs'];
-    
     inline public static function getPath(file:String = '') {
-        return 'assets/$file';
+        if (OpenFlAssets.exists('mods/$file'))
+            return 'mods/$file';
+        else
+            return 'assets/$file';
     }
 
     inline public static function exists(file:String) {
@@ -81,5 +82,5 @@ class FunkinPaths {
 
     inline public static function state(scr:String) {
         return getPath('states/$scr');
-    }//couldve been one function but i alr spent
+    }//couldve been one function but i alr spent to much time
 }

@@ -51,7 +51,7 @@ class GameOverSubState extends MusicBeatSubState {
         
         if (deadMF.animation.curAnim.name == 'dead' && deadMF.animation.curAnim.curFrame == 12)
         {
-            FlxG.camera.follow(camFollow, LOCKON, funkin.system.Util.adjustedFrame(0.01));
+            FlxG.camera.follow(camFollow, LOCKON, funkin.util.FunkinUtil.adjustedFrame(0.01));
         }
 
         if (deadMF.animation.curAnim.name == 'dead' && deadMF.animation.curAnim.finished) {

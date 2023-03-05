@@ -1,13 +1,14 @@
-package funkin.system;
+package funkin.util;
 
 import flixel.FlxG;
 import funkin.scripting.FunkinScript;
+import funkin.system.FunkinPaths;
 import lime.utils.Assets;
 import sys.FileSystem;
 
 using StringTools;
 
-class Util {
+class FunkinUtil {
 	public static function adjustedFrame(input:Float) {
         return input * (60 / FlxG.drawFramerate);
     } //fix shit getting faster with higher framerates unlike kade engine
@@ -27,5 +28,17 @@ class Util {
 				    scriptVar.execute(FunkinPaths.getText(scr));
             }
         }
+    }//prob gonna put dese together soon
+
+    public static function listFromFile(file:String) {
+        var listThing:Array<String> = [];
+
+        listThing = Assets.getText(file).trim().split('\n');
+        
+        for (i in 0...listThing.length) {
+            listThing[i].trim();
+        }
+        
+        return listThing;
     }
 }

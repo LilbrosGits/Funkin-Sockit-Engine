@@ -5,7 +5,13 @@ import sys.thread.Thread;
 #end
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.addons.transition.FlxTransitionSprite.GraphicTransTileDiamond;
+import flixel.addons.transition.FlxTransitionableState;
+import flixel.addons.transition.TransitionData;
+import flixel.graphics.FlxGraphic;
 import flixel.group.FlxGroup;
+import flixel.math.FlxPoint;
+import flixel.math.FlxRect;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
@@ -32,6 +38,18 @@ class TitleState extends MusicBeat.MusicBeatState
 
 	override public function create():Void
 	{
+		var diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileDiamond);
+		diamond.persist = true;
+		diamond.destroyOnNoUse = false;
+
+		FlxTransitionableState.defaultTransIn = new TransitionData(FADE, 0x000000, 1, new FlxPoint(0, -1), {asset: diamond, width: 32, height: 32},
+			new FlxRect(-200, -200, FlxG.width * 1.4, FlxG.height * 1.4));
+		FlxTransitionableState.defaultTransOut = new TransitionData(FADE, 0x000000, 0.7, new FlxPoint(0, 1), {asset: diamond, width: 32, height: 32},
+			new FlxRect(-200, -200, FlxG.width * 1.4, FlxG.height * 1.4));
+
+		transIn = FlxTransitionableState.defaultTransIn;
+		transOut = FlxTransitionableState.defaultTransOut;
+
 		curWacky = FlxG.random.getObject(getIntroTextShit());
 
 		// DEBUG BULLSHIT

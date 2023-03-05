@@ -18,6 +18,7 @@ import funkin.scripting.FunkinScript;
 import funkin.system.*;
 import funkin.system.MusicBeat.MusicBeatState;
 import funkin.ui.HUD;
+import funkin.util.FunkinUtil;
 import sys.FileSystem;
 
 using StringTools;
@@ -47,11 +48,13 @@ class PlayState extends MusicBeatState
 	var canPlay:Bool = false;
 	public static var score:Int = 0;
 	public static var misses:Int = 0;
+	public static var accuracy:Float = 1;
 	
 	override public function create()
 	{
 		score = 0;
 		misses = 0;
+		accuracy = 0;
 
 		swagScript = new FunkinScript();
 
@@ -66,7 +69,7 @@ class PlayState extends MusicBeatState
 
 		for (scr in FileSystem.readDirectory('assets/data/${song.song.toLowerCase()}/')) {
             if (scr.endsWith('.hx') || scr.endsWith('.hxs') || scr.endsWith('.hscript')) {
-				swagScript.execute(FunkinPaths.getText(scr));
+				swagScript.execute(FunkinPaths.getText('data/${song.song.toLowerCase()}/$scr'));
             }
         }
 		
@@ -105,12 +108,14 @@ class PlayState extends MusicBeatState
 		camFollow.setPosition(player3.getMidpoint().x - 100, player3.getMidpoint().y - 100);
 		add(camFollow);
 
-		FlxG.camera.follow(camFollow, LOCKON, Util.adjustedFrame(0.04));
+		FlxG.camera.follow(camFollow, LOCKON, FunkinUtil.adjustedFrame(0.04));
 		FlxG.camera.focusOn(camFollow.getPosition());
 		FlxG.worldBounds.set(0, 0, FlxG.width, FlxG.height);
 		FlxG.fixedTimestep = false;
 
 		strumLine = new FlxSprite(0, 50).makeGraphic(FlxG.width, 10);
+		if (Preferences.downscroll)
+			strumLine.y = FlxG.height - 150;
 		strumLine.scrollFactor.set();
 
 		playerStrums = new FlxTypedGroup<StaticNote>();
@@ -160,18 +165,12 @@ class PlayState extends MusicBeatState
 
 		hud.health = health;
 		
-		hud.scoreTxt = 'Score: $score • Misses: $misses';
+		hud.scoreTxt = 'Score: $score • Misses: $misses • Accuracy: $accuracy';
 
 		swagScript.executeFunc('onUpdate', [elapsed]);
 
 		super.update(elapsed);
-
-		/*if (finishedCountdown) {
-			if (Conductor.songPos >= 0) {
-				startSong();
-			}
-		}*/
-
+		
 		if (unaddedNotes[0] != null)
 		{
 			if (unaddedNotes[0].strumTime - Conductor.songPos < 1500)
@@ -186,7 +185,10 @@ class PlayState extends MusicBeatState
 
 		if (loadedSong && finishedCountdown) {
 			notes.forEachAlive(function(note:Note) {
-				note.y = (strumLine.y - (Conductor.songPos - note.strumTime) * (0.45 * FlxMath.roundDecimal(song.speed, 2)));
+				if (Preferences.downscroll)
+					note.y = (strumLine.y - (Conductor.songPos - note.strumTime) * (-0.45 * FlxMath.roundDecimal(song.speed, 2)));
+				else
+					note.y = (strumLine.y - (Conductor.songPos - note.strumTime) * (0.45 * FlxMath.roundDecimal(song.speed, 2)));
 
 				if (note.susNote && note.hit)
 				{
@@ -274,19 +276,26 @@ class PlayState extends MusicBeatState
 	function genScore(note:Note) {
 		var noteDiff:Float = Math.abs(note.strumTime - Conductor.songPos);
 		var noteScore:Int = 200;
+		var swag:Float = 1;
 
 		if (noteDiff > Conductor.milliFrames * 0.9)
 		{
+			swag = 0.05;
 			noteScore = 10;
 		}
 		else if (noteDiff > Conductor.milliFrames * 0.75)
 		{
+			swag = 0.1;
 			noteScore = 50;
 		}
 		else if (noteDiff > Conductor.milliFrames * 0.2)
 		{
+			swag = 0.5;
 			noteScore = 100;
 		}
+
+		if (!note.susNote)
+			accuracy += swag;
 
 		score += noteScore;
 	}
@@ -419,8 +428,8 @@ class PlayState extends MusicBeatState
 		}
 
 		if (loadedSong && PlayState.song.sections[Std.int(steps / 16)] != null) {
-			FlxG.camera.zoom = FlxMath.lerp(1.05, FlxG.camera.zoom, Util.adjustedFrame(0.95));
-			camHUD.zoom = FlxMath.lerp(1, camHUD.zoom, Util.adjustedFrame(0.95));
+			FlxG.camera.zoom = FlxMath.lerp(1.05, FlxG.camera.zoom, FunkinUtil.adjustedFrame(0.95));
+			camHUD.zoom = FlxMath.lerp(1, camHUD.zoom, FunkinUtil.adjustedFrame(0.95));
 		}
 	}
 

@@ -9,6 +9,7 @@ import flixel.ui.FlxBar;
 import flixel.util.FlxColor;
 import funkin.states.PlayState;
 import funkin.system.*;
+import funkin.util.FunkinUtil;
 
 class HUD extends FlxSubState{
 	private var healthBarBackdrop:FlxSprite;
@@ -24,6 +25,8 @@ class HUD extends FlxSubState{
 		healthBarBackdrop = new FlxSprite(0, FlxG.height * 0.9).loadGraphic(FunkinPaths.image('UI/HUD/healthBar'));
 		healthBarBackdrop.screenCenter(X);
 		healthBarBackdrop.scrollFactor.set();
+		if (Preferences.downscroll)
+			healthBarBackdrop.y = FlxG.height * 0.1;
 		add(healthBarBackdrop);
 
 		healthBar = new FlxBar(healthBarBackdrop.x + 4, healthBarBackdrop.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBackdrop.width - 8), Std.int(healthBarBackdrop.height - 8), this,
@@ -40,9 +43,10 @@ class HUD extends FlxSubState{
 		iconP2.y = healthBar.y - (iconP2.height / 2);
 		add(iconP2);
 
-		scoreBar = new FlxText(FlxG.width / 2, healthBarBackdrop.y + 40, 0, scoreTxt, 32);
+		scoreBar = new FlxText(0, healthBarBackdrop.y + 40, FlxG.width, scoreTxt, 32);
 		scoreBar.setFormat(FunkinPaths.font('vcr.ttf'), 18, FlxColor.WHITE);
 		scoreBar.setBorderStyle(OUTLINE, FlxColor.BLACK, 1.5);
+		scoreBar.scrollFactor.set();
 		scoreBar.antialiasing = true;
 		add(scoreBar);
     }
@@ -63,8 +67,8 @@ class HUD extends FlxSubState{
 		iconP1.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01) - iconOffset);
 		iconP2.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)) - (iconP2.width - iconOffset);
 
-		iconP1.setGraphicSize(Std.int(FlxMath.lerp(150, iconP1.width, Util.adjustedFrame(0.50))));
-		iconP2.setGraphicSize(Std.int(FlxMath.lerp(150, iconP2.width, Util.adjustedFrame(0.50))));
+		iconP1.setGraphicSize(Std.int(FlxMath.lerp(150, iconP1.width, FunkinUtil.adjustedFrame(0.50))));
+		iconP2.setGraphicSize(Std.int(FlxMath.lerp(150, iconP2.width, FunkinUtil.adjustedFrame(0.50))));
 
 		iconP1.updateHitbox();
 		iconP2.updateHitbox();

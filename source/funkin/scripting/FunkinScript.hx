@@ -51,7 +51,7 @@ class FunkinScript {
     public function setVar(swag:String, swagVal:Dynamic) {
         interp.variables.set(swag, swagVal);
     }
-
+    
     public function executeFunc(func:String, para:Array<Dynamic>) {
         // Parse the script into an hscript.Expr object
         expr = parser.parseString(func);

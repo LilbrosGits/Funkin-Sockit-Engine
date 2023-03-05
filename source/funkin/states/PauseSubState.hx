@@ -57,7 +57,7 @@ class PauseSubState extends MusicBeatSubState {
                 case 'Restart Song':
                     FlxG.switchState(new PlayState());
                 case 'Exit To Menu':
-                    close();
+                    FlxG.switchState(new funkin.states.menus.MainMenuState());
             }
         }
     }
@@ -78,14 +78,11 @@ class PauseSubState extends MusicBeatSubState {
 			bullShit++;
 
 			item.alpha = 0.6;
-			// item.setGraphicSize(Std.int(item.width * 0.8));
 
 			if (item.targetY == 0)
 			{
 				item.alpha = 1;
-				// item.setGraphicSize(Std.int(item.width));
 			}
 		}
-		//
 	}
 }

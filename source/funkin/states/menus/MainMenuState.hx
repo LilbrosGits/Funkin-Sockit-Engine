@@ -7,7 +7,7 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import funkin.scripting.FunkinScript;
 import funkin.system.FunkinPaths;
 import funkin.system.MusicBeat.MusicBeatState;
-import funkin.system.Util;
+import funkin.util.FunkinUtil;
 
 class MainMenuState extends MusicBeatState {
     var bg:FlxSprite;
@@ -21,7 +21,7 @@ class MainMenuState extends MusicBeatState {
     override public function create() {
         scriptSwag = new FunkinScript();
         if (FunkinPaths.exists(FunkinPaths.state('MainMenuState')))
-            Util.getState('MainMenuState', scriptSwag);
+            FunkinUtil.getState('MainMenuState', scriptSwag);
 
         scriptSwag.executeFunc('onCreate', []);
 
@@ -47,9 +47,11 @@ class MainMenuState extends MusicBeatState {
             menuItems.add(swaggyBalls);
         }
 
-        FlxG.camera.follow(camFol, null, Util.adjustedFrame(0.06));
+        FlxG.camera.follow(camFol, null, FunkinUtil.adjustedFrame(0.06));
 
         scriptSwag.executeFunc('onCreatePost', []);
+
+        select();
 
         super.create();
     }
@@ -60,9 +62,11 @@ class MainMenuState extends MusicBeatState {
 
         if (FlxG.keys.justPressed.UP) {
             curSelected -= 1;
+            select();//gay shit cause the anims don't play
         }
         if (FlxG.keys.justPressed.DOWN) {
             curSelected += 1;
+            select();//gay shit cause the anims don't play
         }
 
         if (curSelected < 0) {
@@ -79,15 +83,19 @@ class MainMenuState extends MusicBeatState {
                 case 'story_mode':
                     FlxG.switchState(new PlayState());
                 case 'freeplay':
-                    FlxG.switchState(new PlayState());
+                    FlxG.switchState(new FreeplayMenu());
                 case 'options':
-                    FlxG.switchState(new OptionsMenu());
+                    FlxG.switchState(new funkin.states.menus.options.OptionsMenu());
                 default:
                     FlxG.switchState(new PlayState());
             }
         }
         super.update(elapsed);
 
+        scriptSwag.executeFunc('onUpdatePost', [elapsed]);
+    }
+
+    function select() {
         menuItems.forEach(function(wag:FlxSprite) {
             wag.animation.play('idle');
             if (curSelected == wag.ID) {
@@ -97,7 +105,5 @@ class MainMenuState extends MusicBeatState {
             wag.updateHitbox();
             wag.screenCenter(X);
         });
-
-        scriptSwag.executeFunc('onUpdatePost', [elapsed]);
     }
 }
