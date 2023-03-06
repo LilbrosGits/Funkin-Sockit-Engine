@@ -57,6 +57,9 @@ class Note extends FlxSprite {
         animation.play(notes[noteData]);
 
         if (prevNote != null && susNote) {
+            if (Preferences.downscroll)
+                flipY = true;
+            
             alpha = 0.5;
 
             x += width / 2;
@@ -83,9 +86,7 @@ class Note extends FlxSprite {
          if (mustHit) {
             if (strumTime > Conductor.songPos - Conductor.milliFrames)
             {
-                if (strumTime < Conductor.songPos + (Conductor.milliFrames * 0.5))
-                    canHit = true;
-                if (strumTime < Conductor.songPos + (Conductor.milliFrames * 0.4)) //try both??
+                if (strumTime < Conductor.songPos + (Conductor.milliFrames * 0.5) || strumTime < Conductor.songPos + (Conductor.milliFrames * 0.4))
                     canHit = true;
             }
             else

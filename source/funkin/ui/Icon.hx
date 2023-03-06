@@ -1,7 +1,7 @@
 package funkin.ui;
 
 import flixel.FlxSprite;
-import funkin.system.FunkinPaths;
+import funkin.system.*;
 
 class Icon extends FlxSprite {
     public var sprTracker:FlxSprite;
@@ -14,6 +14,7 @@ class Icon extends FlxSprite {
         antialiasing = true;
         animation.add(char, [0, 1], 0, false, isPlayer);
         animation.play(char);
+        antialiasing = Preferences.antialiasing;
         scrollFactor.set();
     }
 

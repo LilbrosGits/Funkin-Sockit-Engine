@@ -35,6 +35,11 @@
 	<assets path="assets" />
 	<assets path="mods" />
 
+	<!-- _____________________________ Engine Settings ____________________________ -->
+
+	<!--MODS LESAGO-->
+	<define name="MODS_ENABLED" if="desktop" />
+
 	<!-- _______________________________ Libraries ______________________________ -->
 
 	<haxelib name="flixel" />

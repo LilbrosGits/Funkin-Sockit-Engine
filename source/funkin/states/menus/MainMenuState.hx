@@ -61,19 +61,10 @@ class MainMenuState extends MusicBeatState {
         scriptSwag.executeFunc('onUpdate', [elapsed]);
 
         if (FlxG.keys.justPressed.UP) {
-            curSelected -= 1;
-            select();//gay shit cause the anims don't play
+            select(-1);//gay shit cause the anims don't play
         }
         if (FlxG.keys.justPressed.DOWN) {
-            curSelected += 1;
-            select();//gay shit cause the anims don't play
-        }
-
-        if (curSelected < 0) {
-            curSelected = swagJunk.length - 1;
-        }
-        if (curSelected >= swagJunk.length) {
-            curSelected = 0;
+            select(1);//gay shit cause the anims don't play
         }
         
         if (FlxG.keys.justPressed.ENTER) {
@@ -90,15 +81,27 @@ class MainMenuState extends MusicBeatState {
                     FlxG.switchState(new PlayState());
             }
         }
+        if (FlxG.keys.justPressed.SEVEN) {
+            FlxG.switchState(new funkin.states.menus.modding.ModMenu());
+        }
         super.update(elapsed);
 
         scriptSwag.executeFunc('onUpdatePost', [elapsed]);
     }
 
-    function select() {
+    function select(change:Int = 0) {
+        curSelected += change;
+
+        if (curSelected < 0) {
+            curSelected = swagJunk.length - 1;
+        }
+        if (curSelected >= swagJunk.length) {
+            curSelected = 0;
+        }
+        
         menuItems.forEach(function(wag:FlxSprite) {
             wag.animation.play('idle');
-            if (curSelected == wag.ID) {
+            if (wag.ID == curSelected) {
                 wag.animation.play('selected');
                 camFol.setPosition(wag.getGraphicMidpoint().x, wag.getGraphicMidpoint().y);
             }

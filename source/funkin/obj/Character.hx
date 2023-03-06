@@ -1,5 +1,6 @@
 package funkin.obj;
 
+import cpp.abi.Abi;
 import flixel.FlxSprite;
 import funkin.system.FunkinPaths;
 import funkin.system.Preferences;
@@ -52,6 +53,8 @@ class Character extends FlxSprite {
     public var charJSON:CharacterFile;
 
     public var char:String;
+
+    public var holdTmr:Float = 0;
     
     public function new(x:Float, y:Float, character:String = 'bf') {
         super(x, y);
@@ -124,12 +127,17 @@ class Character extends FlxSprite {
     }
 
     public function dance() {
-        danced = !danced;
+        switch(char) {
+            case 'gf':
+                danced = !danced;
 
-        if (danced)
-            playAnim('danceRight');
-        else
-            playAnim('danceLeft');
+                if (danced)
+                    playAnim('danceRight');
+                else
+                    playAnim('danceLeft');
+            default:
+                playAnim('idle');
+        }
     }
 
     public function addOffset(name:String, x:Float = 0, y:Float = 0)
@@ -138,6 +146,28 @@ class Character extends FlxSprite {
     }
 
     override public function update(elapsed:Float) {
+        if (!char.startsWith('bf')) {
+            if (animation.curAnim.name.startsWith('sing'))
+                holdTmr += elapsed;
+
+            var dadJunk:Float = 4;
+
+            if (char == 'dad')
+                dadJunk = 6.1;
+
+            if (holdTmr >= funkin.system.Conductor.stepCrochet * dadJunk * 0.001){
+                dance();
+                holdTmr = 0;
+            }
+        }
+        else {
+            if (animation.curAnim.name.startsWith('sing'))
+                {
+                    holdTmr += elapsed;
+                }
+                else
+                    holdTmr = 0;
+        }
         super.update(elapsed);
     }
 }

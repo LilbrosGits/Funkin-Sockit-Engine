@@ -58,7 +58,8 @@ class PlayState extends MusicBeatState
 
 		swagScript = new FunkinScript();
 
-		song = Song.loadSong('bopeebo', 'normal');
+		if (song == null)
+			song = Song.loadSong('bopeebo', 'normal');
 
 		if (FlxG.sound.music != null) {
 			FlxG.sound.music.stop();
@@ -235,6 +236,8 @@ class PlayState extends MusicBeatState
 							spr.animation.play('confirm', true);
 						}
 					});
+
+					player2.holdTmr = 0;
 				}
 
 				if (note.prevNote.late || !note.prevNote.hit) {
@@ -471,13 +474,18 @@ class PlayState extends MusicBeatState
 		if (loadedSong)
 			notes.sort(FlxSort.byY, FlxSort.DESCENDING);
 		
-		player2.playAnim('idle');
-		player1.playAnim('idle');
+		if (!player1.animation.curAnim.name.startsWith('sing'))
+			player1.playAnim('idle');
+
+		if (!player2.animation.curAnim.name.startsWith('sing'))
+			player2.dance();
+
 		player3.dance();
 
 		if (beats % 8 == 7 && song.song == 'Bopeebo') {
 			player1.playAnim('taunt');
 		}
+		
 		swagScript.executeFunc('onBeat', []);	
 
 		hud.everyBeat();
@@ -509,6 +517,7 @@ class PlayState extends MusicBeatState
 		resyncVocals();
 		vocals.play();
 		FlxG.sound.playMusic(FunkinPaths.inst(song.song));
+		FlxG.sound.music.onComplete = onEnd;
 		finishedCountdown = true;
 	}
 
@@ -666,6 +675,7 @@ class PlayState extends MusicBeatState
 		}
 
 		if (pArray.contains(true) && loadedSong) {
+			player1.holdTmr = 0;
 
 			var possibleNotes:Array<Note> = []; // notes that can be hit
 			var directionList:Array<Int> = []; // directions that can be hit
@@ -779,7 +789,13 @@ class PlayState extends MusicBeatState
 			FlxG.sound.music.stop();
 			vocals.stop();
 		}
+
+		if (player1.holdTmr > 0.004 * Conductor.stepCrochet && !hArray.contains(true) && player1.animation.curAnim.name.startsWith('sing') && !player1.animation.curAnim.name.endsWith('miss')){
+			player1.playAnim('idle');
+		}
 	}
+
+	function onEnd() {}
 
 	function genStrums(player:Int) {
 		for (i in 0...4)

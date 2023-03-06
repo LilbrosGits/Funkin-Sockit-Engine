@@ -6,11 +6,13 @@ import openfl.utils.Assets as OpenFlAssets;
 import sys.FileSystem;
 
 class FunkinPaths {
+    public static var currentModDir:String = '';
     inline public static function getPath(file:String = '') {
-        if (OpenFlAssets.exists('mods/$file'))
-            return 'mods/$file';
-        else
-            return 'assets/$file';
+        #if MODS_ENABLED
+        if (OpenFlAssets.exists('mods/$currentModDir/$file'))
+            return 'mods/$currentModDir/$file';
+        #end
+        return 'assets/$file';
     }
 
     inline public static function exists(file:String) {

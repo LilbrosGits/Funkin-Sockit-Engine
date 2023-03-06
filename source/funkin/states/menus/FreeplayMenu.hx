@@ -17,9 +17,15 @@ class FreeplayMenu extends MusicBeatState {
     override public function create() {
         var bg = new FlxSprite().loadGraphic(FunkinPaths.image('UI/menus/menuBGBlue'));
         add(bg);
+        
         for (i in FileSystem.readDirectory('assets/songs')) {
             songz.push(i);
         }
+        #if MODS_ENABLED
+        for (i in FileSystem.readDirectory('assets/${FunkinPaths.currentModDir}/songs')) {
+            songz.push(i);
+        }
+        #end
 
         ihatemylife = new FlxTypedGroup<Alphabet>();
         add(ihatemylife);
@@ -55,6 +61,7 @@ class FreeplayMenu extends MusicBeatState {
 
         if (FlxG.keys.justPressed.ENTER) {
             PlayState.song = Song.loadSong(songz[curSelected], 'normal');
+            FlxG.switchState(new PlayState());
         }
 
         if (curSelected < 0) {

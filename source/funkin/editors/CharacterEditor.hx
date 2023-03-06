@@ -149,6 +149,12 @@ class CharacterEditor extends FlxState
         for (file in FileSystem.readDirectory('assets/characters')){
             charList.push(file.replace('.json', ''));
         }
+		#if MODS_ENABLED
+			for (file in FileSystem.readDirectory('mods/${FunkinPaths.currentModDir}/characters')){
+				if (file.endsWith('.json'))
+					charList.push(file.replace('.json', ''));
+			}
+		#end
 
         return charList;
     }

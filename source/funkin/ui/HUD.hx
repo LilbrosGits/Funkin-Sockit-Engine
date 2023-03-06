@@ -44,10 +44,10 @@ class HUD extends FlxSubState{
 		add(iconP2);
 
 		scoreBar = new FlxText(0, healthBarBackdrop.y + 40, FlxG.width, scoreTxt, 32);
-		scoreBar.setFormat(FunkinPaths.font('vcr.ttf'), 18, FlxColor.WHITE);
+		scoreBar.setFormat(FunkinPaths.font('vcr.ttf'), 18, FlxColor.WHITE, CENTER);
 		scoreBar.setBorderStyle(OUTLINE, FlxColor.BLACK, 1.5);
 		scoreBar.scrollFactor.set();
-		scoreBar.antialiasing = true;
+		scoreBar.antialiasing = Preferences.antialiasing;
 		add(scoreBar);
     }
 
