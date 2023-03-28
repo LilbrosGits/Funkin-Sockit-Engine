@@ -44,10 +44,6 @@ class FunkinScript {
         interp.execute(expr);
     }
 
-    function importLibrary(libName:String) {
-        interp.variables.set(libName, Type.resolveClass(libName));
-    }
-
     public function setVar(swag:String, swagVal:Dynamic) {
         interp.variables.set(swag, swagVal);
     }
@@ -56,12 +52,7 @@ class FunkinScript {
         // Parse the script into an hscript.Expr object
         expr = parser.parseString(func);
 
-        if (func == 'import') {
-            var swag:String = para[0];
-            importLibrary(func + "(" + swag + ")");
-        }
-
         // Execute the script using hscript.Interp.execute
-        interp.execute(parser.parseString(func + "(" + para.join(", ") + ")"));
+        interp.execute(parser.parseString(func + "(" + para.join(", ") + ")".replace(':', ',')));
     }
 }

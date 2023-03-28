@@ -1,22 +1,35 @@
 package funkin.states.menus;
 
 import flixel.FlxG;
+import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.text.FlxText;
+import flixel.util.FlxColor;
 import funkin.system.FunkinPaths;
 import funkin.system.MusicBeat.MusicBeatState;
 import funkin.system.Song;
 import funkin.ui.Alphabet;
+import funkin.ui.AlphabetList;
+import funkin.util.FunkinUtil;
 import sys.FileSystem;
 
 class FreeplayMenu extends MusicBeatState {
     var songz:Array<String> = [];
-    var ihatemylife:FlxTypedGroup<Alphabet>;
+    var list:AlphabetList;
     var curSelected:Int = 0;
+    var diffShit:FlxText;
+    var curDiff:Int = 0;
 
     override public function create() {
         var bg = new FlxSprite().loadGraphic(FunkinPaths.image('UI/menus/menuBGBlue'));
+        bg.scrollFactor.set();
         add(bg);
+
+        diffShit = new FlxText(0, 0, 0, '', 32);
+        diffShit.setFormat(FunkinPaths.font('vcr.ttf'), 32, FlxColor.WHITE, RIGHT);
+        diffShit.scrollFactor.set();
+        add(diffShit);
         
         for (i in FileSystem.readDirectory('assets/songs')) {
             songz.push(i);
@@ -27,49 +40,42 @@ class FreeplayMenu extends MusicBeatState {
         }
         #end
 
-        ihatemylife = new FlxTypedGroup<Alphabet>();
-        add(ihatemylife);
-
-        for (cool in 0...songz.length) {
-            var txt:Alphabet = new Alphabet(0, 0, songz[cool], true);
-            txt.isMenuItem = true;
-            txt.targetY = cool;
-            txt.ID = cool;
-            ihatemylife.add(txt);
-        }
+        list = new AlphabetList(songz, curSelected, true, true, false);
+        add(list);
 
         super.create();
     }
 
     override public function update(elapsed:Float) {
-        if (FlxG.keys.justPressed.UP) {
-            curSelected -= 1;
+        if (FlxG.keys.justPressed.LEFT) {
+            curDiff -= 1;
         }
 
-        if (FlxG.keys.justPressed.DOWN) {
-            curSelected += 1;
+        if (FlxG.keys.justPressed.RIGHT) {
+            curDiff += 1;
+        }
+        
+        if (FlxG.keys.justPressed.ESCAPE) {
+            FlxG.switchState(new MainMenuState());
         }
 
-        ihatemylife.forEach(function(cool:Alphabet) {
-            if (cool.ID == curSelected) {
-                cool.alpha = 1;
-            }
-            else {
-                cool.alpha = 0.6;
+        curSelected = list.curSelected;
+        
+        list.onSelect(function() {
+            if (FlxG.keys.justPressed.ENTER) {
+                PlayState.song = Song.loadSong(songz[curSelected], FunkinUtil.difficulties[curDiff]);
+                FlxG.switchState(new PlayState());
             }
         });
 
-        if (FlxG.keys.justPressed.ENTER) {
-            PlayState.song = Song.loadSong(songz[curSelected], 'normal');
-            FlxG.switchState(new PlayState());
+        if (curDiff < 0) {
+            curDiff = FunkinUtil.difficulties.length - 1;
+        }
+        if (curDiff >= FunkinUtil.difficulties.length) {
+            curDiff = 0;
         }
 
-        if (curSelected < 0) {
-            curSelected = songz.length - 1;
-        }
-        if (curSelected >= songz.length) {
-            curSelected = 0;
-        }
+        diffShit.text = FunkinUtil.difficulties[curDiff];
 
         super.update(elapsed);
     }

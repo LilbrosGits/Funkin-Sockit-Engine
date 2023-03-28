@@ -5,10 +5,13 @@ import funkin.scripting.FunkinScript;
 import funkin.system.FunkinPaths;
 import lime.utils.Assets;
 import sys.FileSystem;
+import sys.io.File;
 
 using StringTools;
 
 class FunkinUtil {
+    public static var difficulties:Array<String> = ['Easy', 'Normal', 'Hard'];
+    
 	public static function adjustedFrame(input:Float) {
         return input * (60 / FlxG.drawFramerate);
     } //fix shit getting faster with higher framerates unlike kade engine
@@ -33,7 +36,7 @@ class FunkinUtil {
     public static function listFromFile(file:String) {
         var listThing:Array<String> = [];
 
-        listThing = Assets.getText(file).trim().split('\n');
+        listThing = File.getContent(file).trim().split('\n');
         
         for (i in 0...listThing.length) {
             listThing[i].trim();

@@ -7,6 +7,7 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import funkin.scripting.FunkinScript;
 import funkin.system.FunkinPaths;
 import funkin.system.MusicBeat.MusicBeatState;
+import funkin.system.Preferences;
 import funkin.util.FunkinUtil;
 
 class MainMenuState extends MusicBeatState {
@@ -25,8 +26,13 @@ class MainMenuState extends MusicBeatState {
 
         scriptSwag.executeFunc('onCreate', []);
 
+        var yScroll:Float = Math.max(0.25 - (0.05 * (swagJunk.length - 4)), 0.1);
         bg = new FlxSprite(0, 0).loadGraphic(FunkinPaths.image('UI/menus/menuBG'));
-        bg.scrollFactor.set();
+		bg.scrollFactor.set(0, yScroll);
+		bg.setGraphicSize(Std.int(bg.width * 1.175));
+		bg.updateHitbox();
+		bg.screenCenter();
+		bg.antialiasing = Preferences.antialiasing;
         add(bg);
 
         menuItems = new FlxTypedGroup<FlxSprite>();
@@ -36,7 +42,7 @@ class MainMenuState extends MusicBeatState {
         add(camFol);
 
         for (i in 0...swagJunk.length) {
-            var swaggyBalls:FlxSprite = new FlxSprite(0, 100 + (180 * i));
+            var swaggyBalls:FlxSprite = new FlxSprite(0, 60 + (200 * i));
             swaggyBalls.frames = FunkinPaths.sparrowAtlas('UI/menus/mainmenu/menu_${swagJunk[i]}');
             swaggyBalls.animation.addByPrefix('idle', '${swagJunk[i]} basic', 24);
             swaggyBalls.animation.addByPrefix('selected', '${swagJunk[i]} white', 24);
@@ -72,7 +78,7 @@ class MainMenuState extends MusicBeatState {
 
             switch(funy) {
                 case 'story_mode':
-                    FlxG.switchState(new PlayState());
+                    FlxG.switchState(new StoryMenuState());
                 case 'freeplay':
                     FlxG.switchState(new FreeplayMenu());
                 case 'options':
@@ -82,7 +88,7 @@ class MainMenuState extends MusicBeatState {
             }
         }
         if (FlxG.keys.justPressed.SEVEN) {
-            FlxG.switchState(new funkin.states.menus.modding.ModMenu());
+            FlxG.switchState(new funkin.states.menus.modding.ModsMenu());
         }
         super.update(elapsed);
 
@@ -103,7 +109,7 @@ class MainMenuState extends MusicBeatState {
             wag.animation.play('idle');
             if (wag.ID == curSelected) {
                 wag.animation.play('selected');
-                camFol.setPosition(wag.getGraphicMidpoint().x, wag.getGraphicMidpoint().y);
+                camFol.setPosition(FlxG.width / 2, wag.getGraphicMidpoint().y);
             }
             wag.updateHitbox();
             wag.screenCenter(X);

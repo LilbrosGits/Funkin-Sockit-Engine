@@ -3,10 +3,13 @@ package funkin.obj;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.util.FlxColor;
+import funkin.scripting.FunkinScript;
 import funkin.system.FunkinPaths;
 import funkin.system.MusicBeat.MusicBeatSubState;
 import funkin.system.Preferences;
 import haxe.Json;
+
+using StringTools;
 
 typedef File = {
     cameraZoom:Float,
@@ -15,18 +18,20 @@ typedef File = {
     ?animatedSprites:Array<AnimSprite>,
     boyfriendPosition:Array<Float>,
     dadPosition:Array<Float>,
-    gfPosition:Array<Float>
+    gfPosition:Array<Float>,
+    ?script:String
 }
 
 typedef ImageSprite = {
+    spriteName:String,
     image:String,
     positions:Array<Float>,
     ?scrollFactor:Array<Float>,
     ?active:Bool,
     ?angle:Float,
     ?color:Array<Int>,
-    ?width:Int,
-    ?height:Int,
+    ?width:Float,
+    ?height:Float,
     ?flipX:Bool,
     ?flipY:Bool,
     ?scale:Array<Float>,
@@ -34,6 +39,7 @@ typedef ImageSprite = {
 }
 
 typedef AnimSprite = {
+    spriteName:String,
     image:String,
     positions:Array<Float>,
     animations:Array<AnimThing>,
@@ -41,8 +47,8 @@ typedef AnimSprite = {
     ?active:Bool,
     ?angle:Float,
     ?color:Array<Int>,
-    ?width:Int,
-    ?height:Int,
+    ?width:Float,
+    ?height:Float,
     ?flipX:Bool,
     ?flipY:Bool,
     ?scale:Array<Float>,
@@ -58,6 +64,7 @@ typedef AnimThing = {
 }
 
 typedef MakeSprite = {
+    spriteName:String,
     color:Array<Int>,
     width:Int,
     height:Int,
@@ -74,12 +81,23 @@ class Stage extends MusicBeatSubState
 {
     public var data:File;
 
+    public var scr:FunkinScript;
+
     public var allSprGrp:FlxTypedGroup<FlxSprite>;
     
     public function new(stage:String){
         super();
 
         data = Json.parse(FunkinPaths.stage(stage));
+
+        if (data.script != null) {
+            scr = new FunkinScript();
+            scr.execute(data.script);
+            scr.executeFunc('onCreate', []);
+            scr.setVar('beats', beats);
+            scr.setVar('steps', steps);
+            scr.setVar('PlayState', funkin.states.PlayState);
+        }
 
         allSprGrp = new FlxTypedGroup<FlxSprite>();
         add(allSprGrp);
@@ -103,6 +121,7 @@ class Stage extends MusicBeatSubState
                     image.scale.set(img.scale[0], img.scale[1]);
                 if (img.antialiasing != false)
                     image.antialiasing = Preferences.antialiasing;
+                addSpr(img.spriteName, image);
                 allSprGrp.add(image);
             }
         }
@@ -117,6 +136,7 @@ class Stage extends MusicBeatSubState
                     swagSpr.scrollFactor.set(swag.scrollFactor[0], swag.scrollFactor[1]);
                 if (swag.scale != null)
                     swagSpr.scale.set(swag.scale[0], swag.scale[1]);
+                addSpr(swag.spriteName, swagSpr);
                 allSprGrp.add(swagSpr);
             }
         }
@@ -146,16 +166,37 @@ class Stage extends MusicBeatSubState
                     anim.scale.set(animSpr.scale[0], animSpr.scale[1]);
                 if (animSpr.antialiasing != false)
                     anim.antialiasing = Preferences.antialiasing;
+                addSpr(animSpr.spriteName, anim);
                 allSprGrp.add(anim);
             }
         }
+
+        if (data.script != null)
+            scr.executeFunc('onCreatePost', []);
+    }
+
+    override public function onBeat() {
+        if (data.script != null) {
+            scr.executeFunc('onBeat', []);
+        }
+        super.onBeat();
     }
 
     override public function update(elapsed:Float) {
+        if (data.script != null)
+            scr.executeFunc('onUpdate', [elapsed]);
+
         super.update(elapsed);
 
         allSprGrp.forEach(function(spr:FlxSprite) {
             spr.updateHitbox();
         });
+        if (data.script != null)
+            scr.executeFunc('onUpdatePost', [elapsed]);
+    }
+
+    function addSpr(sprName:String, vari:Dynamic) {
+        if (data.script != null)
+            scr.setVar(sprName, vari);
     }
 }

@@ -4,6 +4,7 @@ import flixel.graphics.frames.FlxAtlasFrames;
 import lime.utils.Assets;
 import openfl.utils.Assets as OpenFlAssets;
 import sys.FileSystem;
+import sys.io.File;
 
 class FunkinPaths {
     public static var currentModDir:String = '';
@@ -31,7 +32,7 @@ class FunkinPaths {
     }
 
     inline public static function getText(file:String) {
-        return Assets.getText(getPath(file));
+        return File.getContent(getPath(file));
     }
 
     inline public static function songJson(song:String, diff:String) {

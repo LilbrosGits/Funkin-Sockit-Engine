@@ -13,6 +13,7 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxSort;
 import flixel.util.FlxTimer;
 import funkin.editors.CharacterEditor;
+import funkin.editors.ChartEditor;
 import funkin.obj.*;
 import funkin.scripting.FunkinScript;
 import funkin.system.*;
@@ -26,6 +27,7 @@ using StringTools;
 class PlayState extends MusicBeatState
 {
 	private var unaddedNotes:Array<Note> = [];
+	public static var storySongs:Array<String> = [];
 	public static var song:Song.SongData;
 	var playerStrums:FlxTypedGroup<StaticNote>;
 	var dadStrums:FlxTypedGroup<StaticNote>;
@@ -207,8 +209,12 @@ class PlayState extends MusicBeatState
 				{
 					if (note.late && !note.susNote)
 					{
-						health -= 1;
-						misses++;
+						if (Preferences.ghostTapping)
+							onNoteMiss(note.noteData);
+						else {
+							health -= 1;
+							misses++;
+						}
 					}
 
 					note.active = false;
@@ -304,13 +310,13 @@ class PlayState extends MusicBeatState
 	}
 
 	override public function onFocusLost() {
-		paused = true;
+		//paused = true;
 		swagScript.executeFunc('onFocusLost', []);
 		super.onFocusLost();
 	}
 
 	override public function onFocus() {
-		paused = false;
+		//paused = false;
 		swagScript.executeFunc('onFocus', []);
 		resyncVocals();
 		
@@ -725,7 +731,7 @@ class PlayState extends MusicBeatState
 			{
 				for (shit in 0...pArray.length)
 				{ // if a direction is hit that shouldn't be
-					if (pArray[shit] && !directionList.contains(shit))
+					if (pArray[shit] && !directionList.contains(shit) && !Preferences.ghostTapping)
 						onNoteMiss(shit);
 				}
 				for (coolNote in possibleNotes)
@@ -737,7 +743,7 @@ class PlayState extends MusicBeatState
 			else
 			{
 				for (shit in 0...pArray.length)
-					if (pArray[shit])
+					if (pArray[shit] && !Preferences.ghostTapping)
 						onNoteMiss(shit);
 			}
 		}
@@ -790,12 +796,20 @@ class PlayState extends MusicBeatState
 			vocals.stop();
 		}
 
+		if (FlxG.keys.justPressed.SEVEN) {
+			FlxG.switchState(new ChartEditor());
+			FlxG.sound.music.stop();
+			vocals.stop();
+		}
+
 		if (player1.holdTmr > 0.004 * Conductor.stepCrochet && !hArray.contains(true) && player1.animation.curAnim.name.startsWith('sing') && !player1.animation.curAnim.name.endsWith('miss')){
 			player1.playAnim('idle');
 		}
 	}
 
-	function onEnd() {}
+	function onEnd() {
+		song.song = storySongs[0];
+	}
 
 	function genStrums(player:Int) {
 		for (i in 0...4)

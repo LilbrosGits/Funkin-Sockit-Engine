@@ -1,12 +1,11 @@
 package funkin.ui;
 
-//imported from base fnf, might work on later lmao
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxSpriteGroup;
 import flixel.math.FlxMath;
 import flixel.util.FlxTimer;
-import funkin.system.*;
 
 using StringTools;
 
@@ -39,9 +38,9 @@ class Alphabet extends FlxSpriteGroup
 
 	var splitWords:Array<String> = [];
 
-	public var isBold:Bool = false;
+	var isBold:Bool = false;
 
-	public function new(x:Float, y:Float, text:String = "", ?bold:Bool = false)
+	public function new(?x:Float = 0, ?y:Float = 0, text:String = "", ?bold:Bool = false, typed:Bool = false)
 	{
 		super(x, y);
 
@@ -49,10 +48,16 @@ class Alphabet extends FlxSpriteGroup
 		this.text = text;
 		isBold = bold;
 
-
 		if (text != "")
 		{
-			addText();
+			if (typed)
+			{
+				startTypedText();
+			}
+			else
+			{
+				addText();
+			}
 		}
 	}
 
@@ -67,13 +72,13 @@ class Alphabet extends FlxSpriteGroup
 			// {
 			// }
 
-			if (character == " ")
+			if (character == " " || character == "-")
 			{
 				lastWasSpace = true;
 			}
 
 			if (AlphaCharacter.alphabet.indexOf(character.toLowerCase()) != -1)
-			//if (AlphaCharacter.alphabet.contains(character.toLowerCase()))
+				// if (AlphaCharacter.alphabet.contains(character.toLowerCase()))
 			{
 				if (lastSprite != null)
 				{
@@ -110,7 +115,108 @@ class Alphabet extends FlxSpriteGroup
 		splitWords = _finalText.split("");
 	}
 
-	//public var personTalking:String = 'gf';
+	public var personTalking:String = 'gf';
+
+	public function startTypedText():Void
+	{
+		_finalText = text;
+		doSplitWords();
+
+		// trace(arrayShit);
+
+		var loopNum:Int = 0;
+
+		var xPos:Float = 0;
+		var curRow:Int = 0;
+
+		new FlxTimer().start(0.05, function(tmr:FlxTimer)
+		{
+			// trace(_finalText.fastCodeAt(loopNum) + " " + _finalText.charAt(loopNum));
+			if (_finalText.fastCodeAt(loopNum) == "\n".code)
+			{
+				yMulti += 1;
+				xPosResetted = true;
+				xPos = 0;
+				curRow += 1;
+			}
+
+			if (splitWords[loopNum] == " ")
+			{
+				lastWasSpace = true;
+			}
+
+			#if (haxe >= "4.0.0")
+			var isNumber:Bool = AlphaCharacter.numbers.contains(splitWords[loopNum]);
+			var isSymbol:Bool = AlphaCharacter.symbols.contains(splitWords[loopNum]);
+			#else
+			var isNumber:Bool = AlphaCharacter.numbers.indexOf(splitWords[loopNum]) != -1;
+			var isSymbol:Bool = AlphaCharacter.symbols.indexOf(splitWords[loopNum]) != -1;
+			#end
+
+			if (AlphaCharacter.alphabet.indexOf(splitWords[loopNum].toLowerCase()) != -1 || isNumber || isSymbol)
+				// if (AlphaCharacter.alphabet.contains(splitWords[loopNum].toLowerCase()) || isNumber || isSymbol)
+
+			{
+				if (lastSprite != null && !xPosResetted)
+				{
+					lastSprite.updateHitbox();
+					xPos += lastSprite.width + 3;
+					// if (isBold)
+					// xPos -= 80;
+				}
+				else
+				{
+					xPosResetted = false;
+				}
+
+				if (lastWasSpace)
+				{
+					xPos += 20;
+					lastWasSpace = false;
+				}
+				// trace(_finalText.fastCodeAt(loopNum) + " " + _finalText.charAt(loopNum));
+
+				// var letter:AlphaCharacter = new AlphaCharacter(30 * loopNum, 0);
+				var letter:AlphaCharacter = new AlphaCharacter(xPos, 55 * yMulti);
+				letter.row = curRow;
+				if (isBold)
+				{
+					letter.createBold(splitWords[loopNum]);
+				}
+				else
+				{
+					if (isNumber)
+					{
+						letter.createNumber(splitWords[loopNum]);
+					}
+					else if (isSymbol)
+					{
+						letter.createSymbol(splitWords[loopNum]);
+					}
+					else
+					{
+						letter.createLetter(splitWords[loopNum]);
+					}
+
+					letter.x += 90;
+				}
+
+				if (FlxG.random.bool(40))
+				{
+					var daSound:String = "GF_";
+					//FlxG.sound.play(Paths.soundRandom(daSound, 1, 4));
+				}
+
+				add(letter);
+
+				lastSprite = letter;
+			}
+
+			loopNum += 1;
+
+			tmr.time = FlxG.random.float(0.04, 0.09);
+		}, splitWords.length);
+	}
 
 	override function update(elapsed:Float)
 	{
@@ -139,7 +245,7 @@ class AlphaCharacter extends FlxSprite
 	public function new(x:Float, y:Float)
 	{
 		super(x, y);
-		var tex = FunkinPaths.sparrowAtlas('UI/fonts/alphabet');
+		var tex = funkin.system.FunkinPaths.sparrowAtlas('UI/fonts/alphabet');
 		frames = tex;
 
 		antialiasing = true;

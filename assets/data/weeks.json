@@ -1,0 +1,9 @@
+{
+    "weeks": [{
+        "weekName": "week1",
+        "songs": ["Bopeebo", "Fresh", "Dadbattle"],
+        "characters": ["dad", "bf", "gf"],
+        "difficulties": ["easy", "normal", "hard"],
+        "locked": false
+    }]
+}
