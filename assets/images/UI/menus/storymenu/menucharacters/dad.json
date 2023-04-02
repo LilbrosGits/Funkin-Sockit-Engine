@@ -1,0 +1,11 @@
+{
+	
+	"graphic": "Menu_Dad",
+	"positions": [
+		0,
+		0
+	],
+	"scale": [1, 1],
+	"idleAnim": "M Dad Idle",
+	"confirmAnim": "M Dad Idle"
+}

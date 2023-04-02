@@ -29,7 +29,6 @@ class FunkinScript {
         interp.variables.set('FlxSprite', FlxSprite);
         interp.variables.set('FlxTween', FlxTween);
         interp.variables.set('FlxEase', FlxEase);
-        interp.variables.set('FlxEase', FlxEase);
         interp.variables.set('Json', Json);
         interp.variables.set('Math', Math);
         interp.variables.set('FunkinPaths', FunkinPaths);
@@ -53,6 +52,6 @@ class FunkinScript {
         expr = parser.parseString(func);
 
         // Execute the script using hscript.Interp.execute
-        interp.execute(parser.parseString(func + "(" + para.join(", ") + ")".replace(':', ',')));
+        interp.execute(parser.parseString(func + "(" + para.join(", ") + ")".replace(':', ' = ')));//smth abt ':' being null in hscript
     }
 }

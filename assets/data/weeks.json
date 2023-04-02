@@ -1,6 +1,7 @@
 {
     "weeks": [{
-        "weekName": "week1",
+        "weekName": "Daddy Dearest",
+        "weekID": "week1",
         "songs": ["Bopeebo", "Fresh", "Dadbattle"],
         "characters": ["dad", "bf", "gf"],
         "difficulties": ["easy", "normal", "hard"],

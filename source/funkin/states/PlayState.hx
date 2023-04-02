@@ -16,6 +16,7 @@ import funkin.editors.CharacterEditor;
 import funkin.editors.ChartEditor;
 import funkin.obj.*;
 import funkin.scripting.FunkinScript;
+import funkin.states.menus.StoryMenuState;
 import funkin.system.*;
 import funkin.system.MusicBeat.MusicBeatState;
 import funkin.ui.HUD;
@@ -27,7 +28,11 @@ using StringTools;
 class PlayState extends MusicBeatState
 {
 	private var unaddedNotes:Array<Note> = [];
-	public static var storySongs:Array<String> = [];
+	public static var storyList:Array<String> = [];
+	public static var difficulty:String;
+	public static var storyMode:Bool = false;
+	public static var storyWeek:Int = 0;
+	public static var storyDifficulty:Int = 0;
 	public static var song:Song.SongData;
 	var playerStrums:FlxTypedGroup<StaticNote>;
 	var dadStrums:FlxTypedGroup<StaticNote>;
@@ -437,7 +442,7 @@ class PlayState extends MusicBeatState
 		}
 
 		if (loadedSong && PlayState.song.sections[Std.int(steps / 16)] != null) {
-			FlxG.camera.zoom = FlxMath.lerp(1.05, FlxG.camera.zoom, FunkinUtil.adjustedFrame(0.95));
+			FlxG.camera.zoom = FlxMath.lerp(stage.data.cameraZoom, FlxG.camera.zoom, FunkinUtil.adjustedFrame(0.95));
 			camHUD.zoom = FlxMath.lerp(1, camHUD.zoom, FunkinUtil.adjustedFrame(0.95));
 		}
 	}
@@ -808,7 +813,22 @@ class PlayState extends MusicBeatState
 	}
 
 	function onEnd() {
-		song.song = storySongs[0];
+		if (storyMode) {
+			storyList.remove(storyList[0]);
+			song = Song.loadSong(storyList[0], difficulty);
+			FlxG.switchState(new PlayState());
+
+			Score.saveScore(song.song, score, storyDifficulty);
+
+			if (storyList.length <= 0) {
+				FlxG.switchState(new funkin.states.menus.StoryMenuState());
+
+				Score.saveWeekScore(storyWeek, score, storyDifficulty);
+			}
+		}
+		else {
+			FlxG.switchState(new funkin.states.menus.FreeplayMenu());
+		}
 	}
 
 	function genStrums(player:Int) {
