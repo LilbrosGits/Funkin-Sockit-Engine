@@ -18,7 +18,7 @@ class AlphabetList extends MusicBeatSubState {
     public var list:Array<Dynamic> = [];
     var fol:FlxObject;
 
-    public function new(list:Array<Dynamic>, index:Int, follow:Bool, bold:Bool, typed:Bool) {
+    public function new(list:Array<Dynamic>, index:Int, follow:Bool, menuItem:Bool, bold:Bool, typed:Bool) {
         super();
         this.list = list;
         index = curSelected;
@@ -30,7 +30,7 @@ class AlphabetList extends MusicBeatSubState {
         
         for (i in 0...list.length) {
             var txt = new Alphabet(0, 0 + (i * 100), list[i].toString(), bold, typed);
-            txt.isMenuItem = isMenuItem;
+            txt.isMenuItem = menuItem;
             txt.targetY = i;
             txt.ID = i;
             listGrp.add(txt);

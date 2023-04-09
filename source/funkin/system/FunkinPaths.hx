@@ -86,4 +86,12 @@ class FunkinPaths {
     inline public static function state(scr:String) {
         return getPath('states/$scr');
     }//couldve been one function but i alr spent to much time
+
+    inline public static function getAllMods(ml:Array<String>) {
+        for (i in FileSystem.readDirectory('mods/')) {
+            if (FileSystem.exists('$i/mod.json')) {
+                ml.push(i);
+            }
+        }
+    }
 }

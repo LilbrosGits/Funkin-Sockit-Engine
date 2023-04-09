@@ -16,14 +16,11 @@ import sys.FileSystem;
 using StringTools;
 
 class ModsMenu extends FlxState {
-    var txtGrp:FlxTypedGroup<FlxText>;
-    var ew:FlxTypedGroup<FlxText>;
+    var modGrp:FlxTypedGroup<Mod>;
     var mods:Array<Array<String>> = [];
     var curModSel:Int = 0;
     var curPage:Int = 0;
     var lmao:FlxObject;
-    var cum:Array<String> = ['Enabled', 'Disabled'];
-    var curON:Int = 0;
 
     override public function create() {
         var bg = new FlxSprite().loadGraphic(FunkinPaths.image('UI/menus/menuBGBlue'));
@@ -35,7 +32,7 @@ class ModsMenu extends FlxState {
         });
         add(but);
         
-        loadPage(curPage);
+        resetMods(curPage);
 
         select();
         
@@ -50,27 +47,6 @@ class ModsMenu extends FlxState {
             select(1);
         }
 
-        if (FlxG.keys.justPressed.LEFT) {
-            curON -= 1;
-        }
-        if (FlxG.keys.justPressed.RIGHT) {
-            curON += 1;
-        }
-
-        ew.forEach(function(gay:FlxText) {
-            gay.text = cum[curON];
-
-            if (gay.text == 'Enabled')
-                FunkinPaths.currentModDir = mods[curPage][curModSel];
-            if (gay.text == 'Disabled')
-                FunkinPaths.currentModDir != gay.text;
-        });
-
-        if (curON >= cum.length)
-            curON = 0;
-        if (curON < 0)
-            curON = cum.length - 1;
-
         FlxG.mouse.useSystemCursor = true;
 
         super.update(elapsed);
@@ -84,7 +60,7 @@ class ModsMenu extends FlxState {
         if (curModSel < 0)
             curModSel = mods[curPage].length - 1;
 
-        txtGrp.forEach(function(txt:FlxText) {
+        modGrp.forEach(function(txt:Mod) {
             if (txt.ID == curModSel) {
                 txt.alpha = 1;
                 lmao.setPosition(FlxG.width / 2, txt.y);
@@ -96,35 +72,27 @@ class ModsMenu extends FlxState {
     }
 
     public function loadPage(page:Int = 0) {
-        resetMods();
         lmao = new FlxObject(0, 0, 1, 1);
         
         FlxG.camera.follow(lmao, LOCKON, FunkinUtil.adjustedFrame(0.06));
 
-        txtGrp = new FlxTypedGroup<FlxText>();
-        add(txtGrp);
-
-        ew = new FlxTypedGroup<FlxText>();
-        add(ew);
+        modGrp = new FlxTypedGroup<Mod>();
+        add(modGrp);
 
         for (i in 0...mods[curPage].length) {
-            var swag = new FlxText(0, 0 + (i * 100), 0, mods[curPage][i], 32);
-            swag.setFormat(FunkinPaths.font('vcr.ttf'), 64, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+            var swag = new Mod(0, (100 * i), mods[curPage][i]);
             swag.ID = i;
-            txtGrp.add(swag);
-
-            var kys = new FlxText(swag.width + 20, 0 + (i * 100), 0, 'Disabled', 32);
-            kys.setFormat(FunkinPaths.font('vcr.ttf'), 64, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-            kys.ID = i;
-            ew.add(kys);
+            modGrp.add(swag);
         }
     }
 
-    public function resetMods() {
-        var modList:Array<String> = [];
-        for (file in FileSystem.readDirectory('mods/')) {
-            modList.push(file);
+    public function resetMods(page:Int = 0) {
+        loadPage(page);
+        var modList:Array<Array<String>> = [];
+        FunkinPaths.getAllMods(modList[0]);
+        if (modList.length >= 5) {
+            mods.push(modList[0]);
+            modList.remove(modList[0]);
         }
-        mods.push(modList);
     }
 }

@@ -35,12 +35,14 @@ class FreeplayMenu extends MusicBeatState {
             songz.push(i);
         }
         #if MODS_ENABLED
-        for (i in FileSystem.readDirectory('assets/${FunkinPaths.currentModDir}/songs')) {
-            songz.push(i);
+        if (FunkinPaths.exists('assets/${FunkinPaths.currentModDir}/songs')) {
+            for (i in FileSystem.readDirectory('assets/${FunkinPaths.currentModDir}/songs')) {
+                songz.push(i);
+            }
         }
         #end
 
-        list = new AlphabetList(songz, curSelected, true, true, false);
+        list = new AlphabetList(songz, curSelected, true, true, true, false);
         add(list);
 
         super.create();

@@ -86,6 +86,9 @@ class PlayState extends MusicBeatState
 		swagScript.setVar('health', health);
 		swagScript.setVar('unspawnedNotes', unaddedNotes);
 		swagScript.setVar('Conductor', Conductor);
+		swagScript.setVar('score', score);
+		swagScript.setVar('misses', misses);
+		swagScript.setVar('accuracy', accuracy);
 		
 		swagScript.executeFunc('onCreate', []);
 
@@ -147,6 +150,9 @@ class PlayState extends MusicBeatState
 		swagScript.setVar('camGame', camGame);
 		swagScript.setVar('camHUD', camHUD);
 		swagScript.setVar('camFollow', camFollow);
+		swagScript.setVar('paused', paused);
+		swagScript.setVar('finishedCountdown', finishedCountdown);
+		swagScript.setVar('loadedSong', loadedSong);
 
 		startCountdown();
 

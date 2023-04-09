@@ -55,6 +55,13 @@ class MainMenuState extends MusicBeatState {
 
         FlxG.camera.follow(camFol, null, FunkinUtil.adjustedFrame(0.06));
 
+        scriptSwag.setVar('yellowBG', bg);
+        scriptSwag.setVar('magentaBG', magenta);
+        scriptSwag.setVar('menuListGrp', menuItems);
+        scriptSwag.setVar('menuList', swagJunk);
+        scriptSwag.setVar('curSelected', curSelected);
+        scriptSwag.setVar('camera', camFol);
+
         scriptSwag.executeFunc('onCreatePost', []);
 
         select();

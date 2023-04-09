@@ -52,6 +52,7 @@ class StoryMenuState extends MusicBeatState {
         weekData = haxe.Json.parse(FunkinPaths.getText('data/weeks.json'));
         bro = new FunkinScript();
         if (weekData.script != null) {
+            bro.setVar('weekJSON', weekData);
             bro.execute(weekData.script);
             bro.executeFunc('onCreate', []);
         }
@@ -120,6 +121,20 @@ class StoryMenuState extends MusicBeatState {
 
         add(scoreText);
 		add(weekTitle);
+
+        if (weekData.script != null) {
+            bro.setVar('weekListGrp', broh);
+            bro.setVar('difficultySelectors', diffSel);
+            bro.setVar('weekScoreText', scoreText);
+            bro.setVar('weekTitle', weekTitle);
+            bro.setVar('yellowBG', yellowBG);
+            bro.setVar('characters', menuCharacters);
+            bro.setVar('ui_image', ui_spr);
+            bro.setVar('difficultyTxt', diffSpr);
+            bro.setVar('leftArrow', leftArrow);
+            bro.setVar('rightArrow', rightArrow);
+            bro.setVar('weekTracklist', tracklist);
+        }
 
         sel();
         selDiff();
