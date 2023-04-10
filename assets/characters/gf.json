@@ -31,6 +31,13 @@
                 "offsets": [0, 0],
                 "fr": 24,
                 "loop": false
+            },
+            {
+                "name": "sad",
+                "xmlName": "gf sad",
+                "offsets": [-2, -21],
+                "fr": 24,
+                "loop": false
             }
         ],
         "indiciesAnim": [

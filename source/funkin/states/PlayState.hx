@@ -34,6 +34,7 @@ class PlayState extends MusicBeatState
 	public static var storyWeek:Int = 0;
 	public static var storyDifficulty:Int = 0;
 	public static var song:Song.SongData;
+	var combo:Int = 0;
 	var playerStrums:FlxTypedGroup<StaticNote>;
 	var dadStrums:FlxTypedGroup<StaticNote>;
 	var player1:Character;
@@ -56,6 +57,7 @@ class PlayState extends MusicBeatState
 	public static var score:Int = 0;
 	public static var misses:Int = 0;
 	public static var accuracy:Float = 1;
+	private var grpNoteSplashes:FlxTypedGroup<NoteSplash>;
 	
 	override public function create()
 	{
@@ -102,6 +104,11 @@ class PlayState extends MusicBeatState
 		FlxG.cameras.reset(camGame);
 		FlxG.cameras.add(camHUD, false);
 
+		grpNoteSplashes = new FlxTypedGroup<NoteSplash>();
+		var splash:NoteSplash = new NoteSplash(100, 100, 0);
+		grpNoteSplashes.add(splash);
+		splash.alpha = 0.1;
+
 		FlxG.cameras.setDefaultDrawTarget(camGame, true);
 
 		FlxG.camera.zoom = stage.data.cameraZoom;
@@ -135,6 +142,8 @@ class PlayState extends MusicBeatState
 		dadStrums = new FlxTypedGroup<StaticNote>();
 		add(dadStrums);
 
+		add(grpNoteSplashes);
+
 		genSong();
 
 		hud = new HUD();
@@ -156,6 +165,7 @@ class PlayState extends MusicBeatState
 
 		startCountdown();
 
+		grpNoteSplashes.cameras = [camHUD];
 		hud.cameras = [camHUD];
 		notes.cameras = [camHUD];
 		playerStrums.cameras = [camHUD];
@@ -296,28 +306,127 @@ class PlayState extends MusicBeatState
 	function genScore(note:Note) {
 		var noteDiff:Float = Math.abs(note.strumTime - Conductor.songPos);
 		var noteScore:Int = 200;
+		var rating:FlxSprite = new FlxSprite();
 		var swag:Float = 1;
+		var splash:Bool = true;
+		var daRating:String = "sick";
 
 		if (noteDiff > Conductor.milliFrames * 0.9)
 		{
 			swag = 0.05;
 			noteScore = 10;
+			splash = false;
+			daRating = 'shit';
+			combo--;
 		}
 		else if (noteDiff > Conductor.milliFrames * 0.75)
 		{
 			swag = 0.1;
 			noteScore = 50;
+			splash = false;
+			daRating = 'bad';
+			combo--;
 		}
 		else if (noteDiff > Conductor.milliFrames * 0.2)
 		{
 			swag = 0.5;
 			noteScore = 100;
+			splash = false;
+			daRating = 'good';
+			combo++;
+		}
+
+		if (splash)
+		{
+			var splash:NoteSplash = grpNoteSplashes.recycle(NoteSplash);
+			splash.setupNoteSplash(note.x, note.y, note.noteData);
+			grpNoteSplashes.add(splash);
 		}
 
 		if (!note.susNote)
 			accuracy += swag;
 
 		score += noteScore;
+
+		rating.loadGraphic(FunkinPaths.image('UI/HUD/ratings/$daRating'));
+		rating.screenCenter();
+		rating.x = FlxG.width * 0.55 - 40;
+		rating.y -= 60;
+		rating.acceleration.y = 550;
+		rating.velocity.y -= FlxG.random.int(140, 175);
+		rating.velocity.x -= FlxG.random.int(0, 10);
+
+		var comboSpr:FlxSprite = new FlxSprite().loadGraphic(FunkinPaths.image('UI/HUD/ratings/combo'));
+		comboSpr.screenCenter();
+		comboSpr.x = FlxG.width * 0.55;
+		comboSpr.acceleration.y = 600;
+		comboSpr.velocity.y -= 150;
+
+		comboSpr.velocity.x += FlxG.random.int(1, 10);
+		add(rating);
+
+		rating.setGraphicSize(Std.int(rating.width * 0.7));
+		rating.antialiasing = true;
+		comboSpr.setGraphicSize(Std.int(comboSpr.width * 0.7));
+		comboSpr.antialiasing = true;
+		comboSpr.updateHitbox();
+
+		if (combo > 5) {
+			add(comboSpr);
+		}
+		
+		rating.updateHitbox();
+
+		var seperatedScore:Array<Int> = [];
+
+		seperatedScore.push(Math.floor(combo / 100));
+		seperatedScore.push(Math.floor((combo - (seperatedScore[0] * 100)) / 10));
+		seperatedScore.push(combo % 10);
+
+		var daLoop:Int = 0;
+		for (i in seperatedScore)
+		{
+			var numScore:FlxSprite = new FlxSprite().loadGraphic(FunkinPaths.image('UI/HUD/ratings/num' + Std.int(i)));
+			numScore.screenCenter();
+			numScore.x = FlxG.width * 0.55 + (43 * daLoop) - 90;
+			numScore.y += 80;
+
+			numScore.antialiasing = true;
+			numScore.setGraphicSize(Std.int(numScore.width * 0.5));
+			
+			numScore.updateHitbox();
+
+			numScore.acceleration.y = FlxG.random.int(200, 300);
+			numScore.velocity.y -= FlxG.random.int(140, 160);
+			numScore.velocity.x = FlxG.random.float(-5, 5);
+
+			if (combo >= 10 || combo == 0)
+				add(numScore);
+
+			FlxTween.tween(numScore, {alpha: 0}, 0.2, {
+				onComplete: function(tween:FlxTween)
+				{
+					numScore.destroy();
+				},
+				startDelay: Conductor.crochet * 0.002
+			});
+
+			daLoop++;
+		}
+
+		FlxTween.tween(rating, {alpha: 0}, 0.2, {
+			startDelay: Conductor.crochet * 0.001
+		});
+
+		FlxTween.tween(comboSpr, {alpha: 0}, 0.2, {
+			onComplete: function(tween:FlxTween)
+			{
+				comboSpr.destroy();
+
+				rating.destroy();
+			},
+			startDelay: Conductor.crochet * 0.001
+		});
 	}
 
 	override public function onFocusLost() {
@@ -631,6 +740,11 @@ class PlayState extends MusicBeatState
 	function onNoteHit(note:Note) {
 		if (!note.hit)//its false here!!!! cause thats the default
 		{
+			if (!note.susNote) {
+				combo += 1;
+				genScore(note);
+			}
+
 			player1.sing(note.noteData, '');
 
 			health += 2; //same amount as miss cause fuck how imbalanced base game is
@@ -649,8 +763,6 @@ class PlayState extends MusicBeatState
 
 			note.hit = true;
 
-			genScore(note);
-
 			var dir = note.noteData;
 			swagScript.executeFunc('onNoteHit', [dir]);
 		}
@@ -658,6 +770,11 @@ class PlayState extends MusicBeatState
 
 	function onNoteMiss(dir:Int) {
 		health -= 2;
+		if (combo > 5 && player3.animOffsets.exists('sad'))
+		{
+			player3.playAnim('sad');
+		}
+		combo = 0;
 		player1.sing(dir, 'miss');
 		swagScript.executeFunc('onNoteMiss', [dir]);
 		misses++;
