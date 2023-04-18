@@ -22,7 +22,7 @@ class MainMenuState extends MusicBeatState {
     override public function create() {
         scriptSwag = new FunkinScript();
         if (FunkinPaths.exists(FunkinPaths.state('MainMenuState')))
-            FunkinUtil.getState('MainMenuState', scriptSwag);
+            scriptSwag.execute(FunkinPaths.state('MainMenuState'));
 
         scriptSwag.executeFunc('onCreate', []);
 

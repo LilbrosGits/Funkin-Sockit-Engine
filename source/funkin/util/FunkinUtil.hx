@@ -24,15 +24,6 @@ class FunkinUtil {
         }
     }
 
-    public static function getState(name:String, scriptVar:FunkinScript) {
-        for (scr in FileSystem.readDirectory('assets/states/')) {
-            if (scr.endsWith('.hx') || scr.endsWith('.hxs') || scr.endsWith('.hscript')) {
-                if (scr.contains(name))
-				    scriptVar.execute(FunkinPaths.getText(scr));
-            }
-        }
-    }//prob gonna put dese together soon
-
     public static function listFromFile(file:String) {
         var listThing:Array<String> = [];
 

@@ -105,6 +105,7 @@ class Note extends FlxSprite {
         if (late) {
             alpha = 0.3;
         }
+        
         super.update(elapsed);
     }
 }

@@ -5,14 +5,20 @@ import funkin.system.*;
 
 class Icon extends FlxSprite {
     public var sprTracker:FlxSprite;
+	var isPlayer(default, null):Bool;
+
 
     public function new(char:String = 'bf', isPlayer:Bool) {
         super();
+        changeIcon(char);
+        flipX = isPlayer;
+    }
 
+    public function changeIcon(char:String = 'bf') {
         loadGraphic(FunkinPaths.image('UI/HUD/icons/icon-$char'), true, 150, 150);
 
         antialiasing = true;
-        animation.add(char, [0, 1], 0, false, isPlayer);
+        animation.add(char, [0, 1], 0, false);
         animation.play(char);
         antialiasing = Preferences.antialiasing;
         scrollFactor.set();

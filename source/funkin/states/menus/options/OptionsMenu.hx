@@ -36,7 +36,7 @@ class OptionsMenu extends MusicBeatState {
         bg.scrollFactor.set();
         add(bg);
 
-        list = new AlphabetList(['Gameplay', 'Visual', 'Controls'], curSelected, false, true, true, false);
+        list = new AlphabetList(['Gameplay', 'Visual', 'Controls'], curSelected, false, true, true);
         add(list);
 
         super.create();

@@ -32,7 +32,7 @@ class ModsMenu extends FlxState {
         });
         add(but);
         
-        resetMods(curPage);
+        loadPage(curPage);
 
         select();
         
@@ -72,6 +72,7 @@ class ModsMenu extends FlxState {
     }
 
     public function loadPage(page:Int = 0) {
+        resetMods();
         lmao = new FlxObject(0, 0, 1, 1);
         
         FlxG.camera.follow(lmao, LOCKON, FunkinUtil.adjustedFrame(0.06));
@@ -86,13 +87,8 @@ class ModsMenu extends FlxState {
         }
     }
 
-    public function resetMods(page:Int = 0) {
-        loadPage(page);
+    public function resetMods() {
         var modList:Array<Array<String>> = [];
         FunkinPaths.getAllMods(modList[0]);
-        if (modList.length >= 5) {
-            mods.push(modList[0]);
-            modList.remove(modList[0]);
-        }
     }
 }

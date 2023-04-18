@@ -11,25 +11,23 @@ import funkin.util.FunkinUtil;
 class AlphabetList extends MusicBeatSubState {
     var listGrp:FlxTypedGroup<Alphabet>;
     public var bold:Bool = false;
-    public var typed:Bool = false;
     public var isMenuItem:Bool = false;
     public var curSelected:Int = 0;
     public var camLerp:Float = 0.06;
     public var list:Array<Dynamic> = [];
     var fol:FlxObject;
 
-    public function new(list:Array<Dynamic>, index:Int, follow:Bool, menuItem:Bool, bold:Bool, typed:Bool) {
+    public function new(list:Array<Dynamic>, index:Int, follow:Bool, menuItem:Bool, bold:Bool) {
         super();
         this.list = list;
         index = curSelected;
-        this.typed = typed;
         this.bold = bold;
         fol = new FlxObject(0, 0, 1, 1);
         listGrp = new FlxTypedGroup<Alphabet>();
         add(listGrp);
         
         for (i in 0...list.length) {
-            var txt = new Alphabet(0, 0 + (i * 100), list[i].toString(), bold, typed);
+            var txt = new Alphabet(0, 0, list[i].toString(), bold);
             txt.isMenuItem = menuItem;
             txt.targetY = i;
             txt.ID = i;

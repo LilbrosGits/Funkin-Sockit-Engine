@@ -18,9 +18,6 @@ import sys.FileSystem;
 
 using StringTools;
 
-/**
-	*DEBUG MODE
- */
 class CharacterEditor extends FlxState
 {
     var mainBox:FlxUITabMenu;

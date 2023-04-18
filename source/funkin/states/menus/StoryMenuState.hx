@@ -110,6 +110,7 @@ class StoryMenuState extends MusicBeatState {
         for (i in 0...3) {
             var weekCharacter:MenuCharacter = new MenuCharacter((FlxG.width * 0.25) * (1 + i) - 150, weekData.weeks[selected].characters[i]);
             weekCharacter.antialiasing = Preferences.antialiasing;
+            weekCharacter.y += 70;
             menuCharacters.add(weekCharacter);
         }
 

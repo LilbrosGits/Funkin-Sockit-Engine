@@ -65,9 +65,10 @@ class Character extends FlxSprite {
 
         charJSON = Json.parse(FunkinPaths.characterJson(character));
 
-        /*#if MODS_ENABLED
+        #if MODS_ENABLED
+        if (FunkinPaths.exists('mods/${FunkinPaths.currentModDir}/characters/$character.json'))
             charJSON = haxe.Json.parse(FunkinPaths.getText('mods/${FunkinPaths.currentModDir}/characters/$character.json'));
-        #end*/
+        #end
 
         frames = FunkinPaths.sparrowAtlas(charJSON.spriteSheet);
 

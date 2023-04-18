@@ -2,6 +2,7 @@ package funkin.ui;
 
 import flixel.FlxSprite;
 import funkin.system.FunkinPaths;
+import funkin.system.Preferences;
 
 class CheckBox extends FlxSprite {
     public var value(default, set):Bool;
@@ -14,6 +15,7 @@ class CheckBox extends FlxSprite {
         animation.addByPrefix('true', 'Check Box selecting animation', 24, false);
         setGraphicSize(Std.int(width * 0.7));
 		updateHitbox();
+        antialiasing = Preferences.antialiasing;
         value = variable;
     }
 

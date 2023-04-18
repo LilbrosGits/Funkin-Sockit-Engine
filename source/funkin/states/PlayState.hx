@@ -803,7 +803,7 @@ class PlayState extends MusicBeatState
 
 		if (hArray.contains(true) && loadedSong) {
 			notes.forEach(function(note:Note) {
-				if (note.susNote && note.canHit && note.mustHit && hArray[note.noteData])
+				if (note.prevNote.hit && note.susNote && note.canHit && note.mustHit && hArray[note.noteData])
 					onNoteHit(note);
 			});
 		}
@@ -893,18 +893,6 @@ class PlayState extends MusicBeatState
 				spr.centerOffsets();
 		});
 
-		if (!pArray.contains(false)){
-			var noKey = pArray.lastIndexOf(true);
-
-			pArray[noKey] = false;
-		}
-
-		if (!hArray.contains(false)){
-			var noKey = hArray.lastIndexOf(true);
-
-			hArray[noKey] = false;
-		}
-
 		if (FlxG.keys.justPressed.ENTER) {
 			paused = true;
 			persistentUpdate = false;
@@ -937,16 +925,17 @@ class PlayState extends MusicBeatState
 
 	function onEnd() {
 		if (storyMode) {
-			storyList.remove(storyList[0]);
-			song = Song.loadSong(storyList[0], difficulty);
-			FlxG.switchState(new PlayState());
-
-			Score.saveScore(song.song, score, storyDifficulty);
-
 			if (storyList.length <= 0) {
 				FlxG.switchState(new funkin.states.menus.StoryMenuState());
 
 				Score.saveWeekScore(storyWeek, score, storyDifficulty);
+			}
+			else {
+				storyList.remove(storyList[0]);
+				song = Song.loadSong(storyList[0], difficulty);
+				FlxG.switchState(new PlayState());
+	
+				Score.saveScore(song.song, score, storyDifficulty);
 			}
 		}
 		else {

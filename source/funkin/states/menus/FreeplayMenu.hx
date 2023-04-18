@@ -42,7 +42,7 @@ class FreeplayMenu extends MusicBeatState {
         }
         #end
 
-        list = new AlphabetList(songz, curSelected, true, true, true, false);
+        list = new AlphabetList(songz, curSelected, true, true, true);
         add(list);
 
         super.create();

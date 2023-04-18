@@ -84,7 +84,7 @@ class FunkinPaths {
     }
 
     inline public static function state(scr:String) {
-        return getPath('states/$scr');
+        return getPath('states/$scr.hscript');
     }//couldve been one function but i alr spent to much time
 
     inline public static function getAllMods(ml:Array<String>) {
