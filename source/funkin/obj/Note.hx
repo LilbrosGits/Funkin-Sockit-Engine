@@ -16,6 +16,7 @@ class Note extends FlxSprite {
     public var late:Bool = false;
     public var hit:Bool = false;
     public var willMiss:Bool = false;
+    public var rating:String = '';
 
     public function new(strumTime:Float, noteData:Int, ?previousNote:Note, ?isSus:Bool) {
         super();

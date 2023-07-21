@@ -1,5 +1,7 @@
 package funkin.states;
 
+import funkin.system.Preferences;
+import funkin.system.FunkinPaths;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
@@ -24,7 +26,7 @@ class PauseSubState extends MusicBeatSubState {
         add(swagphabet);
 
         for (i in 0...options.length) {
-            var swag:Alphabet = new Alphabet(0, 0, options[i], true);//I LOVE THE WORD SWAG ARGH
+            var swag:Alphabet = new Alphabet(90, 320, options[i], true);//I LOVE THE WORD SWAG ARGH
             swag.isMenuItem = true;
             swag.targetY = i;
             swagphabet.add(swag);
@@ -54,6 +56,7 @@ class PauseSubState extends MusicBeatSubState {
             switch(daSelected) {
                 case 'Resume':
                     close();
+                    FlxG.sound.play(FunkinPaths.sound('menus/cancelMenu'));
                 case 'Restart Song':
                     FlxG.switchState(new PlayState());
                 case 'Exit To Menu':
@@ -84,5 +87,6 @@ class PauseSubState extends MusicBeatSubState {
 				item.alpha = 1;
 			}
 		}
+        FlxG.sound.play(FunkinPaths.sound('menus/scrollMenu'));
 	}
 }

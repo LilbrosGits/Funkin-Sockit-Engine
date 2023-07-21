@@ -1,5 +1,7 @@
 package funkin.states;
 
+import funkin.editors.StageEditor;
+import funkin.scripting.GlobalScript;
 import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxObject;
@@ -46,56 +48,82 @@ class PlayState extends MusicBeatState
 	var vocals:FlxSound;
 	var strumLine:FlxSprite;
 	var loadedSong:Bool = false;
-	var stage:Stage;
+	public static var stage:Stage;
 	var camGame:FlxCamera;
 	var camHUD:FlxCamera;
 	var camFollow:FlxObject;
-	var swagScript:FunkinScript;
+	var swagScript:GlobalScript;
 	var paused:Bool = false;
+	var curStage:String = '';
 	var finishedCountdown:Bool = false;
 	var canPlay:Bool = false;
 	public static var score:Int = 0;
 	public static var misses:Int = 0;
-	public static var accuracy:Float = 1;
+	public static var accuracy:Float = 0.00;
+	public static var totalHits:Float = 0;
+	public static var totalPlayedNotes:Float = 0;
 	private var grpNoteSplashes:FlxTypedGroup<NoteSplash>;
 	
 	override public function create()
 	{
+		FunkinPaths.clearMem();
 		score = 0;
 		misses = 0;
-		accuracy = 0;
+		accuracy = 0.00;
 
-		swagScript = new FunkinScript();
+		swagScript = new GlobalScript('data/${song.song.toLowerCase()}');
 
 		if (song == null)
 			song = Song.loadSong('bopeebo', 'normal');
+
+		curStage = song.stage;
 
 		if (FlxG.sound.music != null) {
 			FlxG.sound.music.stop();
 		}
 
-		/*if (FunkinPaths.exists(FunkinPaths.script('${song.song.toLowerCase()}/')))
-			swagScript.execute(FunkinPaths.script('${song.song.toLowerCase()}/script'));*/
-
-		for (scr in FileSystem.readDirectory('assets/data/${song.song.toLowerCase()}/')) {
-            if (scr.endsWith('.hx') || scr.endsWith('.hxs') || scr.endsWith('.hscript')) {
-				swagScript.execute(FunkinPaths.getText('data/${song.song.toLowerCase()}/$scr'));
-            }
-        }
+		/*if (FunkinPaths.exists('assets/scripts/script.hx'))
+			swagScript.execute('assets/scripts/script.hx');*/
 		
-		swagScript.setVar('song', song);
-		swagScript.setVar('generatedSong', loadedSong);
-		swagScript.setVar('health', health);
-		swagScript.setVar('unspawnedNotes', unaddedNotes);
-		swagScript.setVar('Conductor', Conductor);
-		swagScript.setVar('score', score);
-		swagScript.setVar('misses', misses);
-		swagScript.setVar('accuracy', accuracy);
-		
-		swagScript.executeFunc('onCreate', []);
+		swagScript.setVars('song', song);
+		swagScript.setVars('generatedSong', loadedSong);
+		swagScript.setVars('health', health);
+		swagScript.setVars('unspawnedNotes', unaddedNotes);
+		swagScript.setVars('Conductor', Conductor);
+		swagScript.setVars('score', score);
+		swagScript.setVars('misses', misses);
+		swagScript.setVars('accuracy', accuracy);
 
-		stage = new Stage('stage');
-		add(stage);
+		swagScript.executeScripts();
+		
+		swagScript.runGlobalFunc('onCreate', []);
+
+		stage = new Stage(curStage);
+		if (stage.scr != null) {
+			stage.scr.executeFunc('onCreate', []);
+			stage.scr.setVar('ui', hud);
+			stage.scr.setVar('bfStrums', playerStrums);
+			stage.scr.setVar('dadStrums', dadStrums);
+			stage.scr.setVar('boyfriend', player1);
+			stage.scr.setVar('dad', player2);
+			stage.scr.setVar('gf', player3);
+			stage.scr.setVar('stage', stage);
+			stage.scr.setVar('camGame', camGame);
+			stage.scr.setVar('camHUD', camHUD);
+			stage.scr.setVar('camFollow', camFollow);
+			stage.scr.setVar('paused', paused);
+			stage.scr.setVar('finishedCountdown', finishedCountdown);
+			stage.scr.setVar('loadedSong', loadedSong);
+			stage.scr.setVar('song', song);
+			stage.scr.setVar('generatedSong', loadedSong);
+			stage.scr.setVar('health', health);
+			stage.scr.setVar('unspawnedNotes', unaddedNotes);
+			stage.scr.setVar('Conductor', Conductor);
+			stage.scr.setVar('score', score);
+			stage.scr.setVar('misses', misses);
+			stage.scr.setVar('accuracy', accuracy);
+		}
+		add(stage);//NOTE: this dont gotta be here niggah!
 
 		camGame = new FlxCamera();
 		camHUD = new FlxCamera();
@@ -123,7 +151,7 @@ class PlayState extends MusicBeatState
 		add(player1);
 
 		camFollow = new FlxObject(0, 0, 1, 1);
-		camFollow.setPosition(player3.getMidpoint().x - 100, player3.getMidpoint().y - 100);
+		camFollow.setPosition(player3.charJSON.camPos[0], player3.charJSON.camPos[1]);
 		add(camFollow);
 
 		FlxG.camera.follow(camFollow, LOCKON, FunkinUtil.adjustedFrame(0.04));
@@ -149,19 +177,19 @@ class PlayState extends MusicBeatState
 		hud = new HUD();
 		add(hud);
 
-		swagScript.setVar('ui', hud);
-		swagScript.setVar('bfStrums', playerStrums);
-		swagScript.setVar('dadStrums', dadStrums);
-		swagScript.setVar('boyfriend', player1);
-		swagScript.setVar('dad', player2);
-		swagScript.setVar('gf', player3);
-		swagScript.setVar('stage', stage);
-		swagScript.setVar('camGame', camGame);
-		swagScript.setVar('camHUD', camHUD);
-		swagScript.setVar('camFollow', camFollow);
-		swagScript.setVar('paused', paused);
-		swagScript.setVar('finishedCountdown', finishedCountdown);
-		swagScript.setVar('loadedSong', loadedSong);
+		swagScript.setVars('ui', hud);
+		swagScript.setVars('bfStrums', playerStrums);
+		swagScript.setVars('dadStrums', dadStrums);
+		swagScript.setVars('boyfriend', player1);
+		swagScript.setVars('dad', player2);
+		swagScript.setVars('gf', player3);
+		swagScript.setVars('stage', stage);
+		swagScript.setVars('camGame', camGame);
+		swagScript.setVars('camHUD', camHUD);
+		swagScript.setVars('camFollow', camFollow);
+		swagScript.setVars('paused', paused);
+		swagScript.setVars('finishedCountdown', finishedCountdown);
+		swagScript.setVars('loadedSong', loadedSong);
 
 		startCountdown();
 
@@ -177,10 +205,23 @@ class PlayState extends MusicBeatState
 		
 		super.create();
 
-		swagScript.setVar('beats', beats);
-		swagScript.setVar('steps', steps);
+		swagScript.setVars('beats', beats);
+		swagScript.setVars('steps', steps);
+		if (stage.scr != null) {
+			stage.scr.setVar('beats', beats);
+			stage.scr.setVar('steps', steps);
+		}
 
-		swagScript.executeFunc('onCreatePost', []);
+		swagScript.runGlobalFunc('onCreatePost', []);
+		if (stage.scr != null)
+			stage.scr.executeFunc('onCreatePost', []);
+	}
+
+	static function truncateFloat(number:Float, precision:Int):Float {
+		var num = number;
+		num = num * Math.pow(10, precision);
+		num = Math.round( num ) / Math.pow(10, precision);
+		return num;
 	}
 
 	override public function update(elapsed:Float)
@@ -188,12 +229,14 @@ class PlayState extends MusicBeatState
 		Conductor.songPos = FlxG.sound.music.time;
 
 		hud.health = health;
-		
-		hud.scoreTxt = 'Score: $score • Misses: $misses • Accuracy: $accuracy';
 
-		swagScript.executeFunc('onUpdate', [elapsed]);
+		swagScript.runGlobalFunc('onUpdate', [elapsed]);
+		if (stage.scr != null)
+			stage.scr.executeFunc('onUpdate', [elapsed]);
 
 		super.update(elapsed);
+
+		hud.scoreTxt = 'Score: $score • Misses: $misses • Accuracy: ${truncateFloat(accuracy, 2)}%';
 		
 		if (unaddedNotes[0] != null)
 		{
@@ -300,51 +343,50 @@ class PlayState extends MusicBeatState
 		updateVocals();
 		updateCam();
 
-		swagScript.executeFunc('onUpdatePost', [elapsed]);
+		swagScript.runGlobalFunc('onUpdatePost', [elapsed]);
+		if (stage.scr != null)
+			stage.scr.executeFunc('onUpdatePost', [elapsed]);
 	}
 
 	function genScore(note:Note) {
-		var noteDiff:Float = Math.abs(note.strumTime - Conductor.songPos);
-		var noteScore:Int = 200;
+		//var noteDiff:Float = Math.abs(note.strumTime - Conductor.songPos);
+		var noteScore:Int = 350;
 		var rating:FlxSprite = new FlxSprite();
-		var swag:Float = 1;
 		var splash:Bool = true;
-		var daRating:String = "sick";
+		var daRating:String = note.rating;
 
-		if (noteDiff > Conductor.milliFrames * 0.9)
-		{
-			swag = 0.05;
-			noteScore = 10;
-			splash = false;
-			daRating = 'shit';
-			combo--;
+		switch(daRating) {
+			case "shit":
+				totalHits += 0.25;
+				noteScore = -300;
+				splash = false;
+				health -= 0.1;
+				combo = 0;
+			case "bad":
+				totalHits += 0.50;
+				noteScore = 0;
+				splash = false;
+				health -= 0.06;
+				combo--;
+			case "good":
+				totalHits += 0.75;
+				noteScore = 200;
+				splash = false;
+				health += 0.04;
+				combo++;
+			case "sick":
+				totalHits += 1;
+				splash = true;
+				health += 0.1;
+				combo++;
 		}
-		else if (noteDiff > Conductor.milliFrames * 0.75)
-		{
-			swag = 0.1;
-			noteScore = 50;
-			splash = false;
-			daRating = 'bad';
-			combo--;
-		}
-		else if (noteDiff > Conductor.milliFrames * 0.2)
-		{
-			swag = 0.5;
-			noteScore = 100;
-			splash = false;
-			daRating = 'good';
-			combo++;
-		}
-
+		
 		if (splash)
 		{
 			var splash:NoteSplash = grpNoteSplashes.recycle(NoteSplash);
 			splash.setupNoteSplash(note.x, note.y, note.noteData);
 			grpNoteSplashes.add(splash);
 		}
-
-		if (!note.susNote)
-			accuracy += swag;
 
 		score += noteScore;
 
@@ -428,16 +470,43 @@ class PlayState extends MusicBeatState
 			startDelay: Conductor.crochet * 0.001
 		});
 	}
+	public static function calculateRating(diff:Float, ?customSafeZone:Float):String
+	{
+		var ts = Conductor.milliFrames / 166;
+
+		if (customSafeZone != null)
+			ts = customSafeZone / 166;
+
+		if (diff > 135 * ts)
+			return "shit";
+		else if (diff > 90 * ts)
+			return "bad";
+		else if (diff > 45 * ts)
+			return "good";
+		else if (diff < -45 * ts)
+			return "good";
+		else if (diff < -90 * ts)
+			return "bad";
+		else if (diff < -135 * ts)
+			return "shit";
+		return "sick";
+	}
+
+	function updateAccuracy() 
+	{
+		totalPlayedNotes += 1;
+		accuracy = Math.max(0,totalHits / totalPlayedNotes * 100);
+	}
 
 	override public function onFocusLost() {
 		//paused = true;
-		swagScript.executeFunc('onFocusLost', []);
+		swagScript.runGlobalFunc('onFocusLost', []);
 		super.onFocusLost();
 	}
 
 	override public function onFocus() {
 		//paused = false;
-		swagScript.executeFunc('onFocus', []);
+		swagScript.runGlobalFunc('onFocus', []);
 		resyncVocals();
 		
 		super.onFocus();
@@ -486,7 +555,7 @@ class PlayState extends MusicBeatState
 			switch (swagCounter)
 			{
 				case 0:
-					FlxG.sound.play(FunkinPaths.sound('countdown/${introSounds[swagCounter]}'), 0.6);
+					FlxG.sound.play(FunkinPaths.sound('countdown/${introSounds[swagCounter]}'));
 				case 1:
 					var ready:FlxSprite = new FlxSprite().loadGraphic(FunkinPaths.image('UI/HUD/countdown/${introAssets[swagCounter]}'));
 					ready.scrollFactor.set();
@@ -499,7 +568,7 @@ class PlayState extends MusicBeatState
 							ready.destroy();
 						}
 					});
-					FlxG.sound.play(FunkinPaths.sound('countdown/${introSounds[swagCounter]}'), 0.6);
+					FlxG.sound.play(FunkinPaths.sound('countdown/${introSounds[swagCounter]}'));
 				case 2:
 					var set:FlxSprite = new FlxSprite().loadGraphic(FunkinPaths.image('UI/HUD/countdown/${introAssets[swagCounter]}'));
 					set.scrollFactor.set();
@@ -512,7 +581,7 @@ class PlayState extends MusicBeatState
 							set.destroy();
 						}
 					});
-					FlxG.sound.play(FunkinPaths.sound('countdown/${introSounds[swagCounter]}'), 0.6);
+					FlxG.sound.play(FunkinPaths.sound('countdown/${introSounds[swagCounter]}'));
 				case 3:
 					var go:FlxSprite = new FlxSprite().loadGraphic(FunkinPaths.image('UI/HUD/countdown/${introAssets[swagCounter]}'));
 					go.scrollFactor.set();
@@ -527,7 +596,7 @@ class PlayState extends MusicBeatState
 							canPlay = true;
 						}
 					});
-					FlxG.sound.play(FunkinPaths.sound('countdown/${introSounds[swagCounter]}'), 0.6);
+					FlxG.sound.play(FunkinPaths.sound('countdown/${introSounds[swagCounter]}'));
 				case 4:
 					
 			}
@@ -535,7 +604,7 @@ class PlayState extends MusicBeatState
 			swagCounter += 1;
 		}, 5);
 		
-		swagScript.executeFunc('onCountdown', [swagCounter]);
+		swagScript.runGlobalFunc('onCountdown', [swagCounter]);
 	}
 
 	function updateVocals() {
@@ -543,17 +612,19 @@ class PlayState extends MusicBeatState
 			resyncVocals();
 	}
 
-	//PUT THE KETCHUP UNDER THE TOILET SEAT IN FIRST PERIOD!!
-
 	function updateCam() {
 		if (PlayState.song.sections[Std.int(steps / 16)].mustHitSection) {
 			camFollow.setPosition(player1.getMidpoint().x - 100, player1.getMidpoint().y - 100);
-			swagScript.executeFunc('onCamMove', ['bf']);
+			camFollow.x += player1.charJSON.camPos[0];
+			camFollow.y += player1.charJSON.camPos[1];
+			swagScript.runGlobalFunc('onCamMove', ['bf']);
 		}
 		else
 		{
 			camFollow.setPosition(player2.getMidpoint().x + 150, player2.getMidpoint().y - 100);
-			swagScript.executeFunc('onCamMove', ['dad']);
+			camFollow.x += player2.charJSON.camPos[0];
+			camFollow.y += player2.charJSON.camPos[1];
+			swagScript.runGlobalFunc('onCamMove', ['dad']);
 		}
 
 		if (loadedSong && PlayState.song.sections[Std.int(steps / 16)] != null) {
@@ -601,7 +672,7 @@ class PlayState extends MusicBeatState
 			notes.sort(FlxSort.byY, FlxSort.DESCENDING);
 		
 		if (!player1.animation.curAnim.name.startsWith('sing'))
-			player1.playAnim('idle');
+			player1.playAnim(player1.charJSON.defaultAnim);
 
 		if (!player2.animation.curAnim.name.startsWith('sing'))
 			player2.dance();
@@ -612,7 +683,7 @@ class PlayState extends MusicBeatState
 			player1.playAnim('taunt');
 		}
 		
-		swagScript.executeFunc('onBeat', []);	
+		swagScript.runGlobalFunc('onBeat', []);	
 
 		hud.everyBeat();
 
@@ -636,7 +707,7 @@ class PlayState extends MusicBeatState
 
 		Conductor.setBPM(song.bpm);
 
-		swagScript.executeFunc('onSongCreate', []);
+		swagScript.runGlobalFunc('onSongCreate', []);
 	}
 
 	function startSong() {
@@ -722,9 +793,9 @@ class PlayState extends MusicBeatState
 
 		loadedSong = true;
 
-		swagScript.setVar('notes', notes);
+		swagScript.setVars('notes', notes);
 
-		swagScript.executeFunc('onNoteLoad', []);
+		swagScript.runGlobalFunc('onNoteLoad', []);
 	}
 
 	function sortByShit(Obj1:Note, Obj2:Note):Int
@@ -740,9 +811,14 @@ class PlayState extends MusicBeatState
 	function onNoteHit(note:Note) {
 		if (!note.hit)//its false here!!!! cause thats the default
 		{
+			var noteDiff:Float = Math.abs(note.strumTime - Conductor.songPos);
+
+			note.rating = calculateRating(noteDiff);
+			
 			if (!note.susNote) {
 				combo += 1;
 				genScore(note);
+				updateAccuracy();
 			}
 
 			player1.sing(note.noteData, '');
@@ -764,7 +840,7 @@ class PlayState extends MusicBeatState
 			note.hit = true;
 
 			var dir = note.noteData;
-			swagScript.executeFunc('onNoteHit', [dir]);
+			swagScript.runGlobalFunc('onNoteHit', [dir]);
 		}
 	}
 
@@ -776,9 +852,10 @@ class PlayState extends MusicBeatState
 		}
 		combo = 0;
 		player1.sing(dir, 'miss');
-		swagScript.executeFunc('onNoteMiss', [dir]);
+		swagScript.runGlobalFunc('onNoteMiss', [dir]);
 		misses++;
 		score -= 50;
+		updateAccuracy();
 	}
 
 	function inputInit() {
@@ -906,20 +983,26 @@ class PlayState extends MusicBeatState
 			vocals.stop();
 		}
 
-		if (FlxG.keys.justPressed.F2) {
-			FlxG.switchState(new CharacterEditor());
-			FlxG.sound.music.stop();
-			vocals.stop();
-		}
-
 		if (FlxG.keys.justPressed.SEVEN) {
 			FlxG.switchState(new ChartEditor());
 			FlxG.sound.music.stop();
 			vocals.stop();
 		}
 
+		if (FlxG.keys.justPressed.NINE) {
+			FlxG.switchState(new StageEditor());
+			FlxG.sound.music.stop();
+			vocals.stop();
+		}
+
+		if (FlxG.keys.justPressed.EIGHT) {
+			FlxG.switchState(new CharacterEditor());
+			FlxG.sound.music.stop();
+			vocals.stop();
+		}
+
 		if (player1.holdTmr > 0.004 * Conductor.stepCrochet && !hArray.contains(true) && player1.animation.curAnim.name.startsWith('sing') && !player1.animation.curAnim.name.endsWith('miss')){
-			player1.playAnim('idle');
+			player1.playAnim(player1.charJSON.defaultAnim);
 		}
 	}
 

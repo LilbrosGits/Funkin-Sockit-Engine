@@ -13,13 +13,17 @@ using StringTools;
 
 typedef File = {
     cameraZoom:Float,
-    ?images:Array<ImageSprite>,
-    ?createdSprites:Array<MakeSprite>,
-    ?animatedSprites:Array<AnimSprite>,
+    sprites:MasterSprite,
     boyfriendPosition:Array<Float>,
     dadPosition:Array<Float>,
     gfPosition:Array<Float>,
     ?script:String
+}
+
+typedef MasterSprite = {
+    ?images:Array<ImageSprite>,
+    ?createdSprites:Array<MakeSprite>,
+    ?animatedSprites:Array<AnimSprite>,
 }
 
 typedef ImageSprite = {
@@ -93,17 +97,13 @@ class Stage extends MusicBeatSubState
         if (data.script != null) {
             scr = new FunkinScript();
             scr.execute(data.script);
-            scr.executeFunc('onCreate', []);
-            scr.setVar('beats', beats);
-            scr.setVar('steps', steps);
-            scr.setVar('PlayState', funkin.states.PlayState);
         }
 
         allSprGrp = new FlxTypedGroup<FlxSprite>();
         add(allSprGrp);
 
-        if (data.images != null) {
-            for (img in data.images) {
+        if (data.sprites.images != null) {
+            for (img in data.sprites.images) {
                 var image:FlxSprite = new FlxSprite(img.positions[0], img.positions[1]).loadGraphic(FunkinPaths.image('stages/$stage/${img.image}'));
                 if (img.angle != null)
                     image.angle = img.angle;
@@ -126,8 +126,8 @@ class Stage extends MusicBeatSubState
             }
         }
 
-        if (data.createdSprites != null) {
-            for (swag in data.createdSprites) {
+        if (data.sprites.createdSprites != null) {
+            for (swag in data.sprites.createdSprites) {
                 var swagSpr:FlxSprite = new FlxSprite(swag.positions[0], swag.positions[1]).makeGraphic(swag.width, swag.height, FlxColor.fromRGB(swag.color[0], swag.color[1], swag.color[2]));
                 swagSpr.angle = swag.angle;
                 if (swag.active != null)
@@ -141,8 +141,8 @@ class Stage extends MusicBeatSubState
             }
         }
 
-        if (data.animatedSprites != null) {
-            for (animSpr in data.animatedSprites) {
+        if (data.sprites.animatedSprites != null) {
+            for (animSpr in data.sprites.animatedSprites) {
                 var anim:FlxSprite = new FlxSprite(animSpr.positions[0], animSpr.positions[1]);
                 anim.frames = FunkinPaths.sparrowAtlas('stages/$stage/${animSpr.image}');
                 for (i in 0...animSpr.animations.length) {
@@ -170,29 +170,20 @@ class Stage extends MusicBeatSubState
                 allSprGrp.add(anim);
             }
         }
-
-        if (data.script != null)
-            scr.executeFunc('onCreatePost', []);
     }
 
     override public function onBeat() {
-        if (data.script != null) {
-            scr.executeFunc('onBeat', []);
-        }
         super.onBeat();
+        if (data.script != null)
+            scr.executeFunc('onBeat', []);
     }
 
     override public function update(elapsed:Float) {
-        if (data.script != null)
-            scr.executeFunc('onUpdate', [elapsed]);
-
         super.update(elapsed);
 
         allSprGrp.forEach(function(spr:FlxSprite) {
             spr.updateHitbox();
         });
-        if (data.script != null)
-            scr.executeFunc('onUpdatePost', [elapsed]);
     }
 
     function addSpr(sprName:String, vari:Dynamic) {

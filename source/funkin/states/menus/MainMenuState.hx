@@ -1,5 +1,6 @@
 package funkin.states.menus;
 
+import flixel.util.FlxTimer;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
@@ -9,6 +10,7 @@ import funkin.system.FunkinPaths;
 import funkin.system.MusicBeat.MusicBeatState;
 import funkin.system.Preferences;
 import funkin.util.FunkinUtil;
+import flixel.effects.FlxFlicker;
 
 class MainMenuState extends MusicBeatState {
     var bg:FlxSprite;
@@ -17,14 +19,17 @@ class MainMenuState extends MusicBeatState {
     var swagJunk:Array<String> = ['story_mode', 'freeplay', 'options'];
     var curSelected:Int = 0;
     var camFol:FlxObject;
+    var test:Array<String> = [];
     var scriptSwag:FunkinScript;
 
     override public function create() {
+        FunkinUtil.resetMenuMusic();
         scriptSwag = new FunkinScript();
         if (FunkinPaths.exists(FunkinPaths.state('MainMenuState')))
             scriptSwag.execute(FunkinPaths.state('MainMenuState'));
 
-        scriptSwag.executeFunc('onCreate', []);
+        if (FunkinPaths.exists(FunkinPaths.state('MainMenuState')))
+            scriptSwag.executeFunc('onCreate', []);
 
         var yScroll:Float = Math.max(0.25 - (0.05 * (swagJunk.length - 4)), 0.1);
         bg = new FlxSprite(0, 0).loadGraphic(FunkinPaths.image('UI/menus/menuBG'));
@@ -34,6 +39,15 @@ class MainMenuState extends MusicBeatState {
 		bg.screenCenter();
 		bg.antialiasing = Preferences.antialiasing;
         add(bg);
+
+        magenta = new FlxSprite(0, 0).loadGraphic(FunkinPaths.image('UI/menus/menuBGMagenta'));
+		magenta.scrollFactor.set(0, yScroll);
+		magenta.setGraphicSize(Std.int(magenta.width * 1.175));
+		magenta.updateHitbox();
+		magenta.screenCenter();
+		magenta.antialiasing = Preferences.antialiasing;
+        magenta.visible = false;
+        add(magenta);
 
         menuItems = new FlxTypedGroup<FlxSprite>();
         add(menuItems);
@@ -60,9 +74,11 @@ class MainMenuState extends MusicBeatState {
         scriptSwag.setVar('menuListGrp', menuItems);
         scriptSwag.setVar('menuList', swagJunk);
         scriptSwag.setVar('curSelected', curSelected);
+        scriptSwag.setVar('yScroll', yScroll);
         scriptSwag.setVar('camera', camFol);
 
-        scriptSwag.executeFunc('onCreatePost', []);
+        if (FunkinPaths.exists(FunkinPaths.state('MainMenuState')))
+            scriptSwag.executeFunc('onCreatePost', []);
 
         select();
 
@@ -71,7 +87,8 @@ class MainMenuState extends MusicBeatState {
 
     override public function update(elapsed:Float) {
 
-        scriptSwag.executeFunc('onUpdate', [elapsed]);
+        if (FunkinPaths.exists(FunkinPaths.state('MainMenuState')))
+            scriptSwag.executeFunc('onUpdate', [elapsed]);
 
         if (FlxG.keys.justPressed.UP) {
             select(-1);//gay shit cause the anims don't play
@@ -81,25 +98,28 @@ class MainMenuState extends MusicBeatState {
         }
         
         if (FlxG.keys.justPressed.ENTER) {
-            var funy:String = swagJunk[curSelected];
+            FlxFlicker.flicker(magenta, 0.8, 0.1, false);
 
-            switch(funy) {
-                case 'story_mode':
-                    FlxG.switchState(new StoryMenuState());
-                case 'freeplay':
-                    FlxG.switchState(new FreeplayMenu());
-                case 'options':
-                    FlxG.switchState(new funkin.states.menus.options.OptionsMenu());
-                default:
-                    FlxG.switchState(new PlayState());
-            }
+            FlxG.sound.play(FunkinPaths.sound('menus/confirmMenu'));
+
+            new FlxTimer().start(1, function(swag:FlxTimer) {
+                switch(swagJunk[curSelected]) {
+                    case 'story_mode':
+                        FlxG.switchState(new StoryMenuState());
+                    case 'freeplay':
+                        FlxG.switchState(new FreeplayMenu());
+                    case 'options':
+                        FlxG.switchState(new funkin.states.menus.options.OptionsMenu());
+                    default:
+                        FlxG.switchState(new PlayState());
+                }
+            });
         }
-        if (FlxG.keys.justPressed.SEVEN) {
-            FlxG.switchState(new funkin.states.menus.modding.ModsMenu());
-        }
+
         super.update(elapsed);
 
-        scriptSwag.executeFunc('onUpdatePost', [elapsed]);
+        if (FunkinPaths.exists(FunkinPaths.state('MainMenuState')))
+            scriptSwag.executeFunc('onUpdatePost', [elapsed]);
     }
 
     function select(change:Int = 0) {
@@ -121,5 +141,6 @@ class MainMenuState extends MusicBeatState {
             wag.updateHitbox();
             wag.screenCenter(X);
         });
+        FlxG.sound.play(FunkinPaths.sound('menus/scrollMenu'));
     }
 }

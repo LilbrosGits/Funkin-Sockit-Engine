@@ -8,6 +8,7 @@ import flixel.math.FlxMath;
 import flixel.text.FlxText;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
+import flixel.util.FlxTimer;
 import funkin.obj.MenuCharacter;
 import funkin.scripting.FunkinScript;
 import funkin.system.FunkinPaths;
@@ -36,12 +37,13 @@ class StoryMenuState extends MusicBeatState {
     var scoreText:FlxText;
     var bro:FunkinScript;
     var menuCharacters:FlxTypedGroup<MenuCharacter>;
-    var broh:FlxTypedGroup<FlxSprite>;
+    var broh:FlxTypedGroup<MenuItem>;
     var diffSel:FlxTypedGroup<FlxSprite>;
     var selected:Int = 0;
     var yellowBG:FlxSprite;
     var curDiff:Int = 1;
     var diffSpr:FlxSprite;
+    var buns:Int = 0;
     var weekTitle:FlxText;
     //ugh
     var leftArrow:FlxSprite;
@@ -57,7 +59,7 @@ class StoryMenuState extends MusicBeatState {
             bro.executeFunc('onCreate', []);
         }
 
-        broh = new FlxTypedGroup<FlxSprite>();
+        broh = new FlxTypedGroup<MenuItem>();
         add(broh);
 
         diffSel = new FlxTypedGroup<FlxSprite>();
@@ -78,13 +80,15 @@ class StoryMenuState extends MusicBeatState {
         add(menuCharacters);
 
         var ui_spr = FunkinPaths.sparrowAtlas('UI/menus/storymenu/campaign_menu_UI_assets');
-
+        
         for (i in 0...weekData.weeks.length) {
-            var crazy = new FlxSprite(0, yellowBG.y + 396 + (i * 100)).loadGraphic(FunkinPaths.image('UI/menus/storymenu/weeks/${weekData.weeks[i].weekID}'));
+            var crazy = new MenuItem(0, yellowBG.y + 396 + (i * 100), weekData.weeks[i].weekID);
+            crazy.y += ((crazy.height + 20) * buns);
+            crazy.targetY = buns;
             crazy.screenCenter(X);
-            crazy.y = FlxMath.lerp(crazy.y, (i * 120) + 480, 0.17);
             crazy.ID = i;
             broh.add(crazy);
+            buns++;
         }
 
         diffSpr = new FlxSprite(0, yellowBG.y + 396);
@@ -175,17 +179,13 @@ class StoryMenuState extends MusicBeatState {
             selDiff(1);
 
         if (FlxG.keys.justPressed.ENTER) {
-            PlayState.song = Song.loadSong(weekData.weeks[selected].songs[0], FunkinUtil.difficulties[curDiff]);
-            PlayState.storyList = weekData.weeks[selected].songs;
-            PlayState.storyMode = true;
-            PlayState.difficulty = FunkinUtil.difficulties[curDiff];
-            PlayState.storyWeek = selected;
-            PlayState.storyDifficulty = curDiff;
-            FlxG.switchState(new PlayState());
+            selectWeek();
         }
 
-        if (FlxG.keys.justPressed.ESCAPE)
+        if (FlxG.keys.justPressed.ESCAPE) {
+            FlxG.sound.play(FunkinPaths.sound('menus/cancelMenu'));
             FlxG.switchState(new MainMenuState());
+        }
 
         super.update(elapsed);
         if (weekData.script != null)
@@ -200,14 +200,20 @@ class StoryMenuState extends MusicBeatState {
         if (selected < 0)
             selected = weekData.weeks.length - 1;
 
-        broh.forEach(function(swag:FlxSprite) {
-            if (swag.ID == selected && !weekData.weeks[swag.ID].locked) {
-                swag.alpha = 1;
+        var bullShit:Int = 0;
+        
+		for (item in broh.members)
+            {
+                item.targetY = bullShit - selected;
+                if (item.targetY == Std.int(0))
+                    item.alpha = 1;
+                else
+                    item.alpha = 0.6;
+                bullShit++;
             }
-            else
-                swag.alpha = 0.6;
-        });
+
         updateText();
+        FlxG.sound.play(FunkinPaths.sound('menus/scrollMenu'));
     }
 
     function selDiff(change:Int = 0) {
@@ -230,6 +236,22 @@ class StoryMenuState extends MusicBeatState {
         diffSpr.x += (308 - diffSpr.width) / 3;
         //diffSpr.y = leftArrow.y + 15;
         //rightArrow.x += diffSpr.width;
+    }
+
+    function selectWeek() {
+        menuCharacters.members[1].animation.play('confirm');
+        broh.members[selected].startFlashing();
+        FlxG.sound.play(FunkinPaths.sound('menus/confirmMenu'));
+
+        new FlxTimer().start(2, function(trans:FlxTimer) {
+            PlayState.song = Song.loadSong(weekData.weeks[selected].songs[0], FunkinUtil.difficulties[curDiff]);
+            PlayState.storyList = weekData.weeks[selected].songs;
+            PlayState.storyMode = true;
+            PlayState.difficulty = FunkinUtil.difficulties[curDiff];
+            PlayState.storyWeek = selected;
+            PlayState.storyDifficulty = curDiff;
+            FlxG.switchState(new PlayState());
+        });
     }
 
     function updateText()
@@ -257,4 +279,45 @@ class StoryMenuState extends MusicBeatState {
         intendedScore = Score.getWeekScore(selected, curDiff);
         #end
     }
+}
+
+class MenuItem extends FlxSprite
+{
+	public var targetY:Float = 0;
+	public var flashingInt:Int = 0;
+
+	public function new(x:Float, y:Float, weekName:String = '')
+	{
+		super(x, y);
+		loadGraphic(FunkinPaths.image('UI/menus/storymenu/weeks/${weekName}'));
+		//trace('Test added: ' + WeekData.getWeekNumber(weekNum) + ' (' + weekNum + ')');
+		antialiasing = Preferences.antialiasing;
+	}
+
+	private var isFlashing:Bool = false;
+
+	public function startFlashing():Void
+	{
+		isFlashing = true;
+	}
+
+	// if it runs at 60fps, fake framerate will be 6
+	// if it runs at 144 fps, fake framerate will be like 14, and will update the graphic every 0.016666 * 3 seconds still???
+	// so it runs basically every so many seconds, not dependant on framerate??
+	// I'm still learning how math works thanks whoever is reading this lol
+	var fakeFramerate:Int = Math.round((1 / FlxG.elapsed) / 10);
+
+	override function update(elapsed:Float)
+	{
+		super.update(elapsed);
+		y = FlxMath.lerp(y, (targetY * 120) + 480, FunkinUtil.bound(elapsed * 10.2, 0, 1));
+
+		if (isFlashing)
+			flashingInt += 1;
+
+		if (flashingInt % fakeFramerate >= Math.floor(fakeFramerate / 2))
+			color = 0xFF33ffff;
+		else
+			color = FlxColor.WHITE;
+	}
 }

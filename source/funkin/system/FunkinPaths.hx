@@ -1,23 +1,20 @@
 package funkin.system;
 
+import openfl.system.System as OpenFLSystem;
+import sys.io.File;
 import flixel.graphics.frames.FlxAtlasFrames;
 import lime.utils.Assets;
 import openfl.utils.Assets as OpenFlAssets;
 import sys.FileSystem;
-import sys.io.File;
 
 class FunkinPaths {
     public static var currentModDir:String = '';
     inline public static function getPath(file:String = '') {
-        #if MODS_ENABLED
-        if (OpenFlAssets.exists('mods/$currentModDir/$file'))
-            return 'mods/$currentModDir/$file';
-        #end
         return 'assets/$file';
     }
 
     inline public static function exists(file:String) {
-        if (OpenFlAssets.exists(file))
+        if (FileSystem.exists(file))
             return true;
         else
             return false;
@@ -87,11 +84,11 @@ class FunkinPaths {
         return getPath('states/$scr.hscript');
     }//couldve been one function but i alr spent to much time
 
-    inline public static function getAllMods(ml:Array<String>) {
-        for (i in FileSystem.readDirectory('mods/')) {
-            if (FileSystem.exists('$i/mod.json')) {
-                ml.push(i);
-            }
-        }
+    inline public static function getAllMods() {
+        return FileSystem.readDirectory('mods/');
+    }
+
+    inline public static function clearMem() {
+        OpenFLSystem.gc();
     }
 }

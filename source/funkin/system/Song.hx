@@ -13,6 +13,7 @@ typedef SongData = {
     var speed:Float;
     var characters:Array<String>;
     var validScore:Bool;
+    var stage:String;
 }
 
 class Song {
@@ -21,6 +22,7 @@ class Song {
 	public var bpm:Int;
 	public var needsVoices:Bool = true;
 	public var speed:Float = 1;
+    public var stage:String = 'stage';
 
     public var characters:Array<String> = ['dad', 'bf'];
     public var player1:String;

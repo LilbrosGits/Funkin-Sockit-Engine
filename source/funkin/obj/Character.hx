@@ -11,9 +11,11 @@ using StringTools;
 typedef CharacterFile = {
     ?singAnims:Array<String>,
     ?defaultAnim:String,
+    ?danceIdle:Bool,
     spriteSheet:String,
     ?flipX:Bool,
     ?flipY:Bool,
+    camPos:Array<Float>,
     animations:MasterAnim,
     antialiasing:Bool
 }
@@ -109,7 +111,7 @@ class Character extends FlxSprite {
 		else
 			offset.set(0, 0);
 
-        if (char.startsWith('gf'))
+        if (charJSON.danceIdle)
         {
             if (anim == 'singLEFT')
             {
@@ -132,17 +134,16 @@ class Character extends FlxSprite {
     }
 
     public function dance() {
-        switch(char) {
-            case 'gf':
-                danced = !danced;
+        if (charJSON.danceIdle) {
+            danced = !danced;
 
-                if (danced)
-                    playAnim('danceRight');
-                else
-                    playAnim('danceLeft');
-            default:
-                playAnim('idle');
+            if (danced)
+                playAnim('danceRight');
+            else
+                playAnim('danceLeft');
         }
+        else
+            playAnim(charJSON.defaultAnim);
     }
 
     public function addOffset(name:String, x:Float = 0, y:Float = 0)

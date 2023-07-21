@@ -1,0 +1,10 @@
+{
+	"graphic": "Menu_Spooky_Kids",
+	"positions": [
+		0,
+		-80
+	],
+	"scale": [1, 1],
+	"idleAnim": "M Spooky Kids Idle",
+	"confirmAnim": "M Spooky Kids Idle"
+}

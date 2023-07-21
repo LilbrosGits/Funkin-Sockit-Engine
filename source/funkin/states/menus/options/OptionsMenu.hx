@@ -19,15 +19,18 @@ using StringTools;
 class OptionsMenu extends MusicBeatState {
     var list:AlphabetList;
     var curSelected:Int = 0;
+    var fps:Option = new Option('framerate', 'fps', 'int', 1, 60, 240);
 
     public function openLibrary(state:Int = 0) {
+        fps.onChange = changeFPS;
         switch(state) {
             case 0:
-                FlxG.switchState(new GPOptions());
+                FlxG.switchState(new OptionsState([new Option('downscroll', 'downscroll', 'bool'), 
+                new Option('ghost tapping', 'ghostTapping', 'bool'),
+                new Option('safe zone offset', 'safeZoneOffset', 'float', 0.1, 1, 10)]));
             case 1:
-                FlxG.switchState(new VisualOptions());
-            case 2:
-                FlxG.switchState(new GPOptions());
+                FlxG.switchState(new OptionsState([new Option('antialiasing', 'antialiasing', 'bool'),
+                fps]));
         }
     }
     
@@ -36,7 +39,7 @@ class OptionsMenu extends MusicBeatState {
         bg.scrollFactor.set();
         add(bg);
 
-        list = new AlphabetList(['Gameplay', 'Visual', 'Controls'], curSelected, false, true, true);
+        list = new AlphabetList(['Gameplay', 'Visual'], false, true, true);
         add(list);
 
         super.create();
@@ -56,5 +59,18 @@ class OptionsMenu extends MusicBeatState {
         });
 
         super.update(elapsed);
+    }
+
+    function changeFPS() {
+		if(Preferences.fps > FlxG.drawFramerate)
+		{
+			FlxG.updateFramerate = Preferences.fps;
+			FlxG.drawFramerate = Preferences.fps;
+		}
+		else
+		{
+			FlxG.drawFramerate = Preferences.fps;
+			FlxG.updateFramerate = Preferences.fps;
+		}
     }
 }

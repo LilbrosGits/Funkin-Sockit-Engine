@@ -6,7 +6,7 @@ class Conductor {
     public static var stepCrochet:Float = (crochet / 4) * measure;
     public static var measure:Float = 4 / 4;
     public static var songPos:Float;
-    public static var safeFrames:Float = 10; //idk if its 10 my bad if its nottt
+    public static var safeFrames:Float = Preferences.safeZoneOffset; //idk if its 10 my bad if its nottt
     public static var milliFrames:Float = ((safeFrames / 60) * 1000); //milliseconds lmao
 
     public function new() {}

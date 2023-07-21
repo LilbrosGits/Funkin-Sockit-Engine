@@ -1,6 +1,7 @@
 {
     "singAnims": ["singLEFT", "singDOWN", "singUP", "singRIGHT"],
     "defaultAnim": "danceLeft",
+    "danceIdle": true,
     "spriteSheet": "characters/GF_assets",
     "animations": {
         "prefixAnim": [
@@ -92,5 +93,6 @@
             }
         ]
     },
+    "camPos": [0, 0],
     "antialiasing": true
 }

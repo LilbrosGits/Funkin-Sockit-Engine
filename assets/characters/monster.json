@@ -1,0 +1,47 @@
+{
+    "singAnims": ["singLEFT", "singDOWN", "singUP", "singRIGHT"],
+    "defaultAnim": "idle",
+    "danceIdle": false,
+    "spriteSheet": "characters/Monster_Assets",
+    "animations": {
+        "prefixAnim": [
+            {
+                "name": "idle",
+                "xmlName": "monster idle",
+                "offsets": [3, 0],
+                "fr": 24,
+                "loop": false
+            },
+            {
+                "name": "singLEFT",
+                "xmlName": "Monster left note",
+                "offsets": [-30, 20],
+                "fr": 24,
+                "loop": false
+            },
+            {
+                "name": "singDOWN",
+                "xmlName": "monster down",
+                "offsets": [-50, -80],
+                "fr": 24,
+                "loop": false
+            },
+            {
+                "name": "singUP",
+                "xmlName": "monster up note",
+                "offsets": [-20, 94],
+                "fr": 24,
+                "loop": false
+            },
+            {
+                "name": "singRIGHT",
+                "xmlName": "Monster Right note",
+                "offsets": [-51, 30],
+                "fr": 24,
+                "loop": false
+            }
+        ]
+    },
+    "camPos": [0, 0],
+    "antialiasing": true
+}

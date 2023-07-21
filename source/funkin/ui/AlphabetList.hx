@@ -9,7 +9,7 @@ import funkin.ui.Alphabet;
 import funkin.util.FunkinUtil;
 
 class AlphabetList extends MusicBeatSubState {
-    var listGrp:FlxTypedGroup<Alphabet>;
+    public var listGrp:FlxTypedGroup<Alphabet>;
     public var bold:Bool = false;
     public var isMenuItem:Bool = false;
     public var curSelected:Int = 0;
@@ -17,10 +17,9 @@ class AlphabetList extends MusicBeatSubState {
     public var list:Array<Dynamic> = [];
     var fol:FlxObject;
 
-    public function new(list:Array<Dynamic>, index:Int, follow:Bool, menuItem:Bool, bold:Bool) {
+    public function new(list:Array<Dynamic>, follow:Bool, menuItem:Bool, bold:Bool) {
         super();
         this.list = list;
-        index = curSelected;
         this.bold = bold;
         fol = new FlxObject(0, 0, 1, 1);
         listGrp = new FlxTypedGroup<Alphabet>();

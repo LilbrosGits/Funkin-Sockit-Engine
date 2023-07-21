@@ -18,12 +18,15 @@ using StringTools;
 
 class OptionsList extends MusicBeatSubState {
     public var cam:FlxObject;
-    public static var options:Array<Option> = [];
+    public var options:Array<Option> = [];
     public static var optionGrp:FlxTypedGroup<Alphabet>;
     public var curSel:Int = 0;
 
-    public function new() {
+    public function new(optionArray:Array<Option>) {
         super();
+        FunkinPaths.clearMem();
+        
+        this.options = optionArray;
 
         cam = new FlxObject(0, 0, 1, 1);
         add(cam);

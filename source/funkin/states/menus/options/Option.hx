@@ -18,17 +18,20 @@ class Option {
     public var onChange:Void -> Void = null;
     public var boolThing:Array<Bool> = [true, false];
     public var curVal:Int = 0;
+    public var curStrVal:Int = 0;
+    public var contents:Array<String> = [];
 
-    public function new(?x:Float = 0, ?y:Float = 0, name:String, id:String, type:String, ?scrollSpeed:Float = 1, ?min:Float, ?max:Float) {
+    public function new(name:String, id:String, type:String, ?scrollSpeed:Float = 1, ?min:Float, ?max:Float) {
         this.name = name;
         this.type = type;
         this.id = id;
-        this.value = Reflect.getProperty(Preferences, id);
         if (type != 'bool') {
             this.scrollSpeed = scrollSpeed;
             this.min = min;
             this.max = max;
         }
+        this.value = Reflect.getProperty(Preferences, id);
+        
         if (value == true)
             curVal = 0;
         else
@@ -36,10 +39,10 @@ class Option {
     }
 
     public function updateOptions() {
-        if (min > value)
+        if (min >= value)
             value = min;
 
-        if (max < value)
+        if (max <= value)
             value = max;
         
         changeValue();
@@ -49,9 +52,18 @@ class Option {
 
         if (curVal < 0)
             curVal = boolThing.length - 1;
+
+        if (curStrVal >= contents.length)
+            curStrVal = 0;
+
+        if (curStrVal <= 0)
+            curStrVal = contents.length;
         
         if (type == 'bool') {
             Reflect.setProperty(Preferences, id, boolThing[curVal]);
+        }
+        if (type == 'string') {
+            this.value = contents[curStrVal];
         }
 
         value = Reflect.getProperty(Preferences, id);
@@ -59,7 +71,7 @@ class Option {
 
     public function changeValue() {
         if (FlxG.keys.justPressed.LEFT) {
-            if(type == 'int') {
+            if(type == 'int' || type == 'float') {
                 Reflect.setProperty(Preferences, id, value -= scrollSpeed);
                 if (onChange != null)
                     onChange();
@@ -69,16 +81,28 @@ class Option {
                 if (onChange != null)
                     onChange();
             }
+            if(type == 'string') {
+                curStrVal += 1;
+                Reflect.setProperty(Preferences, id, contents[curStrVal]);
+                if (onChange != null)
+                    onChange();
+            }
             Preferences.saveOptions();
         }
         if (FlxG.keys.justPressed.RIGHT) {
-            if(type == 'int') {
+            if(type == 'int' || type == 'float') {
                 Reflect.setProperty(Preferences, id, value += scrollSpeed);
                 if (onChange != null)
                     onChange();
             }
             if(type == 'bool') {
                 curVal -= 1;
+                if (onChange != null)
+                    onChange();
+            }
+            if(type == 'string') {
+                curStrVal -= 1;
+                Reflect.setProperty(Preferences, id, contents[curStrVal]);
                 if (onChange != null)
                     onChange();
             }

@@ -1,0 +1,29 @@
+{
+    "cameraZoom": 1.05,
+    "sprites": {
+        "animatedSprites": [{
+            "spriteName": "spooky",
+            "image": "halloween_bg",
+            "positions": [-200, -100],
+            "antialiasing": true,
+            "animations": [{
+                "name": "idle",
+                "prefix": "halloweem bg0",
+                "framerate": 24,
+                "loop": false,
+                "defaultAnim": true
+            },
+            {
+                "name": "strike",
+                "prefix": "halloweem bg lightning strike",
+                "framerate": 24,
+                "loop": false,
+                "defaultAnim": false
+            }]
+        }]
+    },
+    "boyfriendPosition": [770, 350],
+    "dadPosition": [100, 300],
+    "gfPosition": [400, 130],
+    "script": "assets/stages/spooky.hscript"
+}

@@ -15,7 +15,10 @@ class Icon extends FlxSprite {
     }
 
     public function changeIcon(char:String = 'bf') {
-        loadGraphic(FunkinPaths.image('UI/HUD/icons/icon-$char'), true, 150, 150);
+        if (!FunkinPaths.exists(FunkinPaths.image('UI/HUD/icons/icon-$char')))
+            loadGraphic(FunkinPaths.image('UI/HUD/icons/icon-face'), true, 150, 150);
+        else
+            loadGraphic(FunkinPaths.image('UI/HUD/icons/icon-$char'), true, 150, 150);
 
         antialiasing = true;
         animation.add(char, [0, 1], 0, false);

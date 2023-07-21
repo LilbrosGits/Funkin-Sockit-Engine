@@ -41,5 +41,6 @@
             }
         ]
     },
+    "camPos": [0, 0],
     "antialiasing": true
 }

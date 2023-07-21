@@ -48,10 +48,9 @@ class FunkinScript {
     }
     
     public function executeFunc(func:String, para:Array<Dynamic>) {
-        // Parse the script into an hscript.Expr object
-        expr = parser.parseString(func);
-
         // Execute the script using hscript.Interp.execute
-        interp.execute(parser.parseString(func + "(" + para.join(", ") + ")".replace(':', ' = ')));//smth abt ':' being null in hscript
+        if (parser.parseString(func + "(" + para.join(", ") + ")".replace(':', '=')) != null)
+            interp.execute(parser.parseString(func + "(" + para.join(", ") + ")".replace(':', '=')));//smth abt ':' being null in hscript
+
     }
 }
