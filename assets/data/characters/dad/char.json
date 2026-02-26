@@ -1,0 +1,74 @@
+{
+	"renderType": "textureatlas",
+	"transform": {
+		"pos": [
+			0,
+			0
+		],
+		"scale": [
+			1,
+			1
+		],
+		"angle": 0
+	},
+	"version": "0.0.0",
+	"assetPath": "images/characters/Dad",
+	"anims": [
+		{
+			"offsets": [
+				0,
+				0
+			],
+			"loop": true,
+			"postFix": "",
+			"frameRate": 24,
+			"xmlName": "Dad idle dance",
+			"name": "idle"
+		},
+		{
+			"loop": false,
+			"offsets": [
+				0,
+				0
+			],
+			"frameRate": 24,
+			"postFix": "",
+			"xmlName": "Dad Sing Note LEFT",
+			"name": "singLEFT"
+		},
+		{
+			"loop": false,
+			"offsets": [
+				0,
+				0
+			],
+			"frameRate": 24,
+			"postFix": "",
+			"xmlName": "dad sing note right",
+			"name": "singRIGHT"
+		},
+		{
+			"loop": false,
+			"offsets": [
+				0,
+				0
+			],
+			"frameRate": 24,
+			"postFix": "",
+			"xmlName": "Dad Sing note UP",
+			"name": "singUP"
+		},
+		{
+			"loop": false,
+			"offsets": [
+				0,
+				0
+			],
+			"frameRate": 24,
+			"postFix": "",
+			"xmlName": "Dad Sing Note DOWN",
+			"name": "singDOWN"
+		}
+	],
+	"name": "Daddy Dearest"
+}

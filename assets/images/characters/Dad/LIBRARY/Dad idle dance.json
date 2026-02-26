@@ -1,0 +1,252 @@
+{"LAYERS":[
+{
+"Layer_name":"Layer_1",
+"Frames":[
+{
+"index":0,
+"duration":2,
+"elements":[
+{"SYMBOL_Instance":{
+"SYMBOL_name":"dad wasit",
+"firstFrame":0,
+"symbolType":"graphic",
+"transformationPoint":{"x":-211,"y":17.3},
+"loop":"loop",
+"Matrix":[1,0,0,1,-376.75,-184.65]
+}},
+{"SYMBOL_Instance":{
+"SYMBOL_name":"Dad Chest",
+"firstFrame":0,
+"symbolType":"graphic",
+"transformationPoint":{"x":-135.75,"y":-257.8},
+"loop":"loop",
+"Matrix":[1,0,0,1,-314.4,-441.95]
+}},
+{"SYMBOL_Instance":{
+"SYMBOL_name":"dad mic idle hand",
+"firstFrame":0,
+"symbolType":"graphic",
+"transformationPoint":{"x":-189.65,"y":-161.4},
+"loop":"loop",
+"Matrix":[1,0,0,1,-262.2,-216.8]
+}},
+{"SYMBOL_Instance":{
+"SYMBOL_name":"Dad default head",
+"firstFrame":0,
+"symbolType":"graphic",
+"transformationPoint":{"x":-157.35,"y":-419.7},
+"loop":"loop",
+"Matrix":[1,0,0,1,-252.45,-547.1]
+}}]},{
+"index":2,
+"duration":2,
+"elements":[
+{"SYMBOL_Instance":{
+"SYMBOL_name":"dad wasit",
+"firstFrame":0,
+"symbolType":"graphic",
+"transformationPoint":{"x":-197.35,"y":200.95},
+"loop":"loop",
+"Matrix":[1.03,0,0.007,0.986,-384.9,-179.2]
+}},
+{"SYMBOL_Instance":{
+"SYMBOL_name":"Dad Chest",
+"firstFrame":0,
+"symbolType":"graphic",
+"transformationPoint":{"x":-121.3,"y":-183.3},
+"loop":"loop",
+"Matrix":[1.021,0.049,-0.046,0.962,-306.8,-433.1]
+}},
+{"SYMBOL_Instance":{
+"SYMBOL_name":"dad mic idle hand",
+"firstFrame":0,
+"symbolType":"graphic",
+"transformationPoint":{"x":-156.9,"y":-189.7},
+"loop":"loop",
+"Matrix":[0.974,-0.223,0.223,0.974,-267.05,-183.1]
+}},
+{"SYMBOL_Instance":{
+"SYMBOL_name":"Dad default head",
+"firstFrame":2,
+"symbolType":"graphic",
+"transformationPoint":{"x":-186.4,"y":-329.75},
+"loop":"loop",
+"Matrix":[0.99,0.136,-0.136,0.99,-222.75,-550.25]
+}}]},{
+"index":4,
+"duration":2,
+"elements":[
+{"SYMBOL_Instance":{
+"SYMBOL_name":"dad wasit",
+"firstFrame":0,
+"symbolType":"graphic",
+"transformationPoint":{"x":-197.35,"y":200.95},
+"loop":"loop",
+"Matrix":[1.024,0,0.007,0.993,-383.85,-181.9]
+}},
+{"SYMBOL_Instance":{
+"SYMBOL_name":"Dad Chest",
+"firstFrame":0,
+"symbolType":"graphic",
+"transformationPoint":{"x":-122.2,"y":-185.15},
+"loop":"loop",
+"Matrix":[1.009,0.058,-0.055,0.962,-303.2,-436.5]
+}},
+{"SYMBOL_Instance":{
+"SYMBOL_name":"dad mic idle hand",
+"firstFrame":0,
+"symbolType":"graphic",
+"transformationPoint":{"x":-156.9,"y":-191.5},
+"loop":"loop",
+"Matrix":[0.969,-0.245,0.245,0.969,-266.9,-182.4]
+}},
+{"SYMBOL_Instance":{
+"SYMBOL_name":"Dad default head",
+"firstFrame":0,
+"symbolType":"graphic",
+"transformationPoint":{"x":-187.3,"y":-331.55},
+"loop":"loop",
+"Matrix":[0.978,0.205,-0.205,0.978,-208.1,-554.1]
+}}]},{
+"index":6,
+"duration":2,
+"elements":[
+{"SYMBOL_Instance":{
+"SYMBOL_name":"dad wasit",
+"firstFrame":0,
+"symbolType":"graphic",
+"transformationPoint":{"x":-197.35,"y":200.95},
+"loop":"loop",
+"Matrix":[1.018,0,0.007,0.993,-382.85,-181.9]
+}},
+{"SYMBOL_Instance":{
+"SYMBOL_name":"Dad Chest",
+"firstFrame":0,
+"symbolType":"graphic",
+"transformationPoint":{"x":-122.2,"y":-186.05},
+"loop":"loop",
+"Matrix":[1.009,0.045,-0.043,0.962,-306.55,-434.95]
+}},
+{"SYMBOL_Instance":{
+"SYMBOL_name":"dad mic idle hand",
+"firstFrame":0,
+"symbolType":"graphic",
+"transformationPoint":{"x":-156.9,"y":-193.3},
+"loop":"loop",
+"Matrix":[0.978,-0.206,0.206,0.978,-267.15,-188.6]
+}},
+{"SYMBOL_Instance":{
+"SYMBOL_name":"Dad default head",
+"firstFrame":2,
+"symbolType":"graphic",
+"transformationPoint":{"x":-188.15,"y":-332.45},
+"loop":"loop",
+"Matrix":[0.981,0.192,-0.192,0.981,-212.05,-554.65]
+}}]},{
+"index":8,
+"duration":2,
+"elements":[
+{"SYMBOL_Instance":{
+"SYMBOL_name":"dad wasit",
+"firstFrame":0,
+"symbolType":"graphic",
+"transformationPoint":{"x":-211,"y":17.3},
+"loop":"loop",
+"Matrix":[1.005,0,0,1,-377.65,-184.65]
+}},
+{"SYMBOL_Instance":{
+"SYMBOL_name":"Dad Chest",
+"firstFrame":0,
+"symbolType":"graphic",
+"transformationPoint":{"x":-135.75,"y":-256.9},
+"loop":"loop",
+"Matrix":[1,0.019,-0.019,1,-310.85,-444.35]
+}},
+{"SYMBOL_Instance":{
+"SYMBOL_name":"dad mic idle hand",
+"firstFrame":0,
+"symbolType":"graphic",
+"transformationPoint":{"x":-151.45,"y":-205.9},
+"loop":"loop",
+"Matrix":[1,-0.027,0.027,1,-264.3,-215.55]
+}},
+{"SYMBOL_Instance":{
+"SYMBOL_name":"Dad default head",
+"firstFrame":0,
+"symbolType":"graphic",
+"transformationPoint":{"x":-197.4,"y":-331.5},
+"loop":"loop",
+"Matrix":[1,0.022,-0.022,1,-247.7,-548.25]
+}}]},{
+"index":10,
+"duration":2,
+"elements":[
+{"SYMBOL_Instance":{
+"SYMBOL_name":"dad wasit",
+"firstFrame":0,
+"symbolType":"graphic",
+"transformationPoint":{"x":-211,"y":17.3},
+"loop":"loop",
+"Matrix":[1,0,0,1,-376.75,-184.65]
+}},
+{"SYMBOL_Instance":{
+"SYMBOL_name":"Dad Chest",
+"firstFrame":0,
+"symbolType":"graphic",
+"transformationPoint":{"x":-135.75,"y":-257.8},
+"loop":"loop",
+"Matrix":[1,0,0,1,-314.4,-441.95]
+}},
+{"SYMBOL_Instance":{
+"SYMBOL_name":"dad mic idle hand",
+"firstFrame":0,
+"symbolType":"graphic",
+"transformationPoint":{"x":-189.65,"y":-161.4},
+"loop":"loop",
+"Matrix":[1,0,0,1,-262.2,-216.8]
+}},
+{"SYMBOL_Instance":{
+"SYMBOL_name":"Dad default head",
+"firstFrame":2,
+"symbolType":"graphic",
+"transformationPoint":{"x":-157.35,"y":-419.7},
+"loop":"loop",
+"Matrix":[1,0,0,1,-252.45,-547.1]
+}}]},{
+"index":12,
+"duration":1,
+"elements":[
+{"SYMBOL_Instance":{
+"SYMBOL_name":"dad wasit",
+"firstFrame":0,
+"symbolType":"graphic",
+"transformationPoint":{"x":-211,"y":17.3},
+"loop":"loop",
+"Matrix":[1,0,0,1,-376.75,-184.65]
+}},
+{"SYMBOL_Instance":{
+"SYMBOL_name":"Dad Chest",
+"firstFrame":0,
+"symbolType":"graphic",
+"transformationPoint":{"x":-135.75,"y":-257.8},
+"loop":"loop",
+"Matrix":[1,0,0,1,-314.4,-441.95]
+}},
+{"SYMBOL_Instance":{
+"SYMBOL_name":"dad mic idle hand",
+"firstFrame":0,
+"symbolType":"graphic",
+"transformationPoint":{"x":-189.65,"y":-161.4},
+"loop":"loop",
+"Matrix":[1,0,0,1,-262.2,-216.8]
+}},
+{"SYMBOL_Instance":{
+"SYMBOL_name":"Dad default head",
+"firstFrame":0,
+"symbolType":"graphic",
+"transformationPoint":{"x":-157.35,"y":-419.7},
+"loop":"loop",
+"Matrix":[1,0,0,1,-252.45,-547.1]
+}}]}
+]}
+]}

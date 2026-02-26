@@ -1,0 +1,166 @@
+{
+    "name": "Pixel",
+    "version": "0.0.0",
+    "renderType": "multiimage",
+    "assetPath": "UI/noteStyles/retro/arrows-pixels",
+    "transform": {
+        "width": 17,
+        "height": 17
+    },
+    "anims": [{
+        "name": "left",
+        "frames": [4],
+        "offsets": [0, 0]
+    },
+    {
+        "name": "down",
+        "frames": [5],
+        "offsets": [0, 0]
+    },
+    {
+        "name": "up",
+        "frames": [6],
+        "offsets": [0, 0]
+    },{
+        "name": "right",
+        "frames": [7],
+        "offsets": [0, 0]
+    },
+    {
+        "name": "hold-left",
+        "frames": [0],
+        "offsets": [0, 0],
+        "assetPath": "UI/noteStyles/retro/arrowEnds",
+        "transform": {
+            "width": 7,
+            "height": 6
+        }
+    },
+    {
+        "name": "hold-down",
+        "frames": [1],
+        "offsets": [0, 0],
+        "assetPath": "UI/noteStyles/retro/arrowEnds",
+        "transform": {
+            "width": 7,
+            "height": 6
+        }
+    },
+    {
+        "name": "hold-up",
+        "frames": [2],
+        "offsets": [0, 0],
+        "assetPath": "UI/noteStyles/retro/arrowEnds",
+        "transform": {
+            "width": 7,
+            "height": 6
+        }
+    },{
+        "name": "hold-right",
+        "frames": [3],
+        "offsets": [0, 0],
+        "assetPath": "UI/noteStyles/retro/arrowEnds",
+        "transform": {
+            "width": 7,
+            "height": 6
+        }
+    },{
+        "name": "endhold-left",
+        "frames": [4],
+        "offsets": [0, 0],
+        "assetPath": "UI/noteStyles/retro/arrowEnds",
+        "transform": {
+            "width": 7,
+            "height": 6
+        }
+    },
+    {
+        "name": "endhold-down",
+        "frames": [5],
+        "offsets": [0, 0],
+        "assetPath": "UI/noteStyles/retro/arrowEnds",
+        "transform": {
+            "width": 7,
+            "height": 6
+        }
+    },
+    {
+        "name": "endhold-up",
+        "frames": [6],
+        "offsets": [0, 0],
+        "assetPath": "UI/noteStyles/retro/arrowEnds",
+        "transform": {
+            "width": 7,
+            "height": 6
+        }
+    },{
+        "name": "endhold-right",
+        "frames": [7],
+        "offsets": [0, 0],
+        "assetPath": "UI/noteStyles/retro/arrowEnds",
+        "transform": {
+            "width": 7,
+            "height": 6
+        }
+    },
+    {
+        "name": "static-left",
+        "frames": [0],
+        "offsets": [0, 0]
+    },
+    {
+        "name": "static-down",
+        "frames": [1],
+        "offsets": [0, 0]
+    },
+    {
+        "name": "static-up",
+        "frames": [2],
+        "offsets": [0, 0]
+    },{
+        "name": "static-right",
+        "frames": [3],
+        "offsets": [0, 0]
+    },{
+        "name": "hit-static-left",
+        "frames": [4, 8],
+        "offsets": [0, 0],
+        "framerate": 12
+    },
+    {
+        "name": "hit-static-down",
+        "frames": [5, 9],
+        "offsets": [0, 0],
+        "framerate": 12
+    },
+    {
+        "name": "hit-static-up",
+        "frames": [6, 10],
+        "offsets": [0, 0],
+        "framerate": 12
+    },{
+        "name": "hit-static-right",
+        "frames": [7, 11],
+        "offsets": [0, 0],
+        "framerate": 12
+    },
+    {
+        "name": "confirm-static-left",
+        "frames": [12, 16],
+        "offsets": [0, 0]
+    },
+    {
+        "name": "confirm-static-down",
+        "frames": [13, 17],
+        "offsets": [0, 0]
+    },
+    {
+        "name": "confirm-static-up",
+        "frames": [14, 18],
+        "offsets": [0, 0]
+    },{
+        "name": "confirm-static-right",
+        "frames": [15, 19],
+        "offsets": [0, 0]
+    }]
+}

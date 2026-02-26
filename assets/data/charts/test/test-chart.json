@@ -1,0 +1,215 @@
+{
+	"playData": {
+		"variations": [
+			"Default"
+		],
+		"difficulties": [
+			"easy",
+			"normal",
+			"hard"
+		],
+		"strumlines": [
+			{
+				"cpu": false,
+				"character": "bf",
+				"strumlineAudio": {
+					"effects": [],
+					"name": "bf-vocals",
+					"assetPath": "data/songs/test/Voices-bf"
+				},
+				"scrollSpeed": 1,
+				"syncAudio": true,
+				"variation": "Default",
+				"strumPos": [
+					620,
+					50
+				],
+				"keys": 4,
+				"strumlineVisible": true,
+				"charPos": [
+					770,
+					450
+				],
+				"strumlineData": [
+					{
+						"difficulty": "easy",
+						"notes": [
+							{
+								"type": "default",
+								"strumTime": 162.159321249036,
+								"sustainLength": 0,
+								"noteID": 1
+							},
+							{
+								"type": "default",
+								"strumTime": 324.318642498072,
+								"sustainLength": 0,
+								"noteID": 3
+							},
+							{
+								"type": "default",
+								"strumTime": 891.876266869697,
+								"sustainLength": 0,
+								"noteID": 2
+							},
+							{
+								"type": "default",
+								"strumTime": 1216.19490936777,
+								"sustainLength": 0,
+								"noteID": 2
+							},
+							{
+								"type": "default",
+								"strumTime": 1540.51355186584,
+								"sustainLength": 0,
+								"noteID": 2
+							},
+							{
+								"type": "default",
+								"strumTime": 1864.83219436391,
+								"sustainLength": 0,
+								"noteID": 0
+							},
+							{
+								"type": "default",
+								"strumTime": 2026.99151561295,
+								"sustainLength": 0,
+								"noteID": 3
+							},
+							{
+								"type": "default",
+								"strumTime": 2108.07117623747,
+								"sustainLength": 0,
+								"noteID": 1
+							},
+							{
+								"type": "default",
+								"strumTime": 2270.2304974865,
+								"sustainLength": 0,
+								"noteID": 3
+							}
+						]
+					},
+					{
+						"difficulty": "normal",
+						"notes": []
+					},
+					{
+						"difficulty": "hard",
+						"notes": []
+					}
+				]
+			},
+			{
+				"cpu": true,
+				"character": "dad",
+				"strumlineAudio": {
+					"effects": [],
+					"name": "dad-vocals",
+					"assetPath": "data/songs/test/Voices-dad"
+				},
+				"scrollSpeed": 1,
+				"syncAudio": true,
+				"variation": "Default",
+				"strumPos": [
+					0,
+					50
+				],
+				"keys": 4,
+				"strumlineVisible": true,
+				"charPos": [
+					0,
+					100
+				],
+				"strumlineData": [
+					{
+						"difficulty": "easy",
+						"notes": [
+							{
+								"strumTime": 10378.1965599383,
+								"noteID": 7,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 10702.5152024364,
+								"noteID": 5,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 10864.6745236854,
+								"noteID": 7,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 11026.8338449344,
+								"noteID": 4,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 11188.9931661835,
+								"noteID": 5,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 11351.1524874325,
+								"noteID": 7,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 11675.4711299306,
+								"noteID": 4,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 11999.7897724287,
+								"noteID": 5,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 12161.9490936777,
+								"noteID": 7,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 12324.1084149267,
+								"noteID": 4,
+								"type": "default",
+								"sustainLength": 0
+							}
+						]
+					},
+					{
+						"difficulty": "normal",
+						"notes": []
+					},
+					{
+						"difficulty": "hard",
+						"notes": []
+					}
+				]
+			}
+		],
+		"stage": "stage",
+		"inst": {
+			"loop": false,
+			"audio": {
+				"effects": [],
+				"name": "TestInst",
+				"assetPath": "data/songs/test/Inst"
+			},
+			"authors": "Noaa",
+			"bpm": 185
+		}
+	},
+	"authors": "Noaa",
+	"name": "Test"
+}

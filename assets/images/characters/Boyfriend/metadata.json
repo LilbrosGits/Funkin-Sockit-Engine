@@ -1,0 +1,9 @@
+{
+"version":"BTA 1.2.0",
+"name":"BF_TA",
+"backgroundColor":"#FFFFFF",
+"width":1280,
+"height":720,
+"asVersion":3,
+"framerate":24
+}

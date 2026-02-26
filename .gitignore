@@ -1,3 +1,4 @@
-export/*
-.vscode/*
-IDEAS
+export/
+.vscode/
+.haxelib/
+art/

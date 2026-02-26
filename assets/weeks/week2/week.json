@@ -1,0 +1,10 @@
+{
+    "weekName": "Week 2",
+    "songs": ["Spookeez", "South", "Monster"],
+    "characters": ["spooky", "gf", "bf"],
+    "difficulties": ["Easy", "Normal", "Hard"],
+    "hideFreeplay": false,
+    "startLocked": true,
+    "hideStoryMode": false,
+    "pos": 2
+}

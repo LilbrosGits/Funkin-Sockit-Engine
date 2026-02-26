@@ -1,112 +1,132 @@
 package funkin.obj;
 
+import assets.Paths;
+import objects.SockitSprite;
 import flixel.FlxSprite;
-import funkin.system.*;
+import flixel.graphics.frames.FlxAtlasFrames;
+import flixel.math.FlxMath;
+import flixel.util.FlxColor;
 
-class Note extends FlxSprite {
-    public static var noteWidth = 160 * 0.7;
-    public static var notes:Array<String> = ['purple', 'blue', 'green', 'red'];
-    public var noteData:Int = 0;
-    public var susNote:Bool = false; //GET OUT OF MY HEAD GET OUYT GET OPUT GET OUTFDRSHSZ
-    public var prevNote:Note;
-    public var mustHit:Bool = false;
-    public var susLength:Float;
-    public var strumTime:Float;
-    public var canHit:Bool = false; //hit notesss
-    public var late:Bool = false;
-    public var hit:Bool = false;
-    public var willMiss:Bool = false;
-    public var rating:String = '';
+using StringTools;
 
-    public function new(strumTime:Float, noteData:Int, ?previousNote:Note, ?isSus:Bool) {
-        super();
+class Note extends SockitSprite
+{
+	public var strumTime:Float = 0;
 
-        if (previousNote == null)
-            previousNote = this;
-        this.noteData = noteData;
-        susNote = isSus;
-        prevNote = previousNote;
-        this.strumTime = strumTime;
-        
-        x += 50;
-        x += noteWidth * noteData;
+	public var mustPress:Bool = false;
+	public var noteData:Int = 0;
+	public var canBeHit:Bool = false;
+	public var tooLate:Bool = false;
+	public var wasGoodHit:Bool = false;
+	public var prevNote:Note;
+	public var speed:Float = 1.0;
+	public var type:String = 'default';
 
-        y -= 2000;
-        //just in case???
+	public var sustainLength:Float = 0;
+	public var isSustainNote:Bool = false;
 
-        loadNotes();
-    }
+	public var noteScore:Float = 1;
 
-    function loadNotes(skin:String = 'NOTE_assets') {
-        antialiasing = Preferences.antialiasing;
-        frames = FunkinPaths.sparrowAtlas('UI/HUD/$skin');
-        animation.addByPrefix('purple', 'purple0', 24, false);
-        animation.addByPrefix('blue', 'blue0', 24, false);
-        animation.addByPrefix('green', 'green0', 24, false);
-        animation.addByPrefix('red', 'red0', 24, false);
-        animation.addByPrefix('purplehold', 'purple hold piece', 24, false);
-        animation.addByPrefix('bluehold', 'blue hold piece', 24, false);
-        animation.addByPrefix('greenhold', 'green hold piece', 24, false);
-        animation.addByPrefix('redhold', 'red hold piece', 24, false);
-        animation.addByPrefix('purpleholdend', 'pruple end hold', 24, false);
-        animation.addByPrefix('blueholdend', 'blue hold end', 24, false);
-        animation.addByPrefix('greenholdend', 'green hold end', 24, false);
-        animation.addByPrefix('redholdend', 'red hold end', 24, false);
+	public static var swagWidth:Float = 160 * 0.7;
+	public var dir:Array<String> = ['left', 'down', 'up', 'right'];
 
-        setGraphicSize(Std.int(width * 0.7));
+	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?type:String = 'default')
+	{
+		super(0, 0);
 
-        animation.play(notes[noteData]);
+		if (prevNote == null)
+			prevNote = this;
 
-        if (prevNote != null && susNote) {
-            if (Preferences.downscroll)
-                flipY = true;
-            
-            alpha = 0.5;
+		this.prevNote = prevNote;
+		isSustainNote = sustainNote;
+		// MAKE SURE ITS DEFINITELY OFF SCREEN?
+		x -= 20;
+		y -= 2000;
+		this.strumTime = strumTime;
 
-            x += width / 2;
+		this.noteData = noteData;
 
-            animation.play('${notes[noteData]}holdend');
+		this.type = type;
 
-            updateHitbox();
+		switch (type)
+		{
+			case 'retro':
+				loadSpriteFile(Paths.getJson('UI/noteStyles/retro/style'));
 
-            x -= width / 2;
+				setGraphicSize(Std.int(width * 0.65));
+				updateHitbox();
 
-            if (prevNote.susNote) {
-                prevNote.animation.play('${notes[prevNote.noteData]}hold');
-                prevNote.scale.y *= Conductor.stepCrochet / 100 * 1.5 * funkin.states.PlayState.song.speed;
-                prevNote.updateHitbox();
-            }
-        }
-    }
-    
-    override public function update(elapsed:Float) {
-        if (willMiss && !hit) {
-            late = true;
-            canHit = false;
-        }
-         if (mustHit) {
-            if (strumTime > Conductor.songPos - Conductor.milliFrames)
-            {
-                if (strumTime < Conductor.songPos + (Conductor.milliFrames * 0.5) || strumTime < Conductor.songPos + (Conductor.milliFrames * 0.4))
-                    canHit = true;
-            }
-            else
-            {
-                canHit = true;
-                willMiss = true;
-            }
-        }
-        else{
-            canHit = false;
-            
-            if (strumTime <= Conductor.songPos)
-                hit = true;
-        }
+			default:
+				loadSpriteFile(Paths.getJson('UI/noteStyles/default/style'));
 
-        if (late) {
-            alpha = 0.3;
-        }
-        
-        super.update(elapsed);
-    }
+				setGraphicSize(Std.int(width * 0.7));
+				updateHitbox();
+				antialiasing = true;
+		}
+
+		x += swagWidth * noteData;
+		playAnim(dir[noteData]);
+		// trace(prevNote);
+
+		if (isSustainNote && prevNote != null)
+		{
+			noteScore * 0.2;
+			alpha = 0.6;
+
+			x += width / 2;
+
+			playAnim('hold-' + dir[noteData]);
+
+			updateHitbox();
+
+			x -= width / 2;
+
+			if (type == 'retro')
+				x += 30;
+
+			if (prevNote.isSustainNote)
+			{
+				playAnim('endhold-' + dir[noteData]);
+
+				prevNote.scale.y *= Conductor.stepCrochet / 100 * 1.5 * speed;
+				prevNote.updateHitbox();
+				// prevNote.setGraphicSize();
+			}
+		}
+	}
+
+	override function update(elapsed:Float)
+	{
+		super.update(elapsed);
+
+		if (mustPress)
+		{
+			// The * 0.5 us so that its easier to hit them too late, instead of too early
+			if (strumTime > Conductor.songPosition - Conductor.safeZoneOffset
+				&& strumTime < Conductor.songPosition + (Conductor.safeZoneOffset * 0.5))
+			{
+				canBeHit = true;
+			}
+			else
+				canBeHit = false;
+
+			if (strumTime < Conductor.songPosition - Conductor.safeZoneOffset)
+				tooLate = true;
+		}
+		else
+		{
+			canBeHit = false;
+
+			if (strumTime <= Conductor.songPosition)
+			{
+				wasGoodHit = true;
+			}
+		}
+
+		if (tooLate)
+		{
+			if (alpha > 0.3)
+				alpha = 0.3;
+		}
+	}
 }

@@ -1,0 +1,113 @@
+{
+	"version": "0.0.0",
+	"transform": {
+		"pos": [
+			0,
+			0
+		]
+	},
+	"renderType": "sparrow",
+	"assetPath": "data/characters/spooky/skins/spooky_kids_assets",
+	"anims": [
+		{
+			"offsets": [
+				0,
+				0
+			],
+			"xmlName": "spooky dance idle",
+			"name": "danceLeft",
+			"flipX": false,
+			"flipY": false,
+			"loop": false,
+			"assetPath": "",
+			"postFix": "",
+			"frameRate": 12,
+			"indices": [
+				0,
+				2,
+				6
+			]
+		},
+		{
+			"assetPath": "",
+			"offsets": [
+				0,
+				0
+			],
+			"indices": [
+				8,
+				10,
+				12,
+				14
+			],
+			"flipX": false,
+			"flipY": false,
+			"postFix": "",
+			"frameRate": 12,
+			"loop": false,
+			"name": "danceRight",
+			"xmlName": "spooky dance idle"
+		},
+		{
+			"assetPath": "",
+			"offsets": [
+				90,
+				-30
+			],
+			"indices": [],
+			"flipX": false,
+			"flipY": false,
+			"postFix": "",
+			"frameRate": 24,
+			"loop": false,
+			"name": "singLEFT",
+			"xmlName": "note sing left"
+		},
+		{
+			"assetPath": "",
+			"offsets": [
+				-80,
+				-30
+			],
+			"indices": [],
+			"flipX": false,
+			"flipY": false,
+			"postFix": "",
+			"frameRate": 24,
+			"loop": false,
+			"name": "singRIGHT",
+			"xmlName": "spooky sing right"
+		},
+		{
+			"assetPath": "",
+			"offsets": [
+				0,
+				-20
+			],
+			"indices": [],
+			"flipX": false,
+			"flipY": false,
+			"postFix": "",
+			"frameRate": 24,
+			"loop": false,
+			"name": "singUP",
+			"xmlName": "spooky UP NOTE"
+		},
+		{
+			"assetPath": "",
+			"offsets": [
+				-30,
+				-170
+			],
+			"indices": [],
+			"flipX": false,
+			"flipY": false,
+			"postFix": "",
+			"frameRate": 24,
+			"loop": false,
+			"name": "singDOWN",
+			"xmlName": "spooky DOWN note"
+		}
+	],
+	"name": "Spooky Kids"
+}

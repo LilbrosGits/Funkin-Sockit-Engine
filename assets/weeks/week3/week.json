@@ -1,0 +1,10 @@
+{
+    "weekName": "Week 3",
+    "songs": ["Pico", "Philly", "Blammed"],
+    "characters": ["pico", "gf", "bf"],
+    "difficulties": ["Easy", "Normal", "Hard"],
+    "hideFreeplay": false,
+    "startLocked": true,
+    "hideStoryMode": false,
+    "pos": 3
+}

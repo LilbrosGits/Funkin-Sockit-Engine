@@ -1,0 +1,72 @@
+{
+"ANIMATION":{
+"name":"Untitled-2",
+"SYMBOL_name":"Dad Anims",
+"TIMELINE":{
+"LAYERS":[
+{
+"Layer_name":"Layer_1",
+"Frames":[
+{
+"name":"Idle",
+"index":0,
+"duration":14,
+"elements":[
+{"SYMBOL_Instance":{
+"SYMBOL_name":"Dad idle dance",
+"firstFrame":0,
+"symbolType":"graphic",
+"transformationPoint":{"x":209.85,"y":383.2},
+"loop":"loop",
+"Matrix":[1,0,0,1,376.75,547.15]
+}}]},{
+"name":"Left",
+"index":14,
+"duration":14,
+"elements":[
+{"SYMBOL_Instance":{
+"SYMBOL_name":"Dad Sing Note LEFT",
+"firstFrame":0,
+"symbolType":"graphic",
+"transformationPoint":{"x":-166.1,"y":-79.75},
+"loop":"loop",
+"Matrix":[1,0,0,1,0.8,84.2]
+}}]},{
+"name":"Right",
+"index":28,
+"duration":14,
+"elements":[
+{"SYMBOL_Instance":{
+"SYMBOL_name":"dad sing note right",
+"firstFrame":0,
+"symbolType":"graphic",
+"transformationPoint":{"x":-209.1,"y":-98.75},
+"loop":"loop",
+"Matrix":[1,0,0,1,-42.2,65.2]
+}}]},{
+"name":"Up",
+"index":42,
+"duration":14,
+"elements":[
+{"SYMBOL_Instance":{
+"SYMBOL_name":"Dad Sing note UP",
+"firstFrame":0,
+"symbolType":"graphic",
+"transformationPoint":{"x":209.85,"y":383.2},
+"loop":"loop",
+"Matrix":[1,0,0,1,376.75,547.15]
+}}]},{
+"name":"Down",
+"index":56,
+"duration":14,
+"elements":[
+{"SYMBOL_Instance":{
+"SYMBOL_name":"Dad Sing Note DOWN",
+"firstFrame":0,
+"symbolType":"graphic",
+"transformationPoint":{"x":-176.1,"y":-61.8},
+"loop":"loop",
+"Matrix":[1,0,0,1,-9.2,102.15]
+}}]}
+]}
+]}}}

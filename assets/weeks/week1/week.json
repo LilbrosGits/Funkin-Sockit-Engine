@@ -1,0 +1,10 @@
+{
+    "weekName": "Week 1",
+    "songs": ["Bopeebo", "Fresh", "DadBattle"],
+    "characters": ["dad", "gf", "bf"],
+    "difficulties": ["Easy", "Normal", "Hard"],
+    "hideFreeplay": false,
+    "startLocked": true,
+    "hideStoryMode": false,
+    "pos": 1
+}

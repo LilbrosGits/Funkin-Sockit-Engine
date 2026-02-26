@@ -1,0 +1,14 @@
+{
+    "options": [{
+        "displayName": "Anti Aliasing",
+        "dataName": "antialias",
+        "type": "bool",
+        "value": true
+    },
+    {
+        "displayName": "Ghost Tapping",
+        "dataName": "ghost",
+        "type": "bool",
+        "value": true
+    }]
+}

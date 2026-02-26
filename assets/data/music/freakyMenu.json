@@ -1,0 +1,13 @@
+{
+    "audio": {
+        "name": "FreakyMenu",
+        "assetPath": "music/freakyMenu",
+        "effects": [{
+            "time": "fadeIn",
+            "value": "4, 0, 0.7"
+        }]
+    },
+    "authors": "KawaiiSprite",
+    "bpm": 102,
+    "loop": true
+}

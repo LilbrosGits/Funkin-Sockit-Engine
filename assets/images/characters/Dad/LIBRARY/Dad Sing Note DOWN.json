@@ -1,0 +1,113 @@
+{"LAYERS":[
+{
+"Layer_name":"Layer_3",
+"Frames":[
+{
+"index":0,
+"duration":2,
+"elements":[
+{"SYMBOL_Instance":{
+"SYMBOL_name":"dad mic arm",
+"firstFrame":0,
+"symbolType":"graphic",
+"transformationPoint":{"x":399.5,"y":300.8},
+"loop":"loop",
+"Matrix":[0.778,0.624,-0.634,0.766,399.2,190.35]
+}},
+{"SYMBOL_Instance":{
+"SYMBOL_name":"dad mic hand sing",
+"firstFrame":0,
+"symbolType":"graphic",
+"transformationPoint":{"x":382.3,"y":248.75},
+"loop":"loop",
+"Matrix":[0.465,-0.869,0.882,0.456,289.05,251.95]
+}}]},{
+"index":2,
+"duration":14,
+"elements":[
+{"SYMBOL_Instance":{
+"SYMBOL_name":"dad mic arm",
+"firstFrame":0,
+"symbolType":"graphic",
+"transformationPoint":{"x":398.1,"y":292.65},
+"loop":"loop",
+"Matrix":[0.787,0.612,-0.612,0.787,395.25,181.15]
+}},
+{"SYMBOL_Instance":{
+"SYMBOL_name":"dad mic hand sing",
+"firstFrame":0,
+"symbolType":"graphic",
+"transformationPoint":{"x":379.8,"y":240.5},
+"loop":"loop",
+"Matrix":[0.51,-0.849,0.849,0.51,287.1,238.4]
+}}]}
+]},{
+"Layer_name":"Layer_2",
+"Frames":[
+{
+"index":0,
+"duration":2,
+"elements":[
+{"SYMBOL_Instance":{
+"SYMBOL_name":"Dad Head DOWN NOTE",
+"firstFrame":0,
+"symbolType":"graphic",
+"transformationPoint":{"x":309.05,"y":65.05},
+"loop":"loop",
+"Matrix":[0.91,0.412,-0.412,0.91,275.2,-95.6]
+}}]},{
+"index":2,
+"duration":14,
+"elements":[
+{"SYMBOL_Instance":{
+"SYMBOL_name":"Dad Head DOWN NOTE",
+"firstFrame":2,
+"symbolType":"graphic",
+"transformationPoint":{"x":303.05,"y":60.05},
+"loop":"loop",
+"Matrix":[0.92,0.387,-0.387,0.92,264.8,-99.65]
+}}]}
+]},{
+"Layer_name":"Layer_1",
+"Frames":[
+{
+"index":0,
+"duration":2,
+"elements":[
+{"SYMBOL_Instance":{
+"SYMBOL_name":"dad wasit",
+"firstFrame":0,
+"symbolType":"graphic",
+"transformationPoint":{"x":182.75,"y":634.75},
+"loop":"loop",
+"Matrix":[1.039,0,-0.019,0.96,3.75,277.75]
+}},
+{"SYMBOL_Instance":{
+"SYMBOL_name":"Dad chest sing",
+"firstFrame":0,
+"symbolType":"graphic",
+"transformationPoint":{"x":276.7,"y":217.95},
+"loop":"loop",
+"Matrix":[1.002,0.215,-0.211,0.951,139.35,5]
+}}]},{
+"index":2,
+"duration":14,
+"elements":[
+{"SYMBOL_Instance":{
+"SYMBOL_name":"dad wasit",
+"firstFrame":0,
+"symbolType":"graphic",
+"transformationPoint":{"x":182.6,"y":634.75},
+"loop":"loop",
+"Matrix":[1.02,0,-0.011,0.976,4.3,271.75]
+}},
+{"SYMBOL_Instance":{
+"SYMBOL_name":"Dad chest sing",
+"firstFrame":0,
+"symbolType":"graphic",
+"transformationPoint":{"x":274.25,"y":211.75},
+"loop":"loop",
+"Matrix":[1,0.195,-0.188,0.964,133,0]
+}}]}
+]}
+]}

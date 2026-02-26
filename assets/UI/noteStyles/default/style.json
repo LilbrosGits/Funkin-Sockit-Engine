@@ -1,0 +1,118 @@
+{
+    "name": "Funkin'",
+    "version": "0.0.0",
+    "renderType": "sparrow",
+    "assetPath": "UI/noteStyles/default/notes",
+    "anims": [{
+        "name": "left",
+        "xmlName": "purple0",
+        "offsets": [0, 0]
+    },
+    {
+        "name": "down",
+        "xmlName": "blue0",
+        "offsets": [0, 0]
+    },
+    {
+        "name": "up",
+        "xmlName": "green0",
+        "offsets": [0, 0]
+    },{
+        "name": "right",
+        "xmlName": "red0",
+        "offsets": [0, 0]
+    },
+    {
+        "name": "hold-left",
+        "xmlName": "purple hold piece",
+        "offsets": [0, 0]
+    },
+    {
+        "name": "hold-down",
+        "xmlName": "blue hold piece",
+        "offsets": [0, 0]
+    },
+    {
+        "name": "hold-up",
+        "xmlName": "green hold piece",
+        "offsets": [0, 0]
+    },{
+        "name": "hold-right",
+        "xmlName": "red hold piece",
+        "offsets": [0, 0]
+    },{
+        "name": "endhold-left",
+        "xmlName": "pruple end hold",
+        "offsets": [0, 0]
+    },
+    {
+        "name": "endhold-down",
+        "xmlName": "blue hold end",
+        "offsets": [0, 0]
+    },
+    {
+        "name": "endhold-up",
+        "xmlName": "green hold end",
+        "offsets": [0, 0]
+    },{
+        "name": "endhold-right",
+        "xmlName": "red hold end",
+        "offsets": [0, 0]
+    },
+    {
+        "name": "static-left",
+        "xmlName": "arrowLEFT",
+        "offsets": [0, 0]
+    },
+    {
+        "name": "static-down",
+        "xmlName": "arrowDOWN",
+        "offsets": [0, 0]
+    },
+    {
+        "name": "static-up",
+        "xmlName": "arrowUP",
+        "offsets": [0, 0]
+    },{
+        "name": "static-right",
+        "xmlName": "arrowRIGHT",
+        "offsets": [0, 0]
+    },{
+        "name": "hit-static-left",
+        "xmlName": "left press",
+        "offsets": [0, 0]
+    },
+    {
+        "name": "hit-static-down",
+        "xmlName": "down press",
+        "offsets": [0, 0]
+    },
+    {
+        "name": "hit-static-up",
+        "xmlName": "up press",
+        "offsets": [0, 0]
+    },{
+        "name": "hit-static-right",
+        "xmlName": "right press",
+        "offsets": [0, 0]
+    },
+    {
+        "name": "confirm-static-left",
+        "xmlName": "left confirm",
+        "offsets": [0, 0]
+    },
+    {
+        "name": "confirm-static-down",
+        "xmlName": "down confirm",
+        "offsets": [0, 0]
+    },
+    {
+        "name": "confirm-static-up",
+        "xmlName": "up confirm",
+        "offsets": [0, 0]
+    },{
+        "name": "confirm-static-right",
+        "xmlName": "right confirm",
+        "offsets": [0, 0]
+    }]
+}

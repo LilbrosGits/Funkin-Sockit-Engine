@@ -1,0 +1,10 @@
+{
+    "weekName": "Tutorial",
+    "songs": ["Tutorial"],
+    "characters": ["", "gf", "bf"],
+    "difficulties": ["Easy", "Normal", "Hard"],
+    "hideFreeplay": false,
+    "startLocked": false,
+    "hideStoryMode": false,
+    "pos": 0
+}
