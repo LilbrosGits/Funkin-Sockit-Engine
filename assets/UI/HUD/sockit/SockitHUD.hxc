@@ -1,0 +1,24 @@
+import flixel.ui.FlxBar.FlxBarFillDirection;
+import flixel.ui.FlxBar;
+import flixel.FlxSprite;
+
+var healthBarBG:FlxSprite;
+var healthBar:FlxBar;
+var healthDir:FlxBarFillDirection;
+
+function onLoad() {
+    healthBarBG = new FlxSprite(0, 0);
+    healthBarBG.loadGraphic(Paths.getImage('images/healthBar'));
+    healthBarBG.x = FlxG.width / 2 - healthBarBG.width / 2;
+    healthBarBG.y = FlxG.height * 0.9;
+    healthBarBG.scrollFactor.set();
+    add(healthBarBG);
+
+    healthDir = FlxBarFillDirection.RIGHT_TO_LEFT;
+
+    healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, healthDir, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), PlayState,
+        'health', 0, 2);
+    healthBar.scrollFactor.set();
+    healthBar.createFilledBar(0xFFFF0000, 0xFF66FF33);
+    add(healthBar);
+}

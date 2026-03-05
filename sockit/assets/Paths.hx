@@ -19,7 +19,7 @@ import sys.io.File;
 enum abstract Script(String)
 {
 	var JSON = ".json";
-	var SCRIPT = ".hx";
+	var SCRIPT = ".hxc";
 	var LUA = ".lua";
 	var TXT = ".txt";
 }

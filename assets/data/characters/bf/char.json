@@ -30,44 +30,88 @@
 				0,
 				0
 			],
+			"loop": false,
 			"postFix": "",
 			"frameRate": 24,
-			"loop": false,
-			"name": "singLEFT",
-			"xmlName": "BF NOTE LEFT"
+			"xmlName": "BF NOTE LEFT",
+			"name": "singLEFT"
 		},
 		{
+			"offsets": [
+				-50,
+				10
+			],
+			"loop": false,
+			"postFix": "",
+			"frameRate": 24,
+			"xmlName": "BF NOTE RIGHT",
+			"name": "singRIGHT"
+		},
+		{
+			"offsets": [
+				-10,
+				72
+			],
+			"loop": false,
+			"postFix": "",
+			"frameRate": 24,
+			"xmlName": "BF NOTE UP",
+			"name": "singUP"
+		},
+		{
+			"offsets": [
+				-20,
+				-40
+			],
+			"loop": false,
+			"postFix": "",
+			"frameRate": 24,
+			"xmlName": "BF NOTE DOWN",
+			"name": "singDOWN"
+		},
+		{
+			"loop": false,
 			"offsets": [
 				0,
 				0
 			],
-			"postFix": "",
 			"frameRate": 24,
-			"loop": false,
-			"name": "singRIGHT",
-			"xmlName": "BF NOTE RIGHT"
+			"postFix": "",
+			"xmlName": "BF NOTE LEFT MISS",
+			"name": "singLEFT-miss"
 		},
 		{
 			"offsets": [
-				0,
-				0
+				-40,
+				10
 			],
 			"postFix": "",
 			"frameRate": 24,
 			"loop": false,
-			"name": "singUP",
-			"xmlName": "BF NOTE UP"
+			"name": "singRIGHT-miss",
+			"xmlName": "BF NOTE RIGHT MISS"
 		},
 		{
 			"offsets": [
-				0,
-				0
+				-20,
+				60
 			],
 			"postFix": "",
 			"frameRate": 24,
 			"loop": false,
-			"name": "singDOWN",
-			"xmlName": "BF NOTE DOWN"
+			"name": "singUP-miss",
+			"xmlName": "BF NOTE UP MISS"
+		},
+		{
+			"offsets": [
+				-15,
+				-40
+			],
+			"postFix": "",
+			"frameRate": 24,
+			"loop": false,
+			"name": "singDOWN-miss",
+			"xmlName": "BF NOTE DOWN MISS"
 		}
 	],
 	"name": "Boyfriend"

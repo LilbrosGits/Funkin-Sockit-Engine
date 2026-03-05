@@ -28,30 +28,30 @@
 		{
 			"loop": false,
 			"offsets": [
-				0,
-				0
+				-10,
+				25
 			],
 			"frameRate": 24,
 			"postFix": "",
 			"xmlName": "Dad Sing Note LEFT",
+			"name": "singRIGHT"
+		},
+		{
+			"loop": false,
+			"offsets": [
+				48,
+				6
+			],
+			"frameRate": 24,
+			"postFix": "",
+			"xmlName": "dad sing note right",
 			"name": "singLEFT"
 		},
 		{
 			"loop": false,
 			"offsets": [
 				0,
-				0
-			],
-			"frameRate": 24,
-			"postFix": "",
-			"xmlName": "dad sing note right",
-			"name": "singRIGHT"
-		},
-		{
-			"loop": false,
-			"offsets": [
-				0,
-				0
+				60
 			],
 			"frameRate": 24,
 			"postFix": "",
@@ -62,7 +62,7 @@
 			"loop": false,
 			"offsets": [
 				0,
-				0
+				-10
 			],
 			"frameRate": 24,
 			"postFix": "",

@@ -369,6 +369,7 @@ class SpriteEditor extends FlxState
 			offsetX.step = 1;
 			offsetX.onChange = function(e)
 			{
+				mainSprite.spriteFile.anims[curAnim].offsets[0] = offsetX.value;
 				//mainSprite.animList.get(mainSprite.spriteFile.anims[curAnim].name).offsets[0] = offsetX.value;
 				mainSprite.playAnim(mainSprite.spriteFile.anims[curAnim].name);
 				mainSprite.animation.pause();
@@ -383,6 +384,7 @@ class SpriteEditor extends FlxState
 			offsetY.step = 1;
 			offsetY.onChange = function(e)
 			{
+				mainSprite.spriteFile.anims[curAnim].offsets[1] = offsetY.value;
 				//mainSprite.animList.get(mainSprite.spriteFile.anims[curAnim].name).offsets[1] = offsetY.value;
 				mainSprite.playAnim(mainSprite.spriteFile.anims[curAnim].name);
 				mainSprite.animation.pause();
@@ -609,7 +611,7 @@ class SpriteEditor extends FlxState
 					duplicateAnim.text = 'Duplicate';
 					duplicateAnim.onClick = function(e)
 					{
-						var anim = mainSprite.spriteFile.anims[animText.ID];
+						var anim:Anim = mainSprite.spriteFile.anims[animText.ID];
 						anim.name = anim.name + '(copy)';
 						mainSprite.spriteFile.anims.insert(animText.ID, anim);
 					};

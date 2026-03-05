@@ -1,0 +1,192 @@
+{
+	"playData": {
+		"variations": [
+			"Default"
+		],
+		"difficulties": [
+			"easy",
+			"normal",
+			"hard"
+		],
+		"strumlines": [
+			{
+				"cpu": false,
+				"character": "bf",
+				"strumlineAudio": {
+					"effects": [],
+					"name": "bf-vocals",
+					"assetPath": "data/songs/bopeebo/Voices-bf"
+				},
+				"scrollSpeed": 1,
+				"syncAudio": true,
+				"variation": "Default",
+				"strumPos": [
+					0,
+					50
+				],
+				"keys": 4,
+				"strumlineVisible": false,
+				"charPos": [
+					0,
+					0
+				],
+				"strumlineData": [
+					{
+						"difficulty": "easy",
+						"notes": [
+							{
+								"type": "default",
+								"strumTime": 0,
+								"sustainLength": 0,
+								"noteID": 2
+							},
+							{
+								"type": "default",
+								"strumTime": 567.567567567568,
+								"sustainLength": 0,
+								"noteID": 3
+							},
+							{
+								"type": "default",
+								"strumTime": 1216.21621621622,
+								"sustainLength": 0,
+								"noteID": 3
+							}
+						]
+					},
+					{
+						"difficulty": "normal",
+						"notes": [
+							{
+								"strumTime": 2432.43243243243,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 3081.08108108108,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 3648.64864864865,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 7216.21621621622,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 7864.86486486487,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 8432.43243243243,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 0
+							}
+						]
+					},
+					{
+						"difficulty": "hard",
+						"notes": []
+					}
+				]
+			},
+			{
+				"cpu": true,
+				"character": "dad",
+				"strumlineAudio": {
+					"effects": [],
+					"name": "dad-vocals",
+					"assetPath": "data/songs/bopeebo/Voices-dad"
+				},
+				"scrollSpeed": 1,
+				"syncAudio": true,
+				"variation": "Default",
+				"strumPos": [
+					0,
+					50
+				],
+				"keys": 4,
+				"strumlineVisible": false,
+				"charPos": [
+					0,
+					0
+				],
+				"strumlineData": [
+					{
+						"difficulty": "easy",
+						"notes": []
+					},
+					{
+						"difficulty": "normal",
+						"notes": [
+							{
+								"strumTime": 0,
+								"noteID": 6,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 648.648648648649,
+								"noteID": 7,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 1216.21621621622,
+								"noteID": 7,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 4864.86486486487,
+								"noteID": 6,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 6081.08108108108,
+								"noteID": 5,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 5432.43243243243,
+								"noteID": 4,
+								"type": "default",
+								"sustainLength": 0
+							}
+						]
+					},
+					{
+						"difficulty": "hard",
+						"notes": []
+					}
+				]
+			}
+		],
+		"stage": "stage",
+		"inst": {
+			"loop": false,
+			"audio": {
+				"effects": [],
+				"name": "BopeeboInst",
+				"assetPath": "data/songs/bopeebo/Inst"
+			},
+			"authors": "Noaa",
+			"bpm": 185
+		}
+	},
+	"authors": "Noaa",
+	"name": "Bopeebo"
+}

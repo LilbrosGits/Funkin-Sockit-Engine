@@ -21,9 +21,9 @@ class SockitScriptGroup
 	{
 		for (i in FileSystem.readDir(dir))
 		{
-			if (i.endsWith('.hx'))
+			if (i.endsWith('.hxc'))
 			{
-				var script:SockitScript = new SockitScript(dir + '/${i.replace('.hx', '')}');
+				var script:SockitScript = new SockitScript(dir + '/${i.replace('.hxc', '')}');
 				scripts.push(script);
 			}
 		}

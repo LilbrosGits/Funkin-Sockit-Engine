@@ -1,5 +1,6 @@
 package funkin.meta.states;
 
+import funkin.backend.inputs.PlayerSettings;
 import audio.SockitMusic;
 import text.SockitText;
 import meta.SockitState;
@@ -34,6 +35,7 @@ using StringTools;
 class IntroState extends GameState
 {
 	public function new() {
+		PlayerSettings.init();
 		super('menus/TitleMenu');
 	}
 

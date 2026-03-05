@@ -1,9 +1,11 @@
 package funkin.meta.states;
 
+import scripts.SockitScriptGroup;
 import funkin.obj.HUD;
 import flixel.util.FlxColor;
 import flixel.FlxCamera;
 import flixel.tweens.FlxEase;
+import flixel.math.FlxMath;
 import flixel.tweens.FlxTween;
 import flixel.FlxSprite;
 import flixel.util.FlxTimer;
@@ -17,9 +19,10 @@ import funkin.data.Song;
 import funkin.data.Song.SongData;
 
 class PlayState extends GameState {
-    public var song:SongData;
+    public static var song:SongData;
+    public static var difficulty:Int = 0;
     public static var instance:PlayState;
-    public static var editingEnabled:Bool = false;
+    public var editingEnabled:Bool = false;
     public var editorEnabled:Bool = false;
     public var stage:Stage;
     public var characters:Map<String, Character> = [];
@@ -29,11 +32,19 @@ class PlayState extends GameState {
     public var curStage:String = 'stage';
     public var inst:SockitMusic;
     public var vocals:Map<String, SockitMusic> = [];
-    var startTimer:FlxTimer;
+    public var startTimer:FlxTimer;
     public var camUI:FlxCamera;
     public var camGame:FlxCamera;
     public var camHUD:FlxCamera;
     public var hud:HUD;
+
+    //song scripting whaaaatttt
+    public var scripts:SockitScriptGroup;
+    public var camZoomTiming:Float = 4;
+
+    //gameplay variables
+
+    public var health:Float = 1;
 
     public function new() {
         super('PlayState');
@@ -53,7 +64,19 @@ class PlayState extends GameState {
         FlxG.cameras.add(camHUD);
         FlxG.cameras.add(camUI);
 
-        instance.song = Song.loadSong('test');
+        if (song == null)
+            song = Song.loadSong('test');
+
+        scripts = new SockitScriptGroup('data/scripts');
+        scripts.set('super', instance);
+        scripts.set('stage', stage);
+        scripts.set('characters', characters);
+        scripts.set('hud', hud);
+        scripts.set('strumlines', strumlineMap);
+        scripts.execute();
+
+        scripts.call('onCreate', []);
+
         curStage = song.playData.stage;
         stage = new Stage(curStage);
         stage.script.set('curBeat', curBeat);
@@ -71,23 +94,36 @@ class PlayState extends GameState {
         strumlineGrp.cameras = [camHUD];
         hud.cameras = [camHUD];
 
-        //add(stage);
+        add(stage);
         add(characterGrp);
         add(strumlineGrp);
         add(hud);
         stage.loadStage();
+        hud.loadHUD();
         loadCharacters();
         loadVocals();
+
+        scripts.call('onCreatePost', []);
         startCountdown();
     }
 
     override public function update(elapsed:Float) {
+        scripts.call('onUpdate', []);
         Conductor.songPosition = FlxG.sound.music.time;
+        if (camZoomTiming != 0)
+		{
+			camGame.zoom = FlxMath.lerp(0.65, FlxG.camera.zoom, 0.65);
+			camHUD.zoom = FlxMath.lerp(1, camHUD.zoom, 0.65);
+		}
         super.update(elapsed);
+        scripts.call('onUpdatePost', []);
     }
 
 	function startCountdown():Void
 	{
+        scripts.call('startCountdown', []);
+        loadStrumlines();
+
 		Conductor.songPosition = 0;
 		Conductor.songPosition -= Conductor.crochet * 5;
 
@@ -149,7 +185,6 @@ class PlayState extends GameState {
 					});
 					FlxG.sound.play('assets/sounds/intro1.ogg', 0.6);
 				case 3:
-                    loadStrumlines();
 					var go:FlxSprite = new FlxSprite().loadGraphic('assets/images/' + introAlts[2]);
 					go.scrollFactor.set();
 					go.updateHitbox();
@@ -165,6 +200,7 @@ class PlayState extends GameState {
 					});
 					FlxG.sound.play('assets/sounds/introGo.ogg', 0.6);
 				case 4:
+                    scripts.call('onSongStart', []);
                     playSong();
 			}
 
@@ -183,13 +219,23 @@ class PlayState extends GameState {
         }
     }
 
+    override public function beatHit() {
+        super.beatHit();
+
+        if (camZoomTiming != 0 && camGame.zoom < 1.35 && curBeat % camZoomTiming == 0)
+		{
+			camGame.zoom += 0.015;
+			camHUD.zoom += 0.03;
+		}
+    }
+
     public function loadStrumlines() {
         for (i in song.playData.strumlines) {
             var strumline:Strumline = new Strumline();
             strumline.loadStrumline(i, 'default');
             strumlineMap.set(i.character, strumline);
             strumlineGrp.add(strumline);
-            strumline.generateSong(i, 0);
+            strumline.generateSong(i, difficulty);
         }
     }
 

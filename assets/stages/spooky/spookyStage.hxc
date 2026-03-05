@@ -1,0 +1,15 @@
+var isHalloween = true;
+
+function onCreatePost()
+{
+    var halloweenBG:SockitSprite = new SockitSprite(-200, -100);
+    halloweenBG.setSparrow('stages/spooky/halloween_bg');
+    halloweenBG.animation.addByPrefix('idle', 'halloweem bg0');
+    halloweenBG.animation.addByPrefix('lightning', 'halloweem bg lightning strike', 24, false);
+    halloweenBG.animation.play('idle');
+    halloweenBG.antialiasing = true;
+    add(halloweenBG);
+
+    isHalloween = true;
+}
+    

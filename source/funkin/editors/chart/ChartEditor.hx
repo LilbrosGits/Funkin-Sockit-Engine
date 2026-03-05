@@ -1,5 +1,9 @@
 package funkin.editors.chart;
 
+import funkin.backend.songs.SongConverter;
+import haxe.ui.components.OptionStepper;
+import flixel.addons.display.FlxTiledSprite;
+import funkin.meta.states.PlayState;
 import funkin.data.Song.Difficulty;
 import flixel.text.FlxText;
 import flixel.FlxObject;
@@ -79,6 +83,8 @@ class ChartEditor extends GameState {
 
     public var infoText:FlxText;
 
+    public var bgGrid:FlxTiledSprite;
+
     public function new() {
         super('Chart Editor');
         instance = this;
@@ -95,10 +101,22 @@ class ChartEditor extends GameState {
 
         FlxG.cameras.reset(camChart);
         FlxG.cameras.add(camUI);
+        camChart.zoom = 1.5;
 
         winMan = new WindowManager();
 
         inst = new SockitMusic();
+
+        var bg:FlxSprite = new FlxSprite(0, 0).loadGraphic(Paths.getImage('images/menuDesat'));
+        bg.color = 0xD5FF75ED;
+        bg.alpha = 0.6;
+        bg.scrollFactor.set();
+        add(bg);
+
+        bgGrid = new FlxTiledSprite(Paths.getImage('UI/charter/grid'), 1280, 720, true, true);
+        bgGrid.alpha = 0.3;
+        bgGrid.scrollFactor.set();
+        add(bgGrid);
 
         initUI();
 
@@ -121,6 +139,8 @@ class ChartEditor extends GameState {
 
         dummyArrow.cameras = [camChart];
         strumSpr.cameras = [camChart];
+        bg.cameras = [camChart];
+        bgGrid.cameras = [camChart];
         infoText.cameras = [camUI];
 
         gridGrp = new FlxTypedGroup<ChartGrid>();
@@ -145,6 +165,10 @@ class ChartEditor extends GameState {
     override public function update(elapsed:Float) {
         super.update(elapsed);
 
+        bgGrid.scrollX = elapsed * 70;
+        
+        bgGrid.scrollY = elapsed * 70;
+
         if (FlxG.sound.music != null) {
             Conductor.songPosition = FlxG.sound.music.time;
 
@@ -166,6 +190,12 @@ class ChartEditor extends GameState {
 
         if (song != null) {
             updateGrids();
+
+            if (FlxG.keys.justPressed.ENTER) {
+                PlayState.song = song;
+                PlayState.difficulty = curDifficulty;
+                FlxG.switchState(new PlayState());
+            }
         }
         else {
             //SockitApplication.setWarning('Error!', 'The Current Grid Can\'t Be Updated');
@@ -182,6 +212,13 @@ class ChartEditor extends GameState {
 
         var fileMenu:Menu = new Menu();
         fileMenu.text = 'File';
+        
+        var newChart:MenuItem = new MenuItem();
+        newChart.text = 'New Chart';
+        newChart.onClick = function(_) {
+            createNewChart();
+        };
+        fileMenu.addComponent(newChart);
 
         var save:MenuItem = new MenuItem();
         save.text = 'Save Chart';
@@ -196,6 +233,13 @@ class ChartEditor extends GameState {
             loadChart();
         };
         fileMenu.addComponent(openChart);
+
+        var loadLegacy:MenuItem = new MenuItem();
+        loadLegacy.text = 'Open Funkin Legacy Chart';
+        loadLegacy.onClick = function(_) {
+            loadLegacyChart();
+        };
+        fileMenu.addComponent(loadLegacy);
 
         var viewMenu:Menu = new Menu();
         viewMenu.text = 'View';
@@ -218,14 +262,6 @@ class ChartEditor extends GameState {
         menuBar.cameras = [camUI];
         tabView.cameras = [camUI];
 
-        strumlineBox = new Box();
-		strumlineBox.width = 320;
-		strumlineBox.height = 400;
-		strumlineBox.x = 0;
-		strumlineBox.y = FlxG.height - 400;
-		strumlineBox.text = 'Strumline';
-		tabView.addComponent(strumlineBox);
-
         songBox = new Box();
 		songBox.width = 320;
 		songBox.height = 400;
@@ -233,6 +269,14 @@ class ChartEditor extends GameState {
 		songBox.y = FlxG.height - 400;
 		songBox.text = 'Song';
 		tabView.addComponent(songBox);
+
+        strumlineBox = new Box();
+		strumlineBox.width = 320;
+		strumlineBox.height = 400;
+		strumlineBox.x = 0;
+		strumlineBox.y = FlxG.height - 400;
+		strumlineBox.text = 'Strumline';
+		tabView.addComponent(strumlineBox);
     }
 
     public function createNewChart(mustDo:Bool = true) {
@@ -319,9 +363,31 @@ class ChartEditor extends GameState {
 
     public function reloadSongUI() {
         songBox.removeAllComponents(true);
+
+        var songVBox:VBox = new VBox();
+        songBox.addComponent(songVBox);
+
+        var songName:TextArea = new TextArea();
+        songName.text = song.name;
+        songName.onChange = function(e) {
+            song.name = songName.text;
+        };
+        songVBox.addComponent(songName);
+
+        var songDifficulty:DropDown = new DropDown();
+        for (i in song.playData.difficulties) {
+            songDifficulty.dataSource.add({id: i, text: i});
+        }
+        songDifficulty.selectedIndex = curDifficulty;
+        songDifficulty.onChange = function(e) {
+            curDifficulty = songDifficulty.selectedIndex;
+        };
+        songVBox.addComponent(songDifficulty);
+
     }
 
     public function reloadStrumlineUI() {
+        reloadSongUI();
         strumlineBox.removeAllComponents(true);
 
         if (song.playData.strumlines[curStrum] == null) {
@@ -428,11 +494,82 @@ class ChartEditor extends GameState {
     public function updateGrids() {
         if (song != null) {
             for (i in 0...song.playData.strumlines.length) {
-                if (i == curStrum) {
+                if (gridMap.get(song.playData.strumlines[i].character) != null) {
+                    for (note in gridMap.get(song.playData.strumlines[i].character).curRenderedNotes) {
+                        if (note.y < FlxG.height) {
+                            note.visible = true;
+                            note.active = true;
+                        }
+                        else {
+                            note.visible = false;
+                            note.active = false;
+                        }
+                    }
+                    for (sus in gridMap.get(song.playData.strumlines[i].character).curRenderedSustains) {
+                        if (sus.y > FlxG.height && sus.y > 0) {
+                            sus.visible = true;
+                            sus.active = true;
+                        }
+                        else {
+                            sus.visible = false;
+                            sus.active = false;
+                        }
+                    }
+                    if (FlxG.mouse.overlaps(gridMap.get(song.playData.strumlines[i].character).strum)) {
+                        dummyArrow.alpha = 0.6;
+                        dummyArrow.x = gridMap.get(song.playData.strumlines[i].character).strum.x + Math.floor(FlxG.mouse.x / 40) * 40;
+                        dummyArrow.y = Math.floor(FlxG.mouse.y / 40) * 40;
+                        if (i == curStrum) {
+                            if (FlxG.mouse.justPressed) {
+                                if (!FlxG.mouse.overlaps(gridMap.get(song.playData.strumlines[i].character).curRenderedNotes)) {
+                                    var newNote:NoteData = {
+                                    noteID: Math.floor(FlxG.mouse.x / 40),
+                                    strumTime: gridMap.get(song.playData.strumlines[curStrum].character).getStrumTime(dummyArrow.y),
+                                    type: 'default',
+                                    sustainLength: 0
+                                    }
+                                    addNote(newNote);
+                                }
+                            }
+                            if (FlxG.mouse.pressed) {
+                                    if (FlxG.mouse.overlaps(gridMap.get(song.playData.strumlines[i].character).curRenderedNotes)) {
+                                        for (note in song.playData.strumlines[curStrum].strumlineData[curDifficulty].notes) {
+                                            if (note.strumTime == gridMap.get(song.playData.strumlines[curStrum].character).getStrumTime(dummyArrow.y))
+                                            {
+                                                note.noteID = Math.floor(FlxG.mouse.x / 40);
+                                                note.strumTime = gridMap.get(song.playData.strumlines[curStrum].character).getStrumTime(dummyArrow.y);
+                                                note.sustainLength = 0 + gridMap.get(song.playData.strumlines[curStrum].character).getStrumTime(Math.floor(FlxG.mouse.deltaY / 40) * 40);
+                                            }
+                                        }
+                                    }
+                                }
+
+                            if (FlxG.mouse.justPressedRight) {
+                                for (note in song.playData.strumlines[curStrum].strumlineData[curDifficulty].notes) {
+                                    if (note.strumTime == gridMap.get(song.playData.strumlines[curStrum].character).getStrumTime(dummyArrow.y) && (note.noteID == Math.floor(FlxG.mouse.x / 40)))
+                                    {
+                                        trace('kill');
+                                        deleteNote(note);
+                                    }
+                                }
+                            }
+                        }
+                        else {
+                            if (FlxG.mouse.justPressed) {
+                                curStrum = i;
+                                reloadStrumlineUI();
+                            }
+                        }
+                    }
+                    else {
+                        dummyArrow.alpha = 0;
+                    }
+                }
+                    if (i == curStrum) {
                     infoText.text = 'Song: ${song.name}\n${Std.int(Conductor.songPosition / 1000)} : ${Std.int(FlxG.sound.music.length / 60000)}.${FlxMath.roundDecimal(Conductor.songPosition, 0)}\n Character: ${song.playData.strumlines[curStrum].character}';
                     if (gridMap.get(song.playData.strumlines[curStrum].character) != null) {
-                        gridMap.get(song.playData.strumlines[i].character).alpha = 1;
                         gridMap.get(song.playData.strumlines[curStrum].character).updateGrid(song.playData.strumlines[curStrum].strumlineData[curDifficulty].notes);
+                        gridMap.get(song.playData.strumlines[i].character).alpha = 1;
                         strumSpr.y = gridMap.get(song.playData.strumlines[curStrum].character).getYfromStrum(Conductor.songPosition);
                         strumSpr.x = gridMap.get(song.playData.strumlines[curStrum].character).x;
                         camFollow.x = 0 + gridGrp.members.length * 40;
@@ -453,63 +590,12 @@ class ChartEditor extends GameState {
                             gridMap.get(song.playData.strumlines[i].character).alpha = 0.6;
                         }
                     }
-
-                if (gridMap.get(song.playData.strumlines[i].character) != null) {
-                    if (FlxG.mouse.overlaps(gridMap.get(song.playData.strumlines[i].character).strum)) {
-                        dummyArrow.alpha = 0.6;
-                        dummyArrow.x = Math.floor(FlxG.mouse.x / 40) * 40;
-                        dummyArrow.y = Math.floor(FlxG.mouse.y / 40) * 40;
-                        if (i == curStrum) {
-                            if (FlxG.mouse.pressed) {
-                                if (!FlxG.mouse.overlaps(gridMap.get(song.playData.strumlines[i].character).curRenderedNotes)) {
-                                    var newNote:NoteData = {
-                                    noteID: Math.floor(FlxG.mouse.x / 40),
-                                    strumTime: gridMap.get(song.playData.strumlines[curStrum].character).getStrumTime(dummyArrow.y),
-                                    type: 'default',
-                                    sustainLength: 0
-                                    }
-                                    addNote(newNote);
-                                }
-                                else {
-                                    trace('ugh');
-                                    for (note in song.playData.strumlines[curStrum].strumlineData[curDifficulty].notes) {
-                                        if (note.strumTime == gridMap.get(song.playData.strumlines[curStrum].character).getStrumTime(dummyArrow.y) && note.noteID == Math.floor(FlxG.mouse.x / 40))
-                                        {
-                                            trace('yuh');
-                                            note.noteID = Math.floor(FlxG.mouse.x / 40);
-                                            note.strumTime = gridMap.get(song.playData.strumlines[curStrum].character).getStrumTime(dummyArrow.y);
-                                        }
-                                    }
-                                }
-                            }
-                            if (FlxG.mouse.justPressedRight) {
-                                if (FlxG.mouse.overlaps(gridMap.get(song.playData.strumlines[i].character).curRenderedNotes)) {
-                                    for (note in song.playData.strumlines[curStrum].strumlineData[curDifficulty].notes) {
-                                        if (note.strumTime == gridMap.get(song.playData.strumlines[curStrum].character).getStrumTime(dummyArrow.y) && note.noteID == Math.floor(FlxG.mouse.x / 40))
-                                        {
-                                            trace('kill');
-                                            deleteNote(note);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        else {
-                            if (FlxG.mouse.justPressed) {
-                                curStrum = i;
-                                reloadStrumlineUI();
-                            }
-                        }
-                    }
-                    else {
-                        dummyArrow.alpha = 0;
-                    }
-                }
             }
         }
     }
 
     function addNote(data:NoteData) {
+        trace(data.noteID);
         if (!song.playData.strumlines[curStrum].strumlineData[curDifficulty].notes.contains(data))
             song.playData.strumlines[curStrum].strumlineData[curDifficulty].notes.push(data);
     }
@@ -687,6 +773,16 @@ class ChartEditor extends GameState {
 		_file.browse([jsonFilter]);
 	}
 
+    public function loadLegacyChart()
+	{
+		var jsonFilter:FileFilter = new FileFilter('.JSON', 'json');
+		_file = new FileReference();
+		_file.addEventListener(Event.SELECT, onLegacyLoadComplete);
+		_file.addEventListener(Event.CANCEL, onLoadCancel);
+		_file.addEventListener(IOErrorEvent.IO_ERROR, onLoadError);
+		_file.browse([jsonFilter]);
+	}
+
     public function saveChart(songData:SongData)
 	{
 		var data:String = haxe.Json.stringify(songData, "\t");
@@ -778,6 +874,33 @@ class ChartEditor extends GameState {
 		if (fullPath != null)
 		{
 			song = haxe.Json.parse(sys.io.File.getContent(fullPath));
+            reloadStrumlineUI();
+            reloadInst();
+            reloadChartGrids();
+            Conductor.changeBPM(song.playData.inst.bpm);
+            for (i in song.playData.strumlines) {
+                var vocal:SockitMusic = new SockitMusic();
+                vocal.parseAudio(i.strumlineAudio);
+                vocals.set('${i.character}-vocals', vocal);
+            }
+		}
+		loadError = true;
+		_file = null;
+	}
+
+    	private function onLegacyLoadComplete(_):Void
+	{
+		_file.removeEventListener(Event.SELECT, onLoadComplete);
+		_file.removeEventListener(Event.CANCEL, onLoadCancel);
+		_file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
+		var fullPath:String = null;
+		@:privateAccess
+		if (_file.__path != null)
+			fullPath = _file.__path;
+
+		if (fullPath != null)
+		{
+			song = SongConverter.convertFromFunkinLegacy(sys.io.File.getContent(fullPath));
             reloadStrumlineUI();
             reloadInst();
             reloadChartGrids();

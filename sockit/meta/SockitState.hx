@@ -21,9 +21,9 @@ class SockitState extends FlxState
 		else
 			stateName = SockitState.stateName;
 
-		trace(Paths.getPath('$stateName.hx'));
+		trace(Paths.getPath('$stateName.hxc'));
 
-		if (FileSystem.exists('$stateName.hx'))
+		if (FileSystem.exists('$stateName.hxc'))
 		{
 			trace('has script');
 			script = new SockitScript('$stateName');
@@ -49,8 +49,6 @@ class SockitState extends FlxState
 
 	override public function destroy()
 	{
-		script.call('destroy', []);
-		script.destroy();
 		super.destroy();
 	}
 

@@ -37,6 +37,7 @@ typedef StrumlineData = {
 	var strumlineVisible:Bool;
 	var cpu:Bool;
 	var strumlineData:Array<Difficulty>;
+	var events:Array<EventData>;
 }
 typedef Difficulty = {
 	var difficulty:String;
@@ -48,6 +49,11 @@ typedef NoteData = {
 	var strumTime:Float;
 	var type:String;
 	var sustainLength:Float;
+}
+
+typedef EventData = {
+	var name:String;
+	var strumTime:Float;
 }
 
 class Song

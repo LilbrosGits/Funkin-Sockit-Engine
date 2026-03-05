@@ -1,5 +1,7 @@
 package funkin.obj.characters;
 
+import funkin.backend.scripts.FunkinImport;
+import scripts.SockitScriptGroup;
 import assets.Cache;
 import assets.Paths;
 import objects.SockitSprite;
