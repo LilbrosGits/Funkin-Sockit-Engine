@@ -14,5 +14,11 @@ class FunkinImport {
         script.interp.imports.set('funkin.meta.states.GameState', funkin.meta.states.GameState);
         @:privateAccess
         script.interp.imports.set('funkin.meta.states.PlayState', funkin.meta.states.PlayState);
+        @:privateAccess
+        script.interp.imports.set('funkin.data.Week', funkin.data.Week);
+        @:privateAccess
+        script.interp.imports.set('funkin.data.Song', funkin.data.Song);
+        @:privateAccess
+        script.interp.imports.set('flixel.group.FlxSpriteGroup', flixel.group.FlxSpriteGroup);
     }
 }

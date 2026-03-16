@@ -1,5 +1,8 @@
 package funkin.editors.chart;
 
+import funkin.data.Event.ScriptedEvent;
+import funkin.data.Song.EventData;
+import funkin.editors.chart.ChartGrid.EventGrid;
 import funkin.backend.songs.SongConverter;
 import haxe.ui.components.OptionStepper;
 import flixel.addons.display.FlxTiledSprite;
@@ -71,6 +74,9 @@ class ChartEditor extends GameState {
     public var camUI:FlxCamera;
     public var camChart:FlxCamera;
 
+    public var events:Array<ScriptedEvent> = [];
+    public var curEvent:Int = 0;
+
     public var inst:SockitMusic;
 
     public var dummyArrow:FlxSprite;
@@ -84,6 +90,8 @@ class ChartEditor extends GameState {
     public var infoText:FlxText;
 
     public var bgGrid:FlxTiledSprite;
+
+    public var eventGrid:EventGrid;
 
     public function new() {
         super('Chart Editor');
@@ -128,6 +136,17 @@ class ChartEditor extends GameState {
             reloadInst();
         }
 
+        for (script in FileSystem.readDir('data/scripts/events')) {
+            var event:ScriptedEvent = new ScriptedEvent(script.replace('.hxc', ''));
+            event.data = {
+                name: script.replace('.hxc', ''),
+                strumTime: 0,
+                values: []
+            };
+            event.loadEvent();
+            events.push(event);
+        }
+
         strumSpr = new FlxSprite(0, 0).makeGraphic(40 * 4, 10);
 
         dummyArrow = new FlxSprite(0, 0).makeGraphic(40, 40);
@@ -145,6 +164,11 @@ class ChartEditor extends GameState {
 
         gridGrp = new FlxTypedGroup<ChartGrid>();
         add(gridGrp);
+
+        eventGrid = new EventGrid();
+        eventGrid.loadEventGrid();
+        add(eventGrid);
+        eventGrid.cameras = [camChart];
 
         add(strumSpr);
 
@@ -194,6 +218,7 @@ class ChartEditor extends GameState {
             if (FlxG.keys.justPressed.ENTER) {
                 PlayState.song = song;
                 PlayState.difficulty = curDifficulty;
+                PlayState.editingEnabled = true;
                 FlxG.switchState(new PlayState());
             }
         }
@@ -488,6 +513,7 @@ class ChartEditor extends GameState {
                 gridMap.get(song.playData.strumlines[i].character).x = i * (song.playData.strumlines[i].keys + gridMap.get(song.playData.strumlines[i].character).width);
                 gridGrp.add(gridMap.get(song.playData.strumlines[i].character));
             }
+            eventGrid.x = 0 + song.playData.strumlines.length * gridMap.get(song.playData.strumlines[i].character).x;
         }
     }
 
@@ -517,7 +543,7 @@ class ChartEditor extends GameState {
                     }
                     if (FlxG.mouse.overlaps(gridMap.get(song.playData.strumlines[i].character).strum)) {
                         dummyArrow.alpha = 0.6;
-                        dummyArrow.x = gridMap.get(song.playData.strumlines[i].character).strum.x + Math.floor(FlxG.mouse.x / 40) * 40;
+                        dummyArrow.x = Math.floor(FlxG.mouse.x / 40) * 40 * i;
                         dummyArrow.y = Math.floor(FlxG.mouse.y / 40) * 40;
                         if (i == curStrum) {
                             if (FlxG.mouse.justPressed) {
@@ -561,13 +587,14 @@ class ChartEditor extends GameState {
                             }
                         }
                     }
-                    else {
+                    else if (!FlxG.mouse.overlaps(eventGrid.strum)) {
                         dummyArrow.alpha = 0;
                     }
                 }
                     if (i == curStrum) {
                     infoText.text = 'Song: ${song.name}\n${Std.int(Conductor.songPosition / 1000)} : ${Std.int(FlxG.sound.music.length / 60000)}.${FlxMath.roundDecimal(Conductor.songPosition, 0)}\n Character: ${song.playData.strumlines[curStrum].character}';
                     if (gridMap.get(song.playData.strumlines[curStrum].character) != null) {
+                        eventGrid.updateEvents(song.playData.strumlines[curStrum].events);
                         gridMap.get(song.playData.strumlines[curStrum].character).updateGrid(song.playData.strumlines[curStrum].strumlineData[curDifficulty].notes);
                         gridMap.get(song.playData.strumlines[i].character).alpha = 1;
                         strumSpr.y = gridMap.get(song.playData.strumlines[curStrum].character).getYfromStrum(Conductor.songPosition);
@@ -591,6 +618,26 @@ class ChartEditor extends GameState {
                         }
                     }
             }
+
+            if (FlxG.mouse.overlaps(eventGrid.strum)) {
+                dummyArrow.x = eventGrid.x;
+                dummyArrow.y = Math.floor(FlxG.mouse.y / 40) * 40;
+                if (FlxG.mouse.justPressed) {
+                    var newEvent:ScriptedEvent = new ScriptedEvent(events[curEvent].data.name);
+                    newEvent.data.strumTime = eventGrid.getStrumTime(dummyArrow.y);
+                    newEvent.loadEvent();
+                    newEvent.script.call('newEvent', [newEvent.data]);
+                    addEvent(newEvent.data);
+                }
+                if (FlxG.mouse.justPressedRight) {
+                    var newEvent:EventData = {
+                        name: events[curEvent].data.name.replace('.hxc', ''),
+                        strumTime: eventGrid.getStrumTime(dummyArrow.y),
+                        values: events[curEvent].data.values
+                    };
+                    deleteEvent(newEvent);
+                }
+            }
         }
     }
 
@@ -598,6 +645,20 @@ class ChartEditor extends GameState {
         trace(data.noteID);
         if (!song.playData.strumlines[curStrum].strumlineData[curDifficulty].notes.contains(data))
             song.playData.strumlines[curStrum].strumlineData[curDifficulty].notes.push(data);
+    }
+
+
+    function addEvent(data:EventData) {
+        trace(data);
+        if (!song.playData.strumlines[curStrum].events.contains(data))
+            song.playData.strumlines[curStrum].events.push(data);
+    }
+
+    function deleteEvent(data:EventData) {
+        for (i in 0...song.playData.strumlines[curStrum].events.length) {
+            if (song.playData.strumlines[curStrum].events[i] == data)
+                song.playData.strumlines[curStrum].events.remove(song.playData.strumlines[curStrum].events[i]);
+        }
     }
 
     function deleteNote(data:NoteData) {
@@ -658,7 +719,8 @@ class ChartEditor extends GameState {
             },
             syncAudio: true,
             strumlineVisible: true,
-            cpu: false
+            cpu: false,
+            events: []
         };
 
         var chr:Array<SpriteFile> = [];

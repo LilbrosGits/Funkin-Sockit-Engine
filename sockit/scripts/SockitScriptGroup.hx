@@ -15,10 +15,14 @@ using StringTools;
 
 class SockitScriptGroup
 {
-	var scripts:Array<SockitScript> = [];
+	public var scripts:Array<SockitScript> = [];
 
 	public function new(dir:String)
 	{
+		addFromDir(dir);
+	}
+
+	public function addFromDir(dir:String) {
 		for (i in FileSystem.readDir(dir))
 		{
 			if (i.endsWith('.hxc'))

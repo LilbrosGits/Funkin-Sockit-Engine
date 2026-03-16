@@ -1,5 +1,10 @@
 package funkin.meta.states;
 
+import funkin.backend.scripts.FunkinImport;
+import funkin.data.Event.ScriptedEvent;
+import funkin.meta.substates.GameSubState;
+import flixel.FlxSubState;
+import meta.SockitSubState;
 import scripts.SockitScriptGroup;
 import funkin.obj.HUD;
 import flixel.util.FlxColor;
@@ -18,11 +23,12 @@ import funkin.obj.Stage;
 import funkin.data.Song;
 import funkin.data.Song.SongData;
 
+using StringTools;
 class PlayState extends GameState {
     public static var song:SongData;
     public static var difficulty:Int = 0;
     public static var instance:PlayState;
-    public var editingEnabled:Bool = false;
+    public static var editingEnabled:Bool = false;
     public var editorEnabled:Bool = false;
     public var stage:Stage;
     public var characters:Map<String, Character> = [];
@@ -37,6 +43,7 @@ class PlayState extends GameState {
     public var camGame:FlxCamera;
     public var camHUD:FlxCamera;
     public var hud:HUD;
+    public var countdownFinished:Bool = false;
 
     //song scripting whaaaatttt
     public var scripts:SockitScriptGroup;
@@ -68,6 +75,9 @@ class PlayState extends GameState {
             song = Song.loadSong('test');
 
         scripts = new SockitScriptGroup('data/scripts');
+        scripts.addFromDir('data/scripts/events');
+        for (i in scripts.scripts)
+            FunkinImport.setImports(i);
         scripts.set('super', instance);
         scripts.set('stage', stage);
         scripts.set('characters', characters);
@@ -107,16 +117,48 @@ class PlayState extends GameState {
         startCountdown();
     }
 
+    public function onEvent(event:EventData) {
+        scripts.call('onEvent', [event]);
+    }
+
     override public function update(elapsed:Float) {
         scripts.call('onUpdate', []);
-        Conductor.songPosition = FlxG.sound.music.time;
+        if (countdownFinished && editorEnabled == false) {
+            Conductor.songPosition = FlxG.sound.music.time;
+            for (event in song.playData.strumlines[difficulty].events) {
+                if (event.strumTime <= Conductor.songPosition) {
+                    onEvent(event);
+                }
+            }
+        }
+
         if (camZoomTiming != 0)
 		{
-			camGame.zoom = FlxMath.lerp(0.65, FlxG.camera.zoom, 0.65);
-			camHUD.zoom = FlxMath.lerp(1, camHUD.zoom, 0.65);
+			camGame.zoom = FlxMath.lerp(0.65, FlxG.camera.zoom, 0.9);
+			camHUD.zoom = FlxMath.lerp(1, camHUD.zoom, 0.9);
 		}
         super.update(elapsed);
         scripts.call('onUpdatePost', []);
+
+        if (controls.PAUSE && countdownFinished && editorEnabled == false) {
+            openPauseMenu('data/scripts/menus/PauseMenu');
+        }
+    }
+
+    override public function openSubState(State:FlxSubState) {
+        persistentUpdate = false;
+        super.openSubState(State);
+    }
+
+    override public function closeSubState() {
+        persistentUpdate = true;
+        playSong();
+        super.closeSubState();
+    }
+
+    public function openPauseMenu(state:String) {
+        pauseSong();
+        openSubState(new GameSubState(state));
     }
 
 	function startCountdown():Void
@@ -200,6 +242,7 @@ class PlayState extends GameState {
 					});
 					FlxG.sound.play('assets/sounds/introGo.ogg', 0.6);
 				case 4:
+                    countdownFinished = true;
                     scripts.call('onSongStart', []);
                     playSong();
 			}
@@ -221,6 +264,14 @@ class PlayState extends GameState {
 
     override public function beatHit() {
         super.beatHit();
+
+        for (char in characters.keys()) {
+            if (!characters.get(char).animation.curAnim.name.startsWith('sing'))
+                characters.get(char).dance();
+
+            if (characters.get(char).animation.curAnim.name.startsWith('sing') && curBeat % 8 == 0)
+                characters.get(char).dance();
+        }
 
         if (camZoomTiming != 0 && camGame.zoom < 1.35 && curBeat % camZoomTiming == 0)
 		{

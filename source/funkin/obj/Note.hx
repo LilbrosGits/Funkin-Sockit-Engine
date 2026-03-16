@@ -30,6 +30,8 @@ class Note extends SockitSprite
 	public static var swagWidth:Float = 160 * 0.7;
 	public var dir:Array<String> = ['left', 'down', 'up', 'right'];
 
+	public var tooEarly:Bool = false;
+
 	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?type:String = 'default')
 	{
 		super(0, 0);
@@ -112,6 +114,10 @@ class Note extends SockitSprite
 
 			if (strumTime < Conductor.songPosition - Conductor.safeZoneOffset)
 				tooLate = true;
+			else {
+				if (strumTime > Conductor.songPosition + Conductor.safeZoneOffset && strumTime > Conductor.songPosition + (Conductor.safeZoneOffset * 0.5))
+					tooEarly = true;
+			}
 		}
 		else
 		{

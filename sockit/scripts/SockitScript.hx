@@ -1,14 +1,15 @@
 package scripts;
 
+import crowplexus.iris.Iris;
 import flixel.FlxObject;
 import application.SockitApplication;
 import assets.Cache;
 import assets.FileSystem;
 import assets.Paths;
 import audio.SockitMusic;
-import crowplexus.iris.Iris;
 import flixel.addons.display.FlxRuntimeShader;
 import flixel.ui.FlxBar;
+import crowplexus.iris.IrisConfig;
 import flixel.util.FlxColor;
 import flixel.util.FlxDirectionFlags;
 import flixel.util.FlxGradient;

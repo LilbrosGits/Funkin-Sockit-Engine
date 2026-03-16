@@ -20,9 +20,10 @@ class GameState extends SockitState
 		FunkinImport.setImports(script);
 		super.loadScript();
 	}
-	public function new(name:String = 'menus/MainMenu') {
+	public function new(name:String = 'data/scripts/menus/MainMenu') {
 		super(name);
 		if (script != null) {
+			script.set('controls', controls);
 			script.set('super', this);
 			script.set('Conductor', Conductor);
 		}
@@ -73,5 +74,10 @@ class GameState extends SockitState
 	public function beatHit():Void
 	{
 		call('onBeat', []);
+	}
+
+	override public function switchState(stateName:String)
+	{
+		flixel.FlxG.switchState(new GameState(stateName));
 	}
 }

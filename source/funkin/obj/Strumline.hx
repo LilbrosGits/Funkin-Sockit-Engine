@@ -151,29 +151,39 @@ class Strumline extends GameSubState {
 			}
 		}
 
-		notes.forEachAlive(function(daNote:Note) {
-			daNote.y = (data.strumPos[1] - (Conductor.songPosition - daNote.strumTime) * (0.45 * FlxMath.roundDecimal(data.scrollSpeed, 2)));
-			if (!daNote.mustPress) {
-				if (daNote.strumTime <= Conductor.songPosition) {
-					goodNoteHit(daNote);
+		if (PlayState.instance.countdownFinished && PlayState.instance.editorEnabled == false) {
+			notes.forEachAlive(function(daNote:Note) {
+				daNote.y = (data.strumPos[1] - (Conductor.songPosition - daNote.strumTime) * (0.45 * FlxMath.roundDecimal(data.scrollSpeed, 2)));
+				if (!daNote.mustPress) {
+					if (daNote.strumTime <= Conductor.songPosition) {
+						goodNoteHit(daNote);
+					}
 				}
-			}
-		});
+				else {
+					if (daNote.y < 0 - daNote.height) {
+						noteMiss(daNote.noteData);
+						daNote.kill();
+						notes.remove(daNote, true);
+						daNote.destroy();
+					}
+				}
+			});
 
-		for (strumNote in strumNotes.members) {
-			if (strumNote.animation.curAnim.finished && strumNote.animation.curAnim.name == 'confirm-static-' + ['left', 'down', 'up', 'right'][strumNote.ID])
-					strumNote.playAnim('static-' + ['left', 'down', 'up', 'right'][strumNote.ID]);
-			
-			if (strumNote.animation.curAnim.name == 'confirm-static-' + ['left', 'down', 'up', 'right'][strumNote.ID])
-			{
-				strumNote.centerOffsets();
-				strumNote.offset.x -= 13;
-				strumNote.offset.y -= 13;
+			for (strumNote in strumNotes.members) {
+				if (strumNote.animation.curAnim.finished && strumNote.animation.curAnim.name == 'confirm-static-' + ['left', 'down', 'up', 'right'][strumNote.ID])
+						strumNote.playAnim('static-' + ['left', 'down', 'up', 'right'][strumNote.ID]);
+				
+				if (strumNote.animation.curAnim.name == 'confirm-static-' + ['left', 'down', 'up', 'right'][strumNote.ID])
+				{
+					strumNote.centerOffsets();
+					strumNote.offset.x -= 13;
+					strumNote.offset.y -= 13;
+				}
+				else
+					strumNote.centerOffsets();
 			}
-			else
-				strumNote.centerOffsets();
+			keyShit();
 		}
-		keyShit();
 	}
 
 	private function keyShit():Void
@@ -194,13 +204,13 @@ class Strumline extends GameSubState {
 		var downR = controls.DOWN_R;
 		var leftR = controls.LEFT_R;
 
-		var pressArray:Array<Bool> = [leftP, downP, upP, rightP];
-		var holdArray:Array<Bool> = [left, down, up, right];
-		var releaseArray:Array<Bool> = [leftR, downR, upR, rightR];
+		var pressArray:Array<Bool> = [controls.LEFT_P, controls.DOWN_P, controls.UP_P, controls.RIGHT_P];
+		var holdArray:Array<Bool> = [controls.LEFT, controls.DOWN, controls.UP, controls.RIGHT];
+		var releaseArray:Array<Bool> = [controls.LEFT_R, controls.DOWN_R, controls.UP_R, controls.RIGHT_R];
 
 		var directions:Array<String> = ['left', 'down', 'up', 'right'];
 
-		if ((upP || rightP || downP || leftP))
+		if (pressArray.contains(true))
 		{
 			var possibleNotes:Array<Note> = [];
 
@@ -240,31 +250,35 @@ class Strumline extends GameSubState {
 										inIgnoreList = true;
 								}
 								if (!inIgnoreList)
-									badNoteCheck();
+									noteMiss(daNote.noteData);
 							}
 						}
 					}
 					else if (possibleNotes[0].noteData == possibleNotes[1].noteData)
 					{
-						noteCheck(pressArray[daNote.noteData], daNote);
+						if (pressArray[daNote.noteData])
+							goodNoteHit(daNote);
+						else {
+							noteMiss(daNote.noteData);
+						}
 					}
 					else
 					{
 						for (coolNote in possibleNotes)
 						{
-							noteCheck(pressArray[coolNote.noteData], coolNote);
+							if (pressArray[daNote.noteData])
+								goodNoteHit(coolNote);
+							else 
+								noteMiss(daNote.noteData);
 						}
 					}
 				}
 				else // regular notes?
 				{
-					noteCheck(pressArray[daNote.noteData], daNote);
-				}
-				if (daNote.wasGoodHit)
-				{
-					daNote.kill();
-					notes.remove(daNote, true);
-					daNote.destroy();
+					if (pressArray[daNote.noteData])
+						goodNoteHit(daNote);
+					else 
+						noteMiss(daNote.noteData);
 				}
 			}
 			else
@@ -276,9 +290,21 @@ class Strumline extends GameSubState {
 		if (holdArray.contains(true)) {
 			notes.forEachAlive(function(daNote:Note)
 			{
-				if (daNote.canBeHit && daNote.mustPress && daNote.isSustainNote)
+				if (daNote.canBeHit && daNote.mustPress && daNote.isSustainNote && daNote.strumTime <= Conductor.songPosition)
 				{
 					goodNoteHit(daNote);
+				}
+			});
+		}
+		else {
+			notes.forEachAlive(function(daNote:Note)
+			{
+				if (daNote.isSustainNote && daNote.prevNote.isSustainNote && daNote.canBeHit && daNote.mustPress && !daNote.tooLate) {
+					noteMiss(daNote.noteData);
+					daNote.canBeHit = false;
+					daNote.kill();
+					notes.remove(daNote, true);
+					daNote.destroy();
 				}
 			});
 		}
@@ -324,8 +350,8 @@ class Strumline extends GameSubState {
 
 	function noteMiss(direction:Int = 1):Void
 	{
-		if (PlayState.instance.characters.get(data.character).isPlayer)
-			PlayState.instance.characters.get(data.character).playAnim('sing${['LEFT', 'DOWN', 'UP', 'RIGHT'][direction].toUpperCase}-miss');
+		if (!data.cpu)
+			PlayState.instance.characters.get(data.character).playAnim('sing${['LEFT', 'DOWN', 'UP', 'RIGHT'][direction]}-miss', true);
 		
 		PlayState.instance.health -= 0.02;
 	}
@@ -353,7 +379,7 @@ class Strumline extends GameSubState {
 			goodNoteHit(note);
 		else
 		{
-			//badNoteCheck();
+			badNoteCheck();
 		}
 	}
 
@@ -373,16 +399,18 @@ class Strumline extends GameSubState {
 				});
 			}
 
-			PlayState.instance.characters.get(data.character).playAnim('sing${swag[note.noteData].toUpperCase()}');
+			PlayState.instance.characters.get(data.character).playAnim('sing${swag[note.noteData].toUpperCase()}', true);
 
 			if (!note.isSustainNote)
 			{
+				PlayState.instance.health += 0.02;
 				note.kill();
 				notes.remove(note, true);
 				note.destroy();
 			}
 
-			PlayState.instance.health += 0.02;
+			
+			PlayState.instance.health += 0.04;
 		}
 		else {
 			if (data != null && data.cpu) {
@@ -394,7 +422,7 @@ class Strumline extends GameSubState {
 				});
 			}
 
-			PlayState.instance.characters.get(data.character).playAnim('sing${swag[note.noteData].toUpperCase()}');
+			PlayState.instance.characters.get(data.character).playAnim('sing${swag[note.noteData].toUpperCase()}', true);
 
 			note.kill();
 			notes.remove(note, true);

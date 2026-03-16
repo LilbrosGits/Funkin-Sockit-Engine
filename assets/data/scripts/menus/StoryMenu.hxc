@@ -1,0 +1,110 @@
+import flixel.FlxSprite;
+import flixel.math.FlxMath;
+import funkin.data.Week.WeekData;
+import funkin.data.Week;
+import assets.FileSystem;
+import flixel.text.FlxText;
+import flixel.text.FlxText.FlxTextBorderStyle;
+import flixel.group.FlxSpriteGroup;
+
+using StringTools;
+
+var weekList:Array<FlxSprite> = [];
+var weekFiles:Array<WeekData> = [];
+
+var scoreText:FlxText;
+var songText:FlxText;
+
+var yellowBG:FlxSprite;
+
+var txtTracklist:FlxText;
+
+var curWeek:Int = 0;
+
+function onCreate() {
+    songText = new FlxText(FlxG.width, 10, 0, 'WEEK NAME', 32);
+    songText.setFormat(Paths.getFont('fonts/vcr'), 32, 0xFFFFFF, "center", FlxTextBorderStyle.OUTLINE, 0x000000, false);
+    add(songText);
+
+    scoreText = new FlxText(0, 10, 0, 'WEEK SCORE: ', 32);
+    scoreText.setFormat(Paths.getFont('fonts/vcr'), 32, 0xFFFFFF, "center", FlxTextBorderStyle.OUTLINE, 0x000000, false);
+    add(scoreText);
+
+    yellowBG = new FlxSprite(0, 56).makeGraphic(FlxG.width, 400, 0xFFF9CF51);
+    yellowBG.scrollFactor.set();
+
+    reloadWeekList();
+
+    add(yellowBG);
+
+    txtTracklist = new FlxText(200, 500, 0, 'TRACKS', 32);
+    txtTracklist.setFormat(Paths.getFont('fonts/vcr'), 32, 0xFFe55777, "center", FlxTextBorderStyle.OUTLINE, 0x000000, false);
+    add(txtTracklist);
+
+    selectSong(0);
+}
+
+function onUpdate() {
+    songText.x = FlxG.width - songText.width;
+
+    var ugh:Int = 0;
+    for (thing in weekList) {
+        if (thing.ID == curWeek) {
+            thing.y = FlxMath.lerp(thing.y, (thing.ID) + 480, 0.17);
+        }
+        else {
+            thing.y = FlxMath.lerp(thing.y, (ugh - (curWeek - thing.ID) * 120) + 480, 0.17);
+            ugh++;
+        }
+    }
+
+    if (controls.UP_P) {
+        selectSong(-1);
+    }
+
+    if (controls.DOWN_P) {
+        selectSong(1);
+    }
+}
+
+function selectSong(change:Int = 0) {
+    curWeek += change;
+
+    if (curWeek > weekFiles.length - 1)
+        curWeek = 0;
+    if (curWeek < 0)
+        curWeek = weekFiles.length - 1;
+
+    songText.text = weekFiles[curWeek].weekName;
+    txtTracklist.text = 'TRACKS\n';
+    for (track in weekFiles[curWeek].songs) {
+        txtTracklist.text += track + '\n';
+    }
+    txtTracklist.x = 200 - txtTracklist.width / 2;
+
+    for (week in weekList) {
+        if (week.ID == curWeek) {
+            week.alpha = 1;
+        }
+        else {
+            week.alpha = 0.6;
+        }
+    }
+}
+
+function reloadWeekList() {
+    for (folder in FileSystem.readDir('data/weeks/')) {
+        trace('data/weeks/' + folder);
+        weekFiles.push(Week.parseFile(folder.replace('.json', '')));
+    }
+    for (weeks in 0...weekFiles.length) {
+        var weekSpr:FlxSprite = new FlxSprite(FlxG.width / 2, 0);
+        weekSpr.ID = weeks;
+        weekSpr.loadGraphic(Paths.getImage('images/storymenu/titles/week' + weeks));
+        weekSpr.y = yellowBG.height + 20 + (weeks * 50);
+        weekSpr.x = weekSpr.x - weekSpr.width / 2;
+        weekSpr.y += ((weekSpr.height + 20) * weeks);
+        weekList.push(weekSpr);
+        add(weekList[weeks]);
+    }
+}

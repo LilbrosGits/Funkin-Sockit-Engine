@@ -14,7 +14,7 @@ class SockitSubState extends FlxSubState
 
 	public var script:SockitScript;
 
-	public function new(stateName:String = 'menus/MainMenu') // the state name is used in debug !!
+	public function new(stateName:String = 'data/scripts/menus/MainMenu') // the state name is used in debug !!
 	{
 		if (stateName != null)
 			SockitState.stateName = stateName;

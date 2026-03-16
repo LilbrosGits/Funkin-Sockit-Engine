@@ -73,7 +73,8 @@ class SongConverter {
                     },{
                     difficulty: 'hard',
                     notes: convertFunkinLegacyNotes(swagShit.notes)
-                    }]
+                    }],
+                    events: [],
                 }, {
                     variation: 'Default',
                     keys: 4,
@@ -98,7 +99,8 @@ class SongConverter {
                     },{
                     difficulty: 'hard',
                     notes: convertFunkinLegacyNotes(swagShit.notes, false)
-                    }]
+                    }],
+                    events: [],
                 }],
                 stage: 'stage'
             }
@@ -118,7 +120,18 @@ class SongConverter {
                             sustainLength: note[2],
                             type: 'default'
                         };
-                        songNotes.push(newNote);
+                        if (note[1] < 4)
+                            songNotes.push(newNote);
+                    }
+                    else {
+                        var newNote:NoteData = {
+                            noteID: Std.int(note[1] % 4),
+                            strumTime: note[0],
+                            sustainLength: note[2],
+                            type: 'default'
+                        };
+                        if (note[1] > 4)
+                            songNotes.push(newNote);
                     }
                 }
                 else {
@@ -129,7 +142,18 @@ class SongConverter {
                             sustainLength: note[2],
                             type: 'default'
                         };
-                        songNotes.push(newNote);
+                        if (note[1] < 4)
+                            songNotes.push(newNote);
+                    }
+                    else {
+                        var newNote:NoteData = {
+                            noteID: Std.int(note[1] % 4),
+                            strumTime: note[0],
+                            sustainLength: note[2],
+                            type: 'default'
+                        };
+                        if (note[1] > 4)
+                            songNotes.push(newNote);
                     }
                 }
 

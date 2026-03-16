@@ -1,0 +1,113 @@
+import flixel.FlxSprite;
+import funkin.backend.inputs.Controls.Control;
+import funkin.meta.states.PlayState;
+import funkin.editors.chart.ChartEditor;
+import flixel.FlxG;
+import flixel.FlxSprite;
+import flixel.FlxSubState;
+import flixel.sound.FlxSound;
+import text.SockitText;
+
+var grpMenuShit:Array<SockitText> = [];
+
+var menuItems:Array<String> = ['Resume', 'Restart Song', 'Exit to menu'];
+var curSelected:Int = 0;
+
+var pauseMusic:FlxSound;
+
+var bg:FlxSprite;
+
+function onCreatePost()
+{
+    pauseMusic = new FlxSound().loadEmbedded('assets/music/breakfast.ogg', true, true);
+    pauseMusic.volume = 0;
+    pauseMusic.play(false, FlxG.random.int(0, Std.int(pauseMusic.length / 2)));
+
+    FlxG.sound.list.add(pauseMusic);
+
+    if (PlayState.editingEnabled) {
+        menuItems = ['Resume', 'Restart Song', 'Return To Chart Editor']; 
+    } 
+    
+    bg = new FlxSprite(0, 0);
+    bg.makeGraphic(FlxG.width, FlxG.height, 0x000000);
+    bg.alpha = 0.6;
+    bg.scrollFactor.set();
+    add(bg);
+
+    for (i in 0...menuItems.length)
+    {
+        var songText:SockitText = new SockitText(0, 200 + (70 * i) + 30, menuItems[i]);
+        songText.ID = i;
+        grpMenuShit.push(songText);
+        add(grpMenuShit[i]);
+    }
+
+    changeSelection(0);
+
+    super.cameras = [PlayState.instance.camHUD];
+}
+
+function onUpdatePost()
+{
+    if (pauseMusic.volume < 0.5)
+        pauseMusic.volume += 0.01 * FlxG.elapsed;
+
+    var upP = controls.UP_P;
+    var downP = controls.DOWN_P;
+    var accepted = controls.ACCEPT;
+
+    if (upP)
+    {
+        changeSelection(-1);
+    }
+    if (downP)
+    {
+        changeSelection(1);
+    }
+
+    if (accepted)
+    {
+        var daSelected:String = menuItems[curSelected];
+
+        switch (daSelected)
+        {
+            case "Resume":
+                super.close();
+            case "Restart Song":
+                FlxG.resetState();
+            case "Exit to menu":
+                switchState('data/scripts/menus/MainMenu');
+            case "Return To Chart Editor":
+                ChartEditor.instance.song = PlayState.song;
+                FlxG.switchState(new ChartEditor());
+        }
+    }
+
+    if (FlxG.keys.justPressed.J)
+    {
+        // for reference later!
+        // PlayerSettings.player1.controls.replaceBinding(Control.LEFT, Keys, FlxKey.J, null);
+    }
+}
+function changeSelection(change:Int = 0):Void
+{
+    curSelected += change;
+
+    if (curSelected < 0)
+        curSelected = menuItems.length - 1;
+    if (curSelected >= menuItems.length)
+        curSelected = 0;
+
+    var bullShit:Int = 0;
+
+    for (item in grpMenuShit)
+    {
+        if (item.ID == curSelected)
+        {
+            item.alpha = 1;
+        }
+        else
+            item.alpha = 0.6;
+    }
+}

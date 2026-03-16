@@ -77,25 +77,24 @@ class ChartGrid extends FlxSpriteGroup {
 }
 
 class EventGrid extends ChartGrid {
-    public var strum:FlxTiledSprite;
     public var curRenderedEvents:FlxTypedSpriteGroup<FlxSprite>;
 
     public function new() {
         super();
     }
 
-    public function loadGrid(keys:Int, charName:String) {
-        this.width = 40 * keys;
+    public function loadEventGrid() {
+        this.width = 40;
         this.height = (FlxG.sound.music != null) ? Math.floor(FlxG.sound.music.length * 40) / 40 : 40;
         strum = new FlxTiledSprite(Paths.getImage('UI/charter/grid'), 40, (FlxG.sound.music != null) ? Math.floor(FlxG.sound.music.length * 40) / 40 : 40, true, true);
         add(strum);
 
-        curRenderedEvents = new FlxTypedSpriteGroup<Note>();
+        curRenderedEvents = new FlxTypedSpriteGroup<FlxSprite>();
 
         add(curRenderedEvents);
     }
 
-    override public function updateGrid(notes:Array<EventData>) {
+    public function updateEvents(notes:Array<EventData>) {
         while (curRenderedEvents.members.length > 0)
         {
             curRenderedEvents.remove(curRenderedEvents.members[0], true);
@@ -103,22 +102,12 @@ class EventGrid extends ChartGrid {
 
         for (i in notes)
         {
-            var note:FlxSprite = new FlxSprite(i.strumTime, i.noteID % 4).loadGraphic(Paths.getImage('UI/charter/eventObject'));
+            var note:FlxSprite = new FlxSprite(i.strumTime, 0).loadGraphic(Paths.getImage('UI/charter/eventObject'));
             note.setGraphicSize(40, 40);
             note.updateHitbox();
             note.y = Math.floor(getYfromStrum((i.strumTime)));
 
             curRenderedEvents.add(note);
         }
-    }
-
-    public function getStrumTime(yPos:Float):Float
-    {
-        return FlxMath.remapToRange(yPos, strum.y, strum.y + strum.height, 0, (FlxG.sound.music != null) ? Math.floor(FlxG.sound.music.length / 40) * Conductor.stepCrochet : 0);
-    }
-
-    public function getYfromStrum(strumTime:Float):Float
-    {
-        return FlxMath.remapToRange(strumTime, 0, (FlxG.sound.music != null) ? Math.floor(FlxG.sound.music.length / 40) * Conductor.stepCrochet : 0, strum.y, strum.y + strum.height);
     }
 }

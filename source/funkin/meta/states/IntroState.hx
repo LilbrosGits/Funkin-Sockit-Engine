@@ -36,7 +36,8 @@ class IntroState extends GameState
 {
 	public function new() {
 		PlayerSettings.init();
-		super('menus/TitleMenu');
+		
+		super('data/scripts/menus/TitleMenu');
 	}
 
 	override public function create():Void

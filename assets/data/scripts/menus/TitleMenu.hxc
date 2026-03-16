@@ -110,7 +110,7 @@ function onUpdate(elapsed) {
 
         new FlxTimer().start(2, function(tmr:FlxTimer)
         {
-            FlxG.switchState(new SockitState('menus/MainMenu'));
+            switchState('data/scripts/menus/MainMenu');
         });
     }
 
@@ -143,8 +143,6 @@ function onBeat() {
         gfDance.animation.play('danceRight');
     else
         gfDance.animation.play('danceLeft');
-
-    FlxG.log.add(super.curBeat);
 
     switch (super.curBeat)
     {

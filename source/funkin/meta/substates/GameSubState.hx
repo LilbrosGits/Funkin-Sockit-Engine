@@ -1,5 +1,6 @@
 package funkin.meta.substates;
 
+import funkin.meta.states.GameState;
 import meta.SockitSubState;
 import funkin.backend.inputs.PlayerSettings;
 import funkin.backend.scripts.FunkinImport;
@@ -23,6 +24,7 @@ class GameSubState extends SockitSubState
 	public function new(name:String = '') {
 		super(name);
 		if (script != null) {
+			script.set('controls', controls);
 			script.set('super', this);
 			script.set('Conductor', Conductor);
 		}
@@ -73,5 +75,10 @@ class GameSubState extends SockitSubState
 	public function beatHit():Void
 	{
 		call('onBeat', []);
+	}
+
+	override public function switchState(stateName:String)
+	{
+		flixel.FlxG.switchState(new GameState(stateName));
 	}
 }

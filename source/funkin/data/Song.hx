@@ -54,6 +54,12 @@ typedef NoteData = {
 typedef EventData = {
 	var name:String;
 	var strumTime:Float;
+	var values:Array<EventValue>;
+}
+
+typedef EventValue = {
+	var name:String;
+	var value:Dynamic;
 }
 
 class Song

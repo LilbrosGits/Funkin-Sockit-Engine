@@ -14,7 +14,7 @@ typedef WeekData = {
 }
 
 class Week {
-    var data:WeekData;
+    public var data:WeekData;
     public function new(weekName, songs, characters, difficulties, startLocked, hideFreeplay, hideStoryMode, pos) {
         data = {
             weekName: weekName,
@@ -28,9 +28,9 @@ class Week {
         };
     }
 
-    public function parseFile(file:String) {
-        var data = Paths.getJson('weeks/$file/week.json');
+    public static function parseFile(file:String):WeekData {
+        var data = Paths.getJson('data/weeks/$file');
 
-        this.data = data;
+        return data;
     }
 }

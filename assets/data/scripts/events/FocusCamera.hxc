@@ -1,0 +1,26 @@
+import funkin.data.Song;
+import funkin.meta.states.PlayState;
+import funkin.editors.chart.ChartEditor;
+
+function newEvent(event:Song.EventData) {
+    var newEvent:Song.EventData = event;
+    if (newEvent.values == []) {
+        newEvent.values.push({name:'focusOn', value: 'bf'});
+        newEvent.values.push({name:'type', value: 'classic'});
+        newEvent.values.push({name:'duration', value: 0});
+        return newEvent;
+        trace('loaded default event measures');
+    }
+    else {
+        return newEvent;
+    }
+}
+
+function onEvent(event:Song.EventData) {
+    for (evnt in event.values) {
+        if (evnt.name == 'focusOn') {
+            trace(evnt.name);
+            PlayState.instance.camGame.setPosition(PlayState.instance.characters.get(evnt.value).getGraphicMidPoint().x, PlayState.instance.characters.get(evnt.value).getGraphicMidPoint().y);
+        }
+    }
+}

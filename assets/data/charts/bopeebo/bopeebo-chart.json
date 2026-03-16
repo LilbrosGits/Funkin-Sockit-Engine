@@ -1,5 +1,7 @@
 {
+	"authors": "N/A",
 	"playData": {
+		"stage": "stage",
 		"variations": [
 			"Default"
 		],
@@ -8,185 +10,2204 @@
 			"normal",
 			"hard"
 		],
+		"inst": {
+			"authors": "N/A",
+			"bpm": 100,
+			"audio": {
+				"assetPath": "data/songs/bopeebo/Inst",
+				"effects": [],
+				"name": "BopeeboInst"
+			},
+			"loop": false
+		},
 		"strumlines": [
 			{
-				"cpu": false,
-				"character": "bf",
 				"strumlineAudio": {
+					"assetPath": "data/songs/bopeebo/Voices-bf",
 					"effects": [],
-					"name": "bf-vocals",
-					"assetPath": "data/songs/bopeebo/Voices-bf"
+					"name": "bf-vocals"
 				},
-				"scrollSpeed": 1,
-				"syncAudio": true,
 				"variation": "Default",
-				"strumPos": [
-					0,
-					50
-				],
-				"keys": 4,
-				"strumlineVisible": false,
-				"charPos": [
-					0,
-					0
-				],
+				"events": [],
 				"strumlineData": [
 					{
-						"difficulty": "easy",
 						"notes": [
 							{
-								"type": "default",
-								"strumTime": 0,
-								"sustainLength": 0,
-								"noteID": 2
-							},
-							{
-								"type": "default",
-								"strumTime": 567.567567567568,
-								"sustainLength": 0,
-								"noteID": 3
-							},
-							{
-								"type": "default",
-								"strumTime": 1216.21621621622,
-								"sustainLength": 0,
-								"noteID": 3
-							}
-						]
-					},
-					{
-						"difficulty": "normal",
-						"notes": [
-							{
-								"strumTime": 2432.43243243243,
+								"strumTime": 2400,
 								"noteID": 2,
 								"type": "default",
 								"sustainLength": 0
 							},
 							{
-								"strumTime": 3081.08108108108,
+								"strumTime": 3000,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 3450,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 600
+							},
+							{
+								"strumTime": 7200,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 300
+							},
+							{
+								"strumTime": 7800,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 300
+							},
+							{
+								"strumTime": 8400,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 300
+							},
+							{
+								"strumTime": 12000,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 150
+							},
+							{
+								"strumTime": 12600,
 								"noteID": 3,
 								"type": "default",
 								"sustainLength": 0
 							},
 							{
-								"strumTime": 3648.64864864865,
-								"noteID": 3,
-								"type": "default",
-								"sustainLength": 0
-							},
-							{
-								"strumTime": 7216.21621621622,
-								"noteID": 2,
-								"type": "default",
-								"sustainLength": 0
-							},
-							{
-								"strumTime": 7864.86486486487,
+								"strumTime": 12900,
 								"noteID": 0,
 								"type": "default",
 								"sustainLength": 0
 							},
 							{
-								"strumTime": 8432.43243243243,
+								"strumTime": 13200,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 16800,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 17100,
 								"noteID": 1,
 								"type": "default",
 								"sustainLength": 0
+							},
+							{
+								"strumTime": 17700,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 18000,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 300
+							},
+							{
+								"strumTime": 21600,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 21900,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 22200,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 750
+							},
+							{
+								"strumTime": 26700,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 27000,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 750
+							},
+							{
+								"strumTime": 26400,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 31200,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 31500,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 31800,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 1050
+							},
+							{
+								"strumTime": 36000,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 36300,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 36900,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 37200,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 40800,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 41400,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 300
+							},
+							{
+								"strumTime": 42000,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 45600,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 46200,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 46800,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 46950,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 47100,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 47400,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 50400,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 51000,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 300
+							},
+							{
+								"strumTime": 51600,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 55200,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 1650
+							},
+							{
+								"strumTime": 55650,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 60000,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 60300,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 60600,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 1050
+							},
+							{
+								"strumTime": 62100,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 64800,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 65100,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 65700,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 66000,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 69600,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 69900,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 70200,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 70500,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 70800,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 71700,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 74400,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 74700,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 75300,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 75600,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 450
 							}
-						]
+						],
+						"difficulty": "easy"
 					},
 					{
-						"difficulty": "hard",
-						"notes": []
+						"notes": [
+							{
+								"strumTime": 2400,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 3000,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 3450,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 600
+							},
+							{
+								"strumTime": 7200,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 300
+							},
+							{
+								"strumTime": 7800,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 300
+							},
+							{
+								"strumTime": 8400,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 300
+							},
+							{
+								"strumTime": 12000,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 150
+							},
+							{
+								"strumTime": 12600,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 12900,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 13200,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 16800,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 17100,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 17700,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 18000,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 300
+							},
+							{
+								"strumTime": 21600,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 21900,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 22200,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 750
+							},
+							{
+								"strumTime": 26700,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 27000,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 750
+							},
+							{
+								"strumTime": 26400,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 31200,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 31500,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 31800,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 1050
+							},
+							{
+								"strumTime": 36000,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 36300,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 36900,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 37200,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 40800,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 41400,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 300
+							},
+							{
+								"strumTime": 42000,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 45600,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 46200,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 46800,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 46950,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 47100,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 47400,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 50400,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 51000,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 300
+							},
+							{
+								"strumTime": 51600,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 55200,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 1650
+							},
+							{
+								"strumTime": 55650,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 60000,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 60300,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 60600,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 1050
+							},
+							{
+								"strumTime": 62100,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 64800,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 65100,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 65700,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 66000,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 69600,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 69900,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 70200,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 70500,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 70800,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 71700,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 74400,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 74700,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 75300,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 75600,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 450
+							}
+						],
+						"difficulty": "normal"
+					},
+					{
+						"notes": [
+							{
+								"strumTime": 2400,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 3000,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 3450,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 600
+							},
+							{
+								"strumTime": 7200,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 300
+							},
+							{
+								"strumTime": 7800,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 300
+							},
+							{
+								"strumTime": 8400,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 300
+							},
+							{
+								"strumTime": 12000,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 150
+							},
+							{
+								"strumTime": 12600,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 12900,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 13200,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 16800,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 17100,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 17700,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 18000,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 300
+							},
+							{
+								"strumTime": 21600,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 21900,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 22200,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 750
+							},
+							{
+								"strumTime": 26700,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 27000,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 750
+							},
+							{
+								"strumTime": 26400,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 31200,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 31500,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 31800,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 1050
+							},
+							{
+								"strumTime": 36000,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 36300,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 36900,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 37200,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 40800,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 41400,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 300
+							},
+							{
+								"strumTime": 42000,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 45600,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 46200,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 46800,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 46950,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 47100,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 47400,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 50400,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 51000,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 300
+							},
+							{
+								"strumTime": 51600,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 55200,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 1650
+							},
+							{
+								"strumTime": 55650,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 60000,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 60300,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 60600,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 1050
+							},
+							{
+								"strumTime": 62100,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 64800,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 65100,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 65700,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 66000,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 69600,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 69900,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 70200,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 70500,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 70800,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 71700,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 74400,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 74700,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 75300,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 75600,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 450
+							}
+						],
+						"difficulty": "hard"
 					}
-				]
+				],
+				"strumPos": [
+					620,
+					50
+				],
+				"scrollSpeed": 1.6,
+				"charPos": [
+					770,
+					450
+				],
+				"syncAudio": true,
+				"cpu": false,
+				"character": "bf",
+				"keys": 4,
+				"strumlineVisible": true
 			},
 			{
-				"cpu": true,
-				"character": "dad",
 				"strumlineAudio": {
+					"assetPath": "data/songs/bopeebo/Voices-dad",
 					"effects": [],
-					"name": "dad-vocals",
-					"assetPath": "data/songs/bopeebo/Voices-dad"
+					"name": "dad-vocals"
 				},
-				"scrollSpeed": 1,
-				"syncAudio": true,
 				"variation": "Default",
+				"events": [],
+				"strumlineData": [
+					{
+						"notes": [
+							{
+								"strumTime": 0,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 600,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 1050,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 600
+							},
+							{
+								"strumTime": 4800,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 300
+							},
+							{
+								"strumTime": 5400,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 300
+							},
+							{
+								"strumTime": 6000,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 300
+							},
+							{
+								"strumTime": 9600,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 150
+							},
+							{
+								"strumTime": 10200,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 10500,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 10800,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 14400,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 14700,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 15300,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 15600,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 300
+							},
+							{
+								"strumTime": 19200,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 19500,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 19800,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 750
+							},
+							{
+								"strumTime": 24000,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 24300,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 24600,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 750
+							},
+							{
+								"strumTime": 28800,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 29100,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 29400,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 1050
+							},
+							{
+								"strumTime": 33600,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 33900,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 34500,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 34800,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 38400,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 39000,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 300
+							},
+							{
+								"strumTime": 39600,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 43200,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 43800,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 44400,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 44550,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 44700,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 45000,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 48000,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 48600,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 300
+							},
+							{
+								"strumTime": 49200,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 52800,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 1650
+							},
+							{
+								"strumTime": 57600,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 57900,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 58200,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 1050
+							},
+							{
+								"strumTime": 62400,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 62700,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 63300,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 63600,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 64500,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 67200,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 67500,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 67800,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 68100,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 68400,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 72000,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 72300,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 72900,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 73200,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 74100,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							}
+						],
+						"difficulty": "easy"
+					},
+					{
+						"notes": [
+							{
+								"strumTime": 0,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 600,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 1050,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 600
+							},
+							{
+								"strumTime": 4800,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 300
+							},
+							{
+								"strumTime": 5400,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 300
+							},
+							{
+								"strumTime": 6000,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 300
+							},
+							{
+								"strumTime": 9600,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 150
+							},
+							{
+								"strumTime": 10200,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 10500,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 10800,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 14400,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 14700,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 15300,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 15600,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 300
+							},
+							{
+								"strumTime": 19200,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 19500,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 19800,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 750
+							},
+							{
+								"strumTime": 24000,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 24300,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 24600,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 750
+							},
+							{
+								"strumTime": 28800,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 29100,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 29400,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 1050
+							},
+							{
+								"strumTime": 33600,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 33900,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 34500,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 34800,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 38400,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 39000,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 300
+							},
+							{
+								"strumTime": 39600,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 43200,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 43800,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 44400,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 44550,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 44700,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 45000,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 48000,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 48600,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 300
+							},
+							{
+								"strumTime": 49200,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 52800,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 1650
+							},
+							{
+								"strumTime": 57600,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 57900,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 58200,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 1050
+							},
+							{
+								"strumTime": 62400,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 62700,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 63300,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 63600,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 64500,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 67200,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 67500,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 67800,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 68100,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 68400,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 72000,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 72300,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 72900,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 73200,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 74100,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							}
+						],
+						"difficulty": "normal"
+					},
+					{
+						"notes": [
+							{
+								"strumTime": 0,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 600,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 1050,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 600
+							},
+							{
+								"strumTime": 4800,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 300
+							},
+							{
+								"strumTime": 5400,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 300
+							},
+							{
+								"strumTime": 6000,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 300
+							},
+							{
+								"strumTime": 9600,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 150
+							},
+							{
+								"strumTime": 10200,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 10500,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 10800,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 14400,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 14700,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 15300,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 15600,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 300
+							},
+							{
+								"strumTime": 19200,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 19500,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 19800,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 750
+							},
+							{
+								"strumTime": 24000,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 24300,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 24600,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 750
+							},
+							{
+								"strumTime": 28800,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 29100,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 29400,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 1050
+							},
+							{
+								"strumTime": 33600,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 33900,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 34500,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 34800,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 38400,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 39000,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 300
+							},
+							{
+								"strumTime": 39600,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 43200,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 43800,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 44400,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 44550,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 44700,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 45000,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 48000,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 48600,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 300
+							},
+							{
+								"strumTime": 49200,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 52800,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 1650
+							},
+							{
+								"strumTime": 57600,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 57900,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 58200,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 1050
+							},
+							{
+								"strumTime": 62400,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 62700,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 63300,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 63600,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 64500,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 67200,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 67500,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 67800,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 68100,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 68400,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 72000,
+								"noteID": 0,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 72300,
+								"noteID": 3,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 72900,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							},
+							{
+								"strumTime": 73200,
+								"noteID": 1,
+								"type": "default",
+								"sustainLength": 450
+							},
+							{
+								"strumTime": 74100,
+								"noteID": 2,
+								"type": "default",
+								"sustainLength": 0
+							}
+						],
+						"difficulty": "hard"
+					}
+				],
 				"strumPos": [
 					0,
 					50
 				],
-				"keys": 4,
-				"strumlineVisible": false,
+				"scrollSpeed": 1.6,
 				"charPos": [
 					0,
-					0
+					100
 				],
-				"strumlineData": [
-					{
-						"difficulty": "easy",
-						"notes": []
-					},
-					{
-						"difficulty": "normal",
-						"notes": [
-							{
-								"strumTime": 0,
-								"noteID": 6,
-								"type": "default",
-								"sustainLength": 0
-							},
-							{
-								"strumTime": 648.648648648649,
-								"noteID": 7,
-								"type": "default",
-								"sustainLength": 0
-							},
-							{
-								"strumTime": 1216.21621621622,
-								"noteID": 7,
-								"type": "default",
-								"sustainLength": 0
-							},
-							{
-								"strumTime": 4864.86486486487,
-								"noteID": 6,
-								"type": "default",
-								"sustainLength": 0
-							},
-							{
-								"strumTime": 6081.08108108108,
-								"noteID": 5,
-								"type": "default",
-								"sustainLength": 0
-							},
-							{
-								"strumTime": 5432.43243243243,
-								"noteID": 4,
-								"type": "default",
-								"sustainLength": 0
-							}
-						]
-					},
-					{
-						"difficulty": "hard",
-						"notes": []
-					}
-				]
+				"syncAudio": true,
+				"cpu": true,
+				"character": "dad",
+				"keys": 4,
+				"strumlineVisible": true
 			}
-		],
-		"stage": "stage",
-		"inst": {
-			"loop": false,
-			"audio": {
-				"effects": [],
-				"name": "BopeeboInst",
-				"assetPath": "data/songs/bopeebo/Inst"
-			},
-			"authors": "Noaa",
-			"bpm": 185
-		}
+		]
 	},
-	"authors": "Noaa",
 	"name": "Bopeebo"
 }
