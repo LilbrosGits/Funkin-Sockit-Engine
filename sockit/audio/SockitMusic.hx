@@ -123,7 +123,7 @@ class SockitMusic extends FlxSound
 			case "volume":
 				FlxG.sound.music.volume = (effects.get('$time').value);
 			case "fadeIn":
-				FlxG.sound.music.fadeIn(effects.get('$time').value.split(',')[0], effects.get('$time').value.split(',')[1], effects.get('$time').value.split(',')[2]);
+				FlxG.sound.music.fadeIn(effects.get('$time').value.split(',')[0], time, effects.get('$time').value.split(',')[1]);
 		}
 	}
 }

@@ -1,10 +1,13 @@
 package funkin.obj;
 
+import funkin.backend.inputs.PlayerSettings;
+import funkin.data.Song.StrumlineData;
 import assets.Paths;
 import objects.SockitSprite;
 import flixel.FlxSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.math.FlxMath;
+import funkin.backend.inputs.Controls.Control;
 import flixel.util.FlxColor;
 
 using StringTools;
@@ -18,6 +21,7 @@ class Note extends SockitSprite
 	public var canBeHit:Bool = false;
 	public var tooLate:Bool = false;
 	public var wasGoodHit:Bool = false;
+	public var rating:String = "sick";
 	public var prevNote:Note;
 	public var speed:Float = 1.0;
 	public var type:String = 'default';
@@ -134,5 +138,43 @@ class Note extends SockitSprite
 			if (alpha > 0.3)
 				alpha = 0.3;
 		}
+	}
+}
+
+class NoteSplash extends SockitSprite {
+	public var noteID:Int = 0;
+	public function new(x, y, data) {
+		super(x, y);
+		noteID = data;
+	}
+
+	public function loadNoteSplashes(data:StrumlineData) {
+		loadSpriteFile(Paths.getJson('UI/noteStyles/default/splashes'));
+		setGraphicSize(Std.int(width * 0.7));
+		x += Note.swagWidth * noteID;
+		visible = false;
+
+		x += data.strumPos[0];
+
+		ID = noteID;
+	}
+
+	override public function update(elapsed) {
+		super.update(elapsed);
+
+		if (animation.curAnim != null) {
+			if (animation.curAnim.finished) {
+				if (animation.curAnim.name.contains('start')) {
+					playAnim('${['purple', 'blue', 'green', 'red'][noteID]}-hold');
+				}
+				if (animation.curAnim.name.contains('end')) {
+					visible = false;
+				}
+				if (animation.curAnim.name.contains('splash-')) {
+					visible = false;
+				}
+			}
+		}
+
 	}
 }

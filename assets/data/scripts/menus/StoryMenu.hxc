@@ -2,6 +2,8 @@ import flixel.FlxSprite;
 import flixel.math.FlxMath;
 import funkin.data.Week.WeekData;
 import funkin.data.Week;
+import funkin.data.Song;
+import funkin.meta.states.PlayState;
 import assets.FileSystem;
 import flixel.text.FlxText;
 import flixel.text.FlxText.FlxTextBorderStyle;
@@ -64,6 +66,12 @@ function onUpdate() {
 
     if (controls.DOWN_P) {
         selectSong(1);
+    }
+
+    if (controls.ACCEPT) {
+        PlayState.isStoryMode = true;
+        PlayState.song = Song.loadSong(weekFiles[curWeek].songs[0]);
+        FlxG.switchState(new PlayState());
     }
 }
 

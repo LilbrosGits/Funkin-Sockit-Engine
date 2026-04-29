@@ -1,5 +1,7 @@
 package funkin.obj;
 
+import funkin.obj.Note.NoteSplash;
+import flixel.FlxG;
 import funkin.meta.states.PlayState;
 import funkin.meta.substates.GameSubState;
 import funkin.data.Song.NoteData;
@@ -17,9 +19,12 @@ import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
 
+using StringTools;
+
 class Strumline extends GameSubState {
     public var data:StrumlineData;
 	public var notes:FlxTypedGroup<Note>;
+	public var splashes:FlxTypedGroup<NoteSplash>;
 	public var strumNotes:FlxTypedSpriteGroup<SockitSprite>;
 	public var unspawnNotes:Array<Note> = [];
 
@@ -27,6 +32,12 @@ class Strumline extends GameSubState {
         super('');
 		strumNotes = new FlxTypedSpriteGroup<SockitSprite>();
 		add(strumNotes);
+
+		splashes = new FlxTypedGroup<NoteSplash>();
+		add(splashes);
+
+		notes = new FlxTypedGroup<Note>();
+		add(notes);
     }
 
     public function loadStrumline(strumdata:StrumlineData, type:String) {
@@ -35,6 +46,8 @@ class Strumline extends GameSubState {
 		for (i in 0...data.keys)
 		{
 			var babyArrow:SockitSprite = new SockitSprite(0, data.strumPos[1]);
+
+			var babySplash:NoteSplash = new NoteSplash(-20, data.strumPos[1] - 20, i);
 
 			switch (type)
 			{
@@ -54,6 +67,8 @@ class Strumline extends GameSubState {
 					babyArrow.setGraphicSize(Std.int(babyArrow.width * 0.7));
 
 					babyArrow.x += Note.swagWidth * i;
+
+					babySplash.loadNoteSplashes(data);
 			}
 
 			babyArrow.updateHitbox();
@@ -69,14 +84,12 @@ class Strumline extends GameSubState {
 			babyArrow.x += data.strumPos[0];
 
 			strumNotes.add(babyArrow);
+			splashes.add(babySplash);
 		}
 	}
 
 	public function generateSong(songNotes:StrumlineData, curDifficulty:Int = 0):Void
 	{
-		notes = new FlxTypedGroup<Note>();
-		add(notes);
-
 		var noteData:Array<NoteData> = [];
 
 		// NEW SHIT
@@ -183,7 +196,46 @@ class Strumline extends GameSubState {
 					strumNote.centerOffsets();
 			}
 			keyShit();
+
+			for (splash in splashes) {
+				if (splash.animation.curAnim != null && splash.animation.curAnim.name.contains('hold')) {
+					if (![controls.LEFT, controls.DOWN, controls.UP, controls.RIGHT][splash.ID])
+						splash.playAnim('${['purple', 'blue', 'green', 'red'][splash.ID]}-end');
+				}
+			}
 		}
+	}
+
+	public function judgeNote(note:Note) {
+		var noteDiff:Float = Math.abs(note.strumTime - Conductor.songPosition);
+
+		var score:Int = 150;
+
+		var daRating:String = "sick";
+
+		/*if (noteDiff > Conductor.safeZoneOffset * 0.9)
+		{
+			daRating = 'shit';
+			score = 10;
+			PlayState.instance.health += 0.01;
+		}
+		else if (noteDiff > Conductor.safeZoneOffset * 0.75)
+		{
+			daRating = 'bad';
+			score = 50;
+			PlayState.instance.health += 0.02;
+		}
+		else if (noteDiff > Conductor.safeZoneOffset * 0.2)
+		{
+			daRating = 'good';
+			score = 100;
+			PlayState.instance.health += 0.04;
+		}
+		else {
+			PlayState.instance.health += 0.045;
+		}*/
+		note.rating = daRating;
+
 	}
 
 	private function keyShit():Void
@@ -391,10 +443,22 @@ class Strumline extends GameSubState {
 			note.wasGoodHit = true;
 
 			if (data != null && !data.cpu) {
+				judgeNote(note);
 				strumNotes.forEach(function(spr:SockitSprite)
 				{	
 					if (spr.ID == note.noteData) {
 						spr.playAnim('confirm-static-' + swag[spr.ID]);
+
+						if (note.rating == 'sick') {
+							if (note.sustainLength != 0 && !note.isSustainNote) {
+								splashes.members[spr.ID].visible = true;
+								splashes.members[spr.ID].playAnim('${['purple', 'blue', 'green', 'red'][note.noteData]}-start');
+							}
+							else if (note.sustainLength == 0 && !note.isSustainNote) {
+								splashes.members[spr.ID].visible = true;
+								splashes.members[spr.ID].playAnim('splash-${['purple', 'blue', 'green', 'red'][note.noteData]}-${FlxG.random.int(1, 2)}');
+							}
+						}
 					}
 				});
 			}
@@ -403,14 +467,10 @@ class Strumline extends GameSubState {
 
 			if (!note.isSustainNote)
 			{
-				PlayState.instance.health += 0.02;
 				note.kill();
 				notes.remove(note, true);
 				note.destroy();
 			}
-
-			
-			PlayState.instance.health += 0.04;
 		}
 		else {
 			if (data != null && data.cpu) {

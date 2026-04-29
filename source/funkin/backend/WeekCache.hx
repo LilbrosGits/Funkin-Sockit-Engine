@@ -1,5 +1,6 @@
 package funkin.backend;
 
+import assets.Paths;
 import funkin.data.Week.WeekData;
 import flixel.FlxG;
 import funkin.data.Song;

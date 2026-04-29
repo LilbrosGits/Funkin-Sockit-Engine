@@ -1,0 +1,259 @@
+{
+	"renderType": "multisparrow",
+	"transform": {
+		"pos": [
+			0,
+			0
+		],
+		"scale": [
+			1,
+			1
+		],
+		"angle": 0
+	},
+	"version": "0.0.0",
+	"assetPath": "UI/noteStyles/default/holdCoverBlue",
+	"anims": [
+		{
+			"offsets": [
+				0,
+				0
+			],
+			"loop": false,
+			"postFix": "",
+			"frameRate": 24,
+			"assetPath": "UI/noteStyles/default/holdCoverBlue",
+			"xmlName": "holdCoverStartBlue",
+			"name": "blue-start"
+		},
+		{
+			"offsets": [
+				0,
+				0
+			],
+			"loop": false,
+			"postFix": "",
+			"frameRate": 24,
+			"assetPath": "UI/noteStyles/default/holdCoverBlue",
+			"xmlName": "holdCoverEndBlue",
+			"name": "blue-end"
+		},
+		{
+			"offsets": [
+				0,
+				0
+			],
+			"loop": true,
+			"postFix": "",
+			"frameRate": 24,
+			"assetPath": "UI/noteStyles/default/holdCoverBlue",
+			"xmlName": "holdCoverBlue",
+			"name": "blue-hold"
+		},
+		{
+			"loop": false,
+			"offsets": [
+				0,
+				0
+			],
+			"frameRate": 24,
+			"postFix": "",
+			"assetPath": "UI/noteStyles/default/holdCoverPurple",
+			"xmlName": "holdCoverStartPurple",
+			"name": "purple-start"
+		},
+		{
+			"loop": true,
+			"offsets": [
+				0,
+				0
+			],
+			"frameRate": 24,
+			"postFix": "",
+			"assetPath": "UI/noteStyles/default/holdCoverPurple",
+			"xmlName": "holdCoverPurple",
+			"name": "purple-hold"
+		},
+		{
+			"loop": false,
+			"offsets": [
+				0,
+				0
+			],
+			"frameRate": 24,
+			"postFix": "",
+			"assetPath": "UI/noteStyles/default/holdCoverPurple",
+			"xmlName": "holdCoverEndPurple",
+			"name": "purple-end"
+		},
+		{
+			"offsets": [
+				0,
+				0
+			],
+			"loop": false,
+			"assetPath": "UI/noteStyles/default/holdCoverGreen",
+			"postFix": "",
+			"frameRate": 24,
+			"xmlName": "holdCoverStartGreen",
+			"name": "green-start"
+		},
+		{
+			"offsets": [
+				0,
+				0
+			],
+			"loop": true,
+			"assetPath": "UI/noteStyles/default/holdCoverGreen",
+			"postFix": "",
+			"frameRate": 24,
+			"xmlName": "holdCoverGreen",
+			"name": "green-hold"
+		},
+		{
+			"offsets": [
+				0,
+				0
+			],
+			"loop": false,
+			"assetPath": "UI/noteStyles/default/holdCoverGreen",
+			"postFix": "",
+			"frameRate": 24,
+			"xmlName": "holdCoverEndGreen",
+			"name": "green-end"
+		},
+		{
+			"offsets": [
+				0,
+				0
+			],
+			"loop": false,
+			"assetPath": "UI/noteStyles/default/holdCoverRed",
+			"postFix": "",
+			"frameRate": 24,
+			"xmlName": "holdCoverStartRed",
+			"name": "red-start"
+		},
+		{
+			"offsets": [
+				0,
+				0
+			],
+			"loop": true,
+			"assetPath": "UI/noteStyles/default/holdCoverRed",
+			"postFix": "",
+			"frameRate": 24,
+			"xmlName": "holdCoverRed",
+			"name": "red-hold"
+		},
+		{
+			"offsets": [
+				0,
+				0
+			],
+			"loop": false,
+			"assetPath": "UI/noteStyles/default/holdCoverRed",
+			"postFix": "",
+			"frameRate": 24,
+			"xmlName": "holdCoverEndRed",
+			"name": "red-end"
+		},
+		{
+			"loop": false,
+			"offsets": [
+				0,
+				0
+			],
+			"frameRate": 24,
+			"postFix": "",
+			"assetPath": "UI/noteStyles/default/noteSplashes",
+			"xmlName": "note impact 1 purple",
+			"name": "slpash-purple-1"
+		},
+		{
+			"loop": false,
+			"offsets": [
+				0,
+				0
+			],
+			"frameRate": 24,
+			"postFix": "",
+			"assetPath": "UI/noteStyles/default/noteSplashes",
+			"xmlName": "note impact 2 purple",
+			"name": "splash-purple-2"
+		},
+		{
+			"loop": false,
+			"offsets": [
+				0,
+				0
+			],
+			"assetPath": "UI/noteStyles/default/noteSplashes",
+			"frameRate": 24,
+			"postFix": "",
+			"xmlName": "note impact 1 blue",
+			"name": "splash-blue-1"
+		},
+		{
+			"assetPath": "UI/noteStyles/default/noteSplashes",
+			"offsets": [
+				0,
+				0
+			],
+			"postFix": "",
+			"frameRate": 24,
+			"loop": false,
+			"name": "splash-blue-2",
+			"xmlName": "note impact 2 blue"
+		},
+		{
+			"assetPath": "UI/noteStyles/default/noteSplashes",
+			"offsets": [
+				0,
+				0
+			],
+			"postFix": "",
+			"frameRate": 24,
+			"loop": false,
+			"name": "splash-green-1",
+			"xmlName": "note impact 1 green"
+		},
+		{
+			"assetPath": "UI/noteStyles/default/noteSplashes",
+			"offsets": [
+				0,
+				0
+			],
+			"postFix": "",
+			"frameRate": 24,
+			"loop": false,
+			"name": "splash-green-2",
+			"xmlName": "note impact 2 green"
+		},
+		{
+			"assetPath": "UI/noteStyles/default/noteSplashes",
+			"offsets": [
+				0,
+				0
+			],
+			"postFix": "",
+			"frameRate": 24,
+			"loop": false,
+			"name": "splash-red-1",
+			"xmlName": "note impact 1 red"
+		},
+		{
+			"assetPath": "UI/noteStyles/default/noteSplashes",
+			"offsets": [
+				0,
+				0
+			],
+			"postFix": "",
+			"frameRate": 24,
+			"loop": false,
+			"name": "splash-red-2",
+			"xmlName": "note impact 2 red"
+		}
+	],
+	"name": "splashes"
+}

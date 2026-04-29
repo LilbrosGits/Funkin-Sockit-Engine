@@ -49,6 +49,7 @@ class SpriteEditor extends FlxState
 	public var transformBox:Box;
 	public var dataBox:Box;
 	public var camUI:FlxCamera;
+	public var camList:FlxCamera;
 	public var camSprite:FlxCamera;
 
 	public var animList:FlxTypedGroup<FlxText>;
@@ -119,8 +120,13 @@ class SpriteEditor extends FlxState
 		camUI.bgColor = FlxColor.TRANSPARENT;
 		add(camUI);
 
+		camList = new FlxCamera(0, 0, FlxG.width, FlxG.height);
+		camList.bgColor = FlxColor.TRANSPARENT;
+		add(camList);
+
 		FlxG.cameras.add(camSprite, true);
 		FlxG.cameras.add(camUI, false);
+		FlxG.cameras.add(camList, false);
 
 		mainSprite.cameras = [camSprite];
 		uiGroup1.cameras = [camUI];
@@ -358,6 +364,25 @@ class SpriteEditor extends FlxState
 			}
 			animVBox.addComponent(framrateStepper);
 
+			var loopAnim:CheckBox = new CheckBox();
+			loopAnim.text = 'Loop?';
+			loopAnim.selected = mainSprite.spriteFile.anims[curAnim].loop;
+			loopAnim.onChange = function(e)
+			{
+				mainSprite.spriteFile.anims[curAnim].loop = loopAnim.value;
+			};
+			animVBox.addComponent(loopAnim);
+
+			if (mainSprite.spriteFile.renderType.contains('multi')) {
+				var assetPath:TextArea = new TextArea();
+				assetPath.text = mainSprite.spriteFile.anims[curAnim].assetPath;
+				assetPath.onChange = function(e)
+				{
+					mainSprite.spriteFile.anims[curAnim].assetPath = assetPath.value;
+					mainSprite.updateAssetPath();
+				}
+				animVBox.addComponent(assetPath);
+			}
 			animationBox.addComponent(animVBox);
 
 			var animHBox:HBox = new HBox();
@@ -450,6 +475,16 @@ class SpriteEditor extends FlxState
 			newAnimation.xmlName = dataName.value;
 		}
 		animVBox.addComponent(dataName);
+
+		if (mainSprite.spriteFile.renderType.contains('multi')) {
+			var assetPath:TextArea = new TextArea();
+			assetPath.text = mainSprite.spriteFile.anims[curAnim].assetPath;
+			assetPath.onChange = function(e)
+			{
+				mainSprite.spriteFile.anims[curAnim].assetPath = assetPath.value;
+			}
+			animVBox.addComponent(assetPath);
+		}
 
 		var framrateStepper:NumberStepper = new NumberStepper();
 		framrateStepper.pos = 24;
@@ -571,10 +606,11 @@ class SpriteEditor extends FlxState
 
 		for (i in 0...mainSprite.spriteFile.anims.length)
 		{
-			var animTxt:FlxText = new FlxText(0, 50 + (i * 50), 0,
-				'${mainSprite.spriteFile.anims[i].name} [${mainSprite.spriteFile.anims[i].offsets[0]}, ${mainSprite.spriteFile.anims[i].offsets[1]}]', 32);
+			var animTxt:FlxText = new FlxText(FlxG.width, 50 + (i  * 50) , 0,
+				'${mainSprite.spriteFile.anims[(i)].name} [${mainSprite.spriteFile.anims[(i)].offsets[0]}, ${mainSprite.spriteFile.anims[(i)].offsets[1]}]', 32);
 			animTxt.ID = i;
-			animTxt.cameras = [camUI];
+			animTxt.cameras = [camList];
+			animTxt.x = FlxG.width - animTxt.width - 20;
 			animList.add(animTxt);
 		}
 
@@ -585,7 +621,7 @@ class SpriteEditor extends FlxState
 			else
 				animText.alpha = 0.4;
 
-			if (FlxG.mouse.overlaps(animText, camUI))
+			if (FlxG.mouse.overlaps(animText, camList))
 			{
 				animText.alpha = 0.6;
 				if (FlxG.mouse.justPressed)
@@ -611,7 +647,7 @@ class SpriteEditor extends FlxState
 					duplicateAnim.text = 'Duplicate';
 					duplicateAnim.onClick = function(e)
 					{
-						var anim:Anim = mainSprite.spriteFile.anims[animText.ID];
+						var anim:Anim = (mainSprite.spriteFile.anims[animText.ID]);
 						anim.name = anim.name + '(copy)';
 						mainSprite.spriteFile.anims.insert(animText.ID, anim);
 					};
@@ -656,6 +692,10 @@ class SpriteEditor extends FlxState
 		{
 			camSprite.scroll.x = camSprite.scroll.x - FlxG.mouse.deltaViewX;
 			camSprite.scroll.y = camSprite.scroll.y - FlxG.mouse.deltaViewY;
+		}
+
+		if (FlxG.mouse.wheel != 0) {
+			camList.scroll.y -= FlxG.mouse.wheel * 10;
 		}
 
 		super.update(elapsed);

@@ -189,10 +189,6 @@ class ChartEditor extends GameState {
     override public function update(elapsed:Float) {
         super.update(elapsed);
 
-        bgGrid.scrollX = elapsed * 70;
-        
-        bgGrid.scrollY = elapsed * 70;
-
         if (FlxG.sound.music != null) {
             Conductor.songPosition = FlxG.sound.music.time;
 
@@ -623,11 +619,7 @@ class ChartEditor extends GameState {
                 dummyArrow.x = eventGrid.x;
                 dummyArrow.y = Math.floor(FlxG.mouse.y / 40) * 40;
                 if (FlxG.mouse.justPressed) {
-                    var newEvent:ScriptedEvent = new ScriptedEvent(events[curEvent].data.name);
-                    newEvent.data.strumTime = eventGrid.getStrumTime(dummyArrow.y);
-                    newEvent.loadEvent();
-                    newEvent.script.call('newEvent', [newEvent.data]);
-                    addEvent(newEvent.data);
+                    addEvent();
                 }
                 if (FlxG.mouse.justPressedRight) {
                     var newEvent:EventData = {
@@ -648,10 +640,13 @@ class ChartEditor extends GameState {
     }
 
 
-    function addEvent(data:EventData) {
-        trace(data);
-        if (!song.playData.strumlines[curStrum].events.contains(data))
-            song.playData.strumlines[curStrum].events.push(data);
+    function addEvent() {
+        var newEvent:ScriptedEvent = new ScriptedEvent(events[curEvent].data.name);
+        newEvent.data.strumTime = eventGrid.getStrumTime(dummyArrow.y);
+        newEvent.loadEvent();
+        trace(newEvent.data);
+        if (!song.playData.strumlines[curStrum].events.contains(newEvent.data))
+            song.playData.strumlines[curStrum].events.push(newEvent.data);
     }
 
     function deleteEvent(data:EventData) {

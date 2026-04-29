@@ -28,6 +28,7 @@ class PlayState extends GameState {
     public static var song:SongData;
     public static var difficulty:Int = 0;
     public static var instance:PlayState;
+    public static var isStoryMode:Bool = false;
     public static var editingEnabled:Bool = false;
     public var editorEnabled:Bool = false;
     public var stage:Stage;

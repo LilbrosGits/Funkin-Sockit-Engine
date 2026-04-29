@@ -33,7 +33,7 @@ function onCreatePost()
     bg.makeGraphic(FlxG.width, FlxG.height, 0x000000);
     bg.alpha = 0.6;
     bg.scrollFactor.set();
-    add(bg);
+    super.add(bg);
 
     for (i in 0...menuItems.length)
     {
